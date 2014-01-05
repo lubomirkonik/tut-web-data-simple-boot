@@ -2,6 +2,7 @@ package tut.webdata.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,13 +18,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
-        .withUser("letsnosh").password("noshing").roles("USER");
+        .withUser("l").password("k").roles("USER");  //letsnosh, noshing
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     //{!begin configure}
     http.authorizeUrls()
+        //.anyRequest().hasAuthority("ROLE_USER").and().anonymous()
+        //.anyRequest().permitAll()
+    	.antMatchers("/").permitAll()
+    	.antMatchers(HttpMethod.GET, "/showBasket").permitAll()
+    	.antMatchers("/addToBasket").permitAll()
+    	.antMatchers("/removeFromBasket").permitAll()
         .antMatchers("/order/**").hasRole("USER")
         .antMatchers("/checkout").hasRole("USER")
         .anyRequest().anonymous()
