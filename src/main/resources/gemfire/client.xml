@@ -24,7 +24,7 @@
 
     <gfe:transaction-manager/>
 
-    <gfe:cq-listener-container id="transactionM">
+    <gfe:cq-listener-container id="transactionManag">
         <gfe:listener ref="statusUpdateListener" query="SELECT * from /YummyNoodleOrder" />
     </gfe:cq-listener-container>
 
