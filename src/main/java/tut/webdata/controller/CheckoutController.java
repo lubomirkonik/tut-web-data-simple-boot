@@ -59,7 +59,7 @@ public class CheckoutController {
 				.createOrder(order);
 
 //		UUID key = event.getNewOrderKey();
-		UUID key = UUID.fromString(event.getId());
+		String key = event.getId();
 
 		redirectAttrs.addFlashAttribute("message",
 				"Your order has been accepted!");
@@ -67,7 +67,7 @@ public class CheckoutController {
 		basket.clear();
 		LOG.debug("Basket now has {} items", basket.getSize());
 
-		return "redirect:/order/" + key.toString();
+		return "redirect:/order/" + key;
 	}
 
 	// {!begin customerInfo}

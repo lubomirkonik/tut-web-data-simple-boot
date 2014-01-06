@@ -6,12 +6,13 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
 // {!begin top}
 @Document(collection = "menu")
-public class MenuItem {
+public class MenuItem implements Serializable {
 
   @Id
   private String id;

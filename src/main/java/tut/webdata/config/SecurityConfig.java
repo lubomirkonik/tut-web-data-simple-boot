@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers(HttpMethod.GET, "/showBasket").permitAll()
     	.antMatchers("/addToBasket").permitAll()
     	.antMatchers("/removeFromBasket").permitAll()
+    	.antMatchers("/updateMenuItem").permitAll()
+    	.antMatchers("/deleteMenuItem").permitAll()
         .antMatchers("/order/**").hasRole("USER")
         .antMatchers("/checkout").hasRole("USER")
         .anyRequest().anonymous()
