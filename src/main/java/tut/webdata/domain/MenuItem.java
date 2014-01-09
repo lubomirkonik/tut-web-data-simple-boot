@@ -1,6 +1,8 @@
 package tut.webdata.domain;
 
 //import tut.webdata.events.menu.MenuItemDetails;
+import org.hibernate.validator.constraints.NotEmpty;
+//import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,13 +12,23 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 // {!begin top}
 @Document(collection = "menu")
 public class MenuItem implements Serializable {
 
+  @NotNull  //err -
+  @NotEmpty	//obmedzenie funguje
   @Id
   private String id;
 
+  @NotNull
+  @NotEmpty
   @Field("itemName")
   @Indexed
   private String name;
@@ -25,9 +37,17 @@ public class MenuItem implements Serializable {
   private String description;
 
   private Set<Ingredient> ingredients;
-
+  
+//  @NotNull
+//  @NotEmpty
+  @DecimalMin(value = "0.1")
+  @DecimalMax(value = "99.99")
   private BigDecimal cost;
 
+//  @NotNull
+//  @NotEmpty
+  @Min(value = 1)
+  @Max(value = 60)
   private int minutesToPrepare;
 
   public String getDescription() {

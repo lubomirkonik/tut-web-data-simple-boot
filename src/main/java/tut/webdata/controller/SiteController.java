@@ -3,7 +3,7 @@ package tut.webdata.controller;
 //import java.util.ArrayList;
 //import java.util.List;
 
-import java.math.BigDecimal;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +43,9 @@ public class SiteController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	// do validation
-	public String addMenuItem(@ModelAttribute("menuItemAdd") MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
+	public String addMenuItem(@Valid @ModelAttribute("menuItemAdd") MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
-			return "redirect:/";
+			return "/home";
 		}
 		LOG.debug("No errors, continue with creating of menu item {}:",
 				menuItem.getName());
@@ -55,17 +54,25 @@ public class SiteController {
 		return "redirect:/";
 	}
 	
+//	validacia pre update
+//	redirect att
 	@RequestMapping(value = "/updateMenuItem", method = RequestMethod.POST)
-	public String updateMenuItem(@ModelAttribute("menuItemUpd") MenuItem menuItem) {
+	public String updateMenuItem(@Valid @ModelAttribute("menuItemUpd") MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
+		if (result.hasErrors()) {
+			return "/home";
+		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());
 		menuService.updateMenuItem(menuItem);
+		redirectAttrs.addFlashAttribute("message", "Menu item has been updated!");
 		return "redirect:/";
 	}
-	
+
+//	redirect att	
 	@RequestMapping(value = "/deleteMenuItem", method = RequestMethod.POST)
-	public String removeMenuItem(@ModelAttribute("menuItemDel") MenuItem menuItem) {
+	public String removeMenuItem(@ModelAttribute("menuItemDel") MenuItem menuItem, RedirectAttributes redirectAttrs) {
 		LOG.debug("Remove {} from MongoDB", menuItem.getId());
 		menuService.deleteMenuItem(menuItem.getId());
+		redirectAttrs.addFlashAttribute("message", "Menu item has been deleted!");
 		return "redirect:/";
 	}
 	

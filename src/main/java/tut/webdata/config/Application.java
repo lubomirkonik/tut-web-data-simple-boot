@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class Application {
 
-	public static void main(String[] args) throws Throwable {  //throws Throwable
+	public static void main(String[] args) { //throws Throwable 
 		SpringApplication.run(Application.class, args);
 	}
 

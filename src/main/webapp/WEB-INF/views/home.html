@@ -67,7 +67,7 @@
                     <th>Name</th>
                     <th>Cost</th>
                     <th>Mins to prepare</th>
-                    <th colspan="3">Action</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,24 +87,7 @@
                             <input type="submit" value="Add to basket"/>
                         </form>
                     </td>
-                    <td>
-                        <form action="/updateMenuItem" method="POST">  <!-- id="${itemFormId}" -->
-                            <input id="id" name="id" th:value="${item.id}"/> th:contenteditable="true"
-                            <input id="name" name="name" th:value="${item.name}"/>
-                            <input id="cost" name="cost" th:value="${item.cost}"/>
-                            <input id="minutesToPrepare" name="minutesToPrepare"
-                                   th:value="${item.minutesToPrepare}"/>
-                            <input type="submit" value="Update item on MongoDB"/>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/deleteMenuItem" method="POST">  <!-- id="${itemFormId}" -->
-                            <input id="id" name="id" type="hidden" th:value="${item.id}"/>
-                            <input type="submit" value="Remove from MongoDB"/>
-                        </form>
-                    </td>
                 </tr>
-                
                 
                 <!-- This example data will be removed by thymeleaf during processing and replaced with the rows generated above -->
                 <tr th:remove="all">
@@ -115,17 +98,51 @@
                 </tr>
                 </tbody>
             </table>
-            
+         
+<!--             table for admin -->
             <div th:if="${message}"
                  th:text="${message}"
                  id="message" class="alert alert-info">
             </div>
-
-            <form method="POST" th:object="${menuItemAdd}">
+            
+<!--          if user role == admin -->
+              <table class="table table-striped">
+                <!-- <thead >
+                  <tr >
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Cost</th>
+                    <th>Mins to prepare</th>
+                    <th>Action</th>
+                  </tr>
+                </thead> -->
+<!--                 <tbody>    -->
+                    <tr th:each="item,status : ${menuItems}">
+                         <td>
+                         <!-- id="${itemFormId}" -->
+                            <form action="/updateMenuItem" method="POST">   
+                              <input id="id" name="id" th:value="${item.id}" contenteditable="false"/>
+                              <input id="name" name="name" th:value="${item.name}"/>
+                              <input id="cost" name="cost" th:value="${item.cost}"/>
+                              <input id="minutesToPrepare" name="minutesToPrepare"
+                                     th:value="${item.minutesToPrepare}"/> <p>&nbsp;</p>
+                              <input type="submit" value="Update item on MongoDB"/>
+                            </form>
+                            <form th:action="@{/deleteMenuItem}" method="POST">
+ 						      <input id="id" name="id" type="hidden" th:value="${item.id}" />
+						      <input type="submit" value="Remove from MongoDB"/>
+						    </form>	
+                         </td>
+					</tr>
+<!-- 					row for menuItemAdd -->
+<!--                 </tbody>     -->
+              </table> 
+            
+            <form id="formAdd" method="POST" th:object="${menuItemAdd}">
                 <table>
                     <tr>
                         <td>ID:</td>
-                        <td><input type="text" th:field="*{id}" /></td>
+                        <td><input type="text" th:field="*{id}"/></td>
                         <td th:if="${#fields.hasErrors('id')}"><p th:errors="*{id}">Incorrect ID</p></td>
                     </tr>
                     <tr>
