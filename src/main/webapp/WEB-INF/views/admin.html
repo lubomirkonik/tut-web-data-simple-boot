@@ -1,9 +1,8 @@
 <!DOCTYPE html> <!-- SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd" -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <!-- vyskusaj <html lang="en"> -->
 
 <head>
-	<title>Yummy Noodle Bar</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
@@ -24,6 +23,7 @@
             })
         });
     </script>
+    <title>Yummy Noodle Bar</title>
     <!-- <style type="text/css">
         body {
             padding-top: 60px;
@@ -75,56 +75,75 @@
 
     <div class="row-fluid navbar-left">
         <div class="span9">
-        
-			<!--/* Handle the flash task */-->
-			<th:block th:if="${message != null}">
-        		<!--/* The message code is returned from the @Controller */-->
-        		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
-    		</th:block>
-
-            <div id="message" class="alert alert-info">
-                Select from the menu. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
-                scrumptious item(s).
+         
+<!--             table for admin -->
+            <div th:if="${message}"
+                 th:text="${message}"
+                 id="message" class="alert alert-info">
             </div>
-
-            <table class="table table-striped">
-                <thead>
-                <tr>
+            
+<!--          if user role == admin -->
+              <table class="table table-striped">
+                <!-- <thead >
+                  <tr >
                     <th>ID</th>
                     <th>Name</th>
                     <th>Cost</th>
                     <th>Mins to prepare</th>
                     <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <tr th:each="item,status : ${menuItems}">
-                    <td th:text="${item.id}"></td>
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${item.cost}"></td>
-                    <td th:text="${item.minutesToPrepare}"></td>
-                    <td>
-                        <form action="/addToBasket" method="POST">
-                            <input id="id" name="id" type="hidden" th:value="${item.id}"/>
-                            <input id="name" name="name" type="hidden" th:value="${item.name}"/>
-                            <input id="cost" name="cost" type="hidden" th:value="${item.cost}"/>
-                            <input id="minutesToPrepare" name="minutesToPrepare" type="hidden"
-                                   th:value="${item.minutesToPrepare}"/>
-                            <input type="submit" value="Add to basket"/>
-                        </form>
-                    </td>
-                </tr>
-                
-                <!-- This example data will be removed by thymeleaf during processing and replaced with the rows generated above -->
-                <tr th:remove="all">
-                    <td>Yummy1</td>
-                    <td>Noodles, with Cheese</td>
-                    <td>$13.99</td>
-                    <td>15</td>
-                </tr>
-                </tbody>
-            </table> 
+                  </tr>
+                </thead> -->
+<!--                 <tbody>    -->
+                    <tr th:each="item,status : ${menuItems}">
+                         <td>
+                         <!-- id="${itemFormId}" -->
+                            <form action="/updateMenuItem" method="POST">   
+                              <input id="id" name="id" th:value="${item.id}" contenteditable="false"/>
+                              <input id="name" name="name" th:value="${item.name}"/>
+                              <input id="cost" name="cost" th:value="${item.cost}"/>
+                              <input id="minutesToPrepare" name="minutesToPrepare"
+                                     th:value="${item.minutesToPrepare}"/> <p>&nbsp;</p>
+                              <input type="submit" value="Update item on MongoDB"/>
+                            </form>
+                            <form th:action="@{/deleteMenuItem}" method="POST">
+ 						      <input id="id" name="id" type="hidden" th:value="${item.id}" />
+						      <input type="submit" value="Remove from MongoDB"/>
+						    </form>	
+                         </td>
+					</tr>
+<!-- 					row for menuItemAdd -->
+<!--                 </tbody>     -->
+              </table> 
+            
+            <form id="formAdd" method="POST" th:object="${menuItemAdd}">
+                <table>
+                    <tr>
+                        <td>ID:</td>
+                        <td><input type="text" th:field="*{id}"/></td>
+                        <td th:if="${#fields.hasErrors('id')}"><p th:errors="*{id}">Incorrect ID</p></td>
+                    </tr>
+                    <tr>
+                        <td>Name:</td>
+                        <td><input type="text" th:field="*{name}" /></td>
+                        <td th:if="${#fields.hasErrors('name')}"><p th:errors="*{name}">Incorrect Name</p></td>
+                    </tr>
+                    <tr>
+                        <td>Cost:</td>
+                        <td><input type="text" th:field="*{cost}" /></td>
+                        <td th:if="${#fields.hasErrors('cost')}"><p th:errors="*{cost}">Incorrect Cost</p></td>
+                    </tr>
+                    <tr>
+                        <td>Minutes to prepare:</td>
+                        <td><input type="text" th:field="*{minutesToPrepare}" /></td>
+                        <td th:if="${#fields.hasErrors('minutesToPrepare')}"><p th:errors="*{minutesToPrepare}">Incorrect Minutes to prepare</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <input type="submit" value="Add menu item to MongoDB" />
+                        </td>
+                    </tr>
+            	</table>
+            </form>
             
             <div th:include="layout :: foot"></div>
 

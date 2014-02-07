@@ -7,10 +7,10 @@ Project is only for learning purposes, it doesn't follow principles of Hexagonal
 
 Start application as follows:
 MongoDB: 
-<path>\bin\mongod.exe --dbpath <path>\data 
-<path>\bin\mongo.exe
+"\<path\>\bin\mongod.exe" --dbpath "\<path\>\data" 
+"\<path\>\bin\mongo.exe"
 
-Gemfire: 
+Gemfire (not used at master1-layouts branch): 
 .\gradlew run
  
 Run Application.class with main method in config package.

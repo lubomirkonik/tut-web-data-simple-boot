@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <body>
 
@@ -20,6 +20,7 @@
                         <li><a href="/showBasket">Basket</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                    	<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin.html" th:href="@{/admin}">Admin</a></li>
                 		<li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="./signin/signin.html" th:href="@{/signin}">Sign in</a></li>
                 		<li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
             		</ul> 
