@@ -45,11 +45,11 @@ public class OrderStatusController {
 	@ModelAttribute("orderStatus")
 	private OrderStatus getOrderStatus(@PathVariable("orderId") String orderId) {
 		Order orderDetailsEvent = orderService.requestOrder(UUID.fromString(orderId));
-		OrderStatus orderStatusEvent = orderService.requestOrderStatusByOrderId(UUID.fromString(orderId));
+		OrderStatus orderStatusEvent = orderService.requestOrderStatusByOrderId(orderId); //UUID.fromString(orderId)
 
 		OrderStatus status = new OrderStatus();
 		status.setName(orderDetailsEvent.getName());
-		status.setOrderId(UUID.fromString(orderId));
+		status.setOrderId(orderId);  // UUID.fromString(orderId)
 		status.setStatus(orderStatusEvent.getStatus());
 		
 		return status;

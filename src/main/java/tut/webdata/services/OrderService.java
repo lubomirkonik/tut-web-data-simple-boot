@@ -12,9 +12,9 @@ public interface OrderService {
 
   public Order requestOrder(UUID key);
 
-  public OrderStatus requestOrderStatus(UUID key);
+  public OrderStatus requestOrderStatus(String key);  //UUID
   
-  public OrderStatus requestOrderStatusByOrderId(UUID key);
+  public OrderStatus requestOrderStatusByOrderId(String key);  //UUID
 
   public Order createOrder(Order order);
 

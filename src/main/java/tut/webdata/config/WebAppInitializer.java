@@ -1,6 +1,7 @@
 package tut.webdata.config;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -14,7 +15,7 @@ public class WebAppInitializer extends
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] { SecurityConfig.class, PersistenceConfig.class,
-				MongoConfiguration.class, JPAConfiguration.class, GemfireConfiguration.class };
+				MongoConfiguration.class, JPAConfiguration.class };  //, GemfireConfiguration.class
 	}
   //{!end addToRootContext}
 
@@ -30,10 +31,15 @@ public class WebAppInitializer extends
 	
 	@Override
 	protected Filter[] getServletFilters() {
-		
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
+//		characterEncodingFilter.setForceEncoding(true);
 		return new Filter[] { characterEncodingFilter};
 	}
-
+	
+//	@Override
+//    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+//        registration.setInitParameter("defaultHtmlEscape", "true");
+//        registration.setInitParameter("spring.profiles.active", "default");
+//    }
 }

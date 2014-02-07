@@ -2,6 +2,7 @@ package tut.webdata.config;
 
 import tut.webdata.domain.MenuItem;
 import tut.webdata.repository.*;
+import tut.webdata.services.AccountService;
 import tut.webdata.services.MenuEventHandler;
 import tut.webdata.services.MenuService;
 import tut.webdata.services.OrderEventHandler;
@@ -18,6 +19,11 @@ import java.math.BigDecimal;
 public class PersistenceConfig {
 
 	@Bean
+	public AccountService accountPersistenceService(AccountRepo accountRepository) {
+		return new AccountService(accountRepository);
+	}
+	
+	@Bean
 	public OrderService ordersPersistenceService(OrdersRepository ordersRepository, OrderStatusRepository orderStatusRepository) {
 	  return new OrderEventHandler(ordersRepository , orderStatusRepository);
 	}
@@ -31,10 +37,10 @@ public class PersistenceConfig {
 		return new MenuEventHandler(menuItemRepository);
 	}
 
-	@Bean
-	public OrderStatusUpdateService orderStatusUpdateService() {
-		return new OrderStatusUpdateEventHandler();
-	}
+//	@Bean
+//	public OrderStatusUpdateService orderStatusUpdateService() {
+//		return new OrderStatusUpdateEventHandler();
+//	}
 	
 	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {
 		MenuItem item = new MenuItem();

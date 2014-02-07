@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class CheckoutController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String checkout() {
+//		 vytvor model atribut customerInfo a vymaz z doCheckout metody @ModelAttribute a metodu getCustomerInfo() - mozno treba nastavit @SessionAttributes, pozri OwnerController-Petclinic
 		return "/checkout";
 	}
 
@@ -46,6 +48,8 @@ public class CheckoutController {
 		if (result.hasErrors()) {
 			// errors in the form
 			// show the checkout form again
+//			result.rejectValue("lastName", "notFound", "not found"); - vyskusaj ako alternativu, inak asi nastavit lokalizovane chybne spravy
+//			pre vytvorenie validacie pozri metodu processCreationForm() v PetController
 			return "/checkout";
 		}
 

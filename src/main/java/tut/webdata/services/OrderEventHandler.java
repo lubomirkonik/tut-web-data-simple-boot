@@ -41,7 +41,7 @@ public class OrderEventHandler implements OrderService {
 	}
 
 	@Override
-	public OrderStatus requestOrderStatus(UUID key) {
+	public OrderStatus requestOrderStatus(String key) {  //UUID
 		OrderStatus status = orderStatusRepository.findOne(key);
 		if (status == null) {
 			return OrderStatus.notFound(key);
@@ -50,7 +50,7 @@ public class OrderEventHandler implements OrderService {
 	}
 	
 	@Override
-	public OrderStatus requestOrderStatusByOrderId(UUID key) {
+	public OrderStatus requestOrderStatusByOrderId(String key) {  //UUID
 		OrderStatus status = orderStatusRepository.findByOrderId(key);
 		if (status == null) {
 			return OrderStatus.notFound(key);
@@ -61,7 +61,8 @@ public class OrderEventHandler implements OrderService {
 	@Override
 	public Order createOrder(Order order) {
 		orderRepository.save(order);
-		setOrderStatus(new OrderStatus(UUID.fromString(order.getId()), UUID.randomUUID(), new Date(), "Order Received"));
+		//(new OrderStatus(UUID.fromString(order.getId()), UUID.randomUUID(), new Date(), "Order Received"))
+		setOrderStatus(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
 		return order;
 	}
 

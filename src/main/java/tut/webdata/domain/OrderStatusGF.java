@@ -1,48 +1,35 @@
 //package tut.webdata.domain;
 //
-////import tut.webdata.events.orders.OrderStatusDetails;
-////import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Transient;
+//import org.springframework.data.gemfire.mapping.Region;
 //
-//import javax.persistence.*;
-//
-////import java.io.Serializable;
+//import java.io.Serializable;
 //import java.util.Date;
+//import java.util.UUID;
 //
-//import javax.persistence.Column;
+//// {!begin gemfire}
+//@Region("YummyNoodleOrder")
+//public class OrderStatusGF implements Serializable {
 //
-//@Entity(name = "ORDER_STATUS")
-//public class OrderStatusH2 { // implements Serializable
-//
-////  @Column(name = "ORDER_ID")
-//  private String orderId;
-//  
+//  private UUID orderId;
 //  @Id
-////  @Column(name = "STATUS_ID")
-//  private String id;
-//  
+//  private UUID id;
+//  // {!end gemfire}
 //  private Date statusDate;
 //  private String status;
-//  
-//  @Transient
-//  private String name;
-//  public String getName() {
-//	  return name;
-//  }
-//  public void setName(String name) {
-//	  this.name = name;
-//  }
 //
-//  public OrderStatusH2(String orderId, String id, final Date date, final String status) {
+//  public OrderStatusGF(UUID orderId, UUID id, final Date date, final String status) {
 //    this.orderId = orderId;
 //    this.id = id;
 //    this.status = status;
 //    this.statusDate = date;
 //  }
 //
-//  public OrderStatusH2() {
+//  public OrderStatusGF() {
 //
 //  }
-//  
+//
 //  public Date getStatusDate() {
 //    return statusDate;
 //  }
@@ -51,19 +38,19 @@
 //    return status;
 //  }
 //
-//  public String getOrderId() {
+//  public UUID getOrderId() {
 //    return orderId;
 //  }
 //
-//  public String getId() {
+//  public UUID getId() {
 //    return id;
 //  }
 //
-//  public void setOrderId(String orderId) {
+//  public void setOrderId(UUID orderId) {
 //    this.orderId = orderId;
 //  }
 //
-//  public void setId(String id) {
+//  public void setId(UUID id) {
 //    this.id = id;
 //  }
 //
@@ -85,8 +72,17 @@
 ////        orderStatusDetails.getStatusDate(), orderStatusDetails.getStatus());
 ////  }
 //  
+//  @Transient
+//  private String name;
+//  public String getName() {
+//	  return name;
+//  }
+//  public void setName(String name) {
+//	  this.name = name;
+//  }
+//  
 //  private boolean entityFound = true;
-//  public static OrderStatus notFound(String key) {
+//  public static OrderStatus notFound(UUID key) {
 //	  OrderStatus ev = new OrderStatus();
 //	  ev.id = key;
 //	  ev.entityFound=false;

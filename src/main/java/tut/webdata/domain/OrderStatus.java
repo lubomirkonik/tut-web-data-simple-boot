@@ -1,25 +1,38 @@
 package tut.webdata.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.gemfire.mapping.Region;
+//import tut.webdata.events.orders.OrderStatusDetails;
+//import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
+import javax.persistence.*;
+
+//import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
-// {!begin gemfire}
-@Region("YummyNoodleOrder")
-public class OrderStatus implements Serializable {
+import javax.persistence.Column;
 
-  private UUID orderId;
+@Entity(name = "ORDER_STATUS")
+public class OrderStatus { // implements Serializable
+
+//  @Column(name = "ORDER_ID")
+  private String orderId;
+  
   @Id
-  private UUID id;
-  // {!end gemfire}
+//  @Column(name = "STATUS_ID")
+  private String id;
+  
   private Date statusDate;
   private String status;
+  
+  @Transient
+  private String name;
+  public String getName() {
+	  return name;
+  }
+  public void setName(String name) {
+	  this.name = name;
+  }
 
-  public OrderStatus(UUID orderId, UUID id, final Date date, final String status) {
+  public OrderStatus(String orderId, String id, final Date date, final String status) {
     this.orderId = orderId;
     this.id = id;
     this.status = status;
@@ -29,7 +42,7 @@ public class OrderStatus implements Serializable {
   public OrderStatus() {
 
   }
-
+  
   public Date getStatusDate() {
     return statusDate;
   }
@@ -38,19 +51,19 @@ public class OrderStatus implements Serializable {
     return status;
   }
 
-  public UUID getOrderId() {
+  public String getOrderId() {
     return orderId;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 
-  public void setOrderId(UUID orderId) {
+  public void setOrderId(String orderId) {
     this.orderId = orderId;
   }
 
-  public void setId(UUID id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -72,17 +85,8 @@ public class OrderStatus implements Serializable {
 //        orderStatusDetails.getStatusDate(), orderStatusDetails.getStatus());
 //  }
   
-  @Transient
-  private String name;
-  public String getName() {
-	  return name;
-  }
-  public void setName(String name) {
-	  this.name = name;
-  }
-  
   private boolean entityFound = true;
-  public static OrderStatus notFound(UUID key) {
+  public static OrderStatus notFound(String key) {
 	  OrderStatus ev = new OrderStatus();
 	  ev.id = key;
 	  ev.entityFound=false;
