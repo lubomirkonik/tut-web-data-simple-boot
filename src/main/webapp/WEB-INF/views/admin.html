@@ -83,20 +83,10 @@
             </div>
             
 <!--          if user role == admin -->
-              <table class="table table-striped">
-                <!-- <thead >
-                  <tr >
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Cost</th>
-                    <th>Mins to prepare</th>
-                    <th>Action</th>
-                  </tr>
-                </thead> -->
-<!--                 <tbody>    -->
+           <!-- <table class="table table-striped">
                     <tr th:each="item,status : ${menuItems}">
                          <td>
-                         <!-- id="${itemFormId}" -->
+                        // id="${itemFormId}"
                             <form action="/updateMenuItem" method="POST">   
                               <input id="id" name="id" th:value="${item.id}" contenteditable="false"/>
                               <input id="name" name="name" th:value="${item.name}"/>
@@ -110,12 +100,50 @@
 						      <input type="submit" value="Remove from MongoDB"/>
 						    </form>	
                          </td>
-					</tr>
-<!-- 					row for menuItemAdd -->
-<!--                 </tbody>     -->
-              </table> 
-            
-            <form id="formAdd" method="POST" th:object="${menuItemAdd}">
+					</tr> 
+					// row for menuItemAdd   
+              </table> -->
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th width="50px" class="text-center">ID</th>
+							<th width="150px" class="text-center">Name</th>
+							<th width="100px" class="text-center">Cost</th>
+							<th width="100px" class="text-center">Mins to prepare</th>
+							<th width="200px" colspan="2" class="text-center">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item,status : ${menuItems}">
+							<td colspan="5">
+								<form action="#" th:action="@{/updateMenuItem}" method="post">
+									<table>
+										<tr>
+											<td><input size="2" id="id" name="id" th:value="${item.id}" contenteditable="false" />&nbsp;</td>
+											<td><input size="17" id="name" name="name" th:value="${item.name}" />&nbsp;</td>
+											<td><input size="10" id="cost" name="cost" th:value="${item.cost}" />&nbsp;</td>
+											<td><input size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" />&nbsp;</td>
+											<td><input type="submit" value="Update item on MongoDB" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+							<td>
+								<form action="#" th:action="@{/deleteMenuItem}" method="post">
+									<table>
+										<tr>
+											<td><input id="id" name="id" type="hidden" th:value="${item.id}" /></td>
+											<td><span class="glyphicon glyphicon-trash"></span>&nbsp;<input type="submit" value="Remove from MongoDB" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<form id="formAdd" method="POST" th:object="${menuItemAdd}">
                 <table>
                     <tr>
                         <td>ID:</td>
