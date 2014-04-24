@@ -1,8 +1,8 @@
 package tut.webdata.domain;
 
 //import tut.webdata.events.menu.MenuItemDetails;
-import org.hibernate.validator.constraints.NotEmpty;
 //import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,21 +18,23 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-// {!begin top}
 @Document(collection = "menu")
 public class MenuItem implements Serializable {
+	
+	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
+	private static final String COST_MESSAGE = "{cost.message}";
+	private static final String MINUTES_MESSAGE = "{minutes.message}";
 
-  @NotNull  //err -
-  @NotEmpty	//obmedzenie funguje
+  @NotNull(message = MenuItem.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = MenuItem.NOT_BLANK_MESSAGE)
   @Id
   private String id;
 
-  @NotNull
-  @NotEmpty
+  @NotNull(message = MenuItem.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = MenuItem.NOT_BLANK_MESSAGE)
   @Field("itemName")
   @Indexed
   private String name;
-// {!end top}
 
   private String description;
 
@@ -40,14 +42,13 @@ public class MenuItem implements Serializable {
   
 //  @NotNull
 //  @NotEmpty
-  @DecimalMin(value = "0.1")
-  @DecimalMax(value = "99.99")
+//  @NotBlank(message = MenuItem.NOT_BLANK_MESSAGE)
+  @DecimalMin(value = "0.99", message = MenuItem.COST_MESSAGE)
+  @DecimalMax(value = "99.99", message = MenuItem.COST_MESSAGE)
   private BigDecimal cost;
 
-//  @NotNull
-//  @NotEmpty
-  @Min(value = 1)
-  @Max(value = 60)
+  @Min(value = 1, message = MenuItem.MINUTES_MESSAGE)
+  @Max(value = 60, message = MenuItem.MINUTES_MESSAGE)
   private int minutesToPrepare;
 
   public String getDescription() {

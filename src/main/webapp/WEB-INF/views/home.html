@@ -5,10 +5,10 @@
 <head>
 	<title>Yummy Noodle Bar</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
-    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <link href="../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script>
         /* Fill in modal with content loaded with Ajax */
         $(document).ready(function () {
@@ -66,7 +66,7 @@
         <p><small>Welcome to the home of all things Noodle</small></p>
         <p>
 <!--             <a class="btn btn-primary btn-large" href="http://spring.io/">Learn more about Spring</a> -->
-            <a th:if="${#authorization.expression('!isAuthenticated()')}" href="./signup/signup.html" th:href="@{/signup}" class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Sign up</a>
+            <a th:if="${#authorization.expression('!isAuthenticated()')}" href="#" class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Sign up</a> <!-- href="./signup/signup.html" th:href="@{/signup}" -->
             <a th:if="${basket.size &gt; 0}"
                class="btn btn-primary btn-large"
                th:href="@{/showBasket}">Look in your basket</a>

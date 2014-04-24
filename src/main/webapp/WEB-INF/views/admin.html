@@ -1,20 +1,20 @@
 <!DOCTYPE html> <!-- SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd" -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<!-- vyskusaj <html lang="en"> -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<!-- <html lang="en"> -->
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
-    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/core.css}" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script>
         /* Fill in modal with content loaded with Ajax */
         $(document).ready(function () {
             $('#myModal').on('show.bs.modal', function (e) {
                 $("#myModalBody").text("");
                 $.ajax({
-                    url: "/signup",  
+                    url: "/addMenuItem",  
                     cache: false
                 })
                         .done(function (html) {
@@ -46,7 +46,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Signup</h4>
+                <h4 class="modal-title" id="myModalLabel">Add Menu Item</h4>
             </div>
             <div class="modal-body" id="myModalBody">Lorem ipsum</div>
             <div class="modal-footer">
@@ -76,42 +76,23 @@
     <div class="row-fluid navbar-left">
         <div class="span9">
          
-<!--             table for admin -->
-            <div th:if="${message}"
+            <!-- <div th:if="${message}"
                  th:text="${message}"
                  id="message" class="alert alert-info">
-            </div>
+            </div> -->
+    		<th:block th:if="${message != null}">
+        		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+    		</th:block>
             
-<!--          if user role == admin -->
-           <!-- <table class="table table-striped">
-                    <tr th:each="item,status : ${menuItems}">
-                         <td>
-                        // id="${itemFormId}"
-                            <form action="/updateMenuItem" method="POST">   
-                              <input id="id" name="id" th:value="${item.id}" contenteditable="false"/>
-                              <input id="name" name="name" th:value="${item.name}"/>
-                              <input id="cost" name="cost" th:value="${item.cost}"/>
-                              <input id="minutesToPrepare" name="minutesToPrepare"
-                                     th:value="${item.minutesToPrepare}"/> <p>&nbsp;</p>
-                              <input type="submit" value="Update item on MongoDB"/>
-                            </form>
-                            <form th:action="@{/deleteMenuItem}" method="POST">
- 						      <input id="id" name="id" type="hidden" th:value="${item.id}" />
-						      <input type="submit" value="Remove from MongoDB"/>
-						    </form>	
-                         </td>
-					</tr> 
-					// row for menuItemAdd   
-              </table> -->
-
-				<table class="table table-striped">
+           		<table class="table table-striped">
 					<thead>
 						<tr>
-							<th width="50px" class="text-center">ID</th>
-							<th width="150px" class="text-center">Name</th>
-							<th width="100px" class="text-center">Cost</th>
-							<th width="100px" class="text-center">Mins to prepare</th>
-							<th width="200px" colspan="2" class="text-center">Actions</th>
+							<th width="90px" class="text-center">ID</th>
+							<th width="140px" class="text-center">Name</th>
+							<th width="130px" class="text-center">Cost</th>
+							<th width="130px" class="text-right">Mins to prepare</th>
+							<th width="50px" class="text-center small">Update item on MongoDB</th>
+							<th width="50px" class="text-center small">Remove from MongoDB</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -120,11 +101,12 @@
 								<form action="#" th:action="@{/updateMenuItem}" method="post">
 									<table>
 										<tr>
-											<td><input size="2" id="id" name="id" th:value="${item.id}" contenteditable="false" />&nbsp;</td>
-											<td><input size="17" id="name" name="name" th:value="${item.name}" />&nbsp;</td>
-											<td><input size="10" id="cost" name="cost" th:value="${item.cost}" />&nbsp;</td>
-											<td><input size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" />&nbsp;</td>
-											<td><input type="submit" value="Update item on MongoDB" /></td>
+											<td class="col-lg-2"><input size="2" id="id" name="id" th:value="${item.id}" contenteditable="false" /></td>
+											<td class="col-lg-3"><input size="17" id="name" name="name" th:value="${item.name}" /></td>
+											<td class="col-lg-3"><input size="10" id="cost" name="cost" th:value="${item.cost}" /></td>
+											<td class="col-lg-3"><input size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" />&nbsp;</td>
+<!-- 											<td><input type="submit" value="Update item on MongoDB" /></td> -->
+											<td class="col-lg-3">&nbsp;<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></td>
 										</tr>
 									</table>
 								</form>
@@ -134,7 +116,7 @@
 									<table>
 										<tr>
 											<td><input id="id" name="id" type="hidden" th:value="${item.id}" /></td>
-											<td><span class="glyphicon glyphicon-trash"></span>&nbsp;<input type="submit" value="Remove from MongoDB" /></td>
+											<td class="col-lg-3"><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> </button></td>
 										</tr>
 									</table>
 								</form>
@@ -142,37 +124,9 @@
 						</tr>
 					</tbody>
 				</table>
-
-				<form id="formAdd" method="POST" th:object="${menuItemAdd}">
-                <table>
-                    <tr>
-                        <td>ID:</td>
-                        <td><input type="text" th:field="*{id}"/></td>
-                        <td th:if="${#fields.hasErrors('id')}"><p th:errors="*{id}">Incorrect ID</p></td>
-                    </tr>
-                    <tr>
-                        <td>Name:</td>
-                        <td><input type="text" th:field="*{name}" /></td>
-                        <td th:if="${#fields.hasErrors('name')}"><p th:errors="*{name}">Incorrect Name</p></td>
-                    </tr>
-                    <tr>
-                        <td>Cost:</td>
-                        <td><input type="text" th:field="*{cost}" /></td>
-                        <td th:if="${#fields.hasErrors('cost')}"><p th:errors="*{cost}">Incorrect Cost</p></td>
-                    </tr>
-                    <tr>
-                        <td>Minutes to prepare:</td>
-                        <td><input type="text" th:field="*{minutesToPrepare}" /></td>
-                        <td th:if="${#fields.hasErrors('minutesToPrepare')}"><p th:errors="*{minutesToPrepare}">Incorrect Minutes to prepare</p></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <input type="submit" value="Add menu item to MongoDB" />
-                        </td>
-                    </tr>
-            	</table>
-            </form>
-            
+				
+				<a href="#"  class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Add Menu Item</a><br /><br /> <!-- href="./admin/menu_item-add.html" th:href="@{/addMenuItem}" -->
+				            
             <div th:include="layout :: foot"></div>
 
         </div>
