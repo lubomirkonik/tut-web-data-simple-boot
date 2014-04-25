@@ -6,7 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/core.css}" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
     <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script>
         /* Fill in modal with content loaded with Ajax */
@@ -74,7 +75,7 @@
     </div>
 
     <div class="row-fluid navbar-left">
-        <div class="span9">
+<!--         <div class="span9"> -->
          
             <!-- <div th:if="${message}"
                  th:text="${message}"
@@ -87,12 +88,12 @@
            		<table class="table table-striped">
 					<thead>
 						<tr>
-							<th width="90px" class="text-center">ID</th>
-							<th width="140px" class="text-center">Name</th>
-							<th width="130px" class="text-center">Cost</th>
-							<th width="130px" class="text-right">Mins to prepare</th>
-							<th width="50px" class="text-center small">Update item on MongoDB</th>
-							<th width="50px" class="text-center small">Remove from MongoDB</th>
+							<th width="135px" class="text-center">ID</th>
+							<th width="145px" class="text-center">Name</th>
+							<th width="115px" class="text-center">Cost</th>
+							<th width="50px" class="text-center">Minutes to prepare</th>
+							<th width="40px" class="text-center small">Update item on MongoDB</th>
+							<th width="40px" class="text-center small">Remove from MongoDB</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -101,12 +102,12 @@
 								<form action="#" th:action="@{/updateMenuItem}" method="post">
 									<table>
 										<tr>
-											<td class="col-lg-2"><input size="2" id="id" name="id" th:value="${item.id}" contenteditable="false" /></td>
+											<td class="col-lg-2"><input size="10" id="id" name="id" th:value="${item.id}" contenteditable="false" /></td>
 											<td class="col-lg-3"><input size="17" id="name" name="name" th:value="${item.name}" /></td>
 											<td class="col-lg-3"><input size="10" id="cost" name="cost" th:value="${item.cost}" /></td>
-											<td class="col-lg-3"><input size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" />&nbsp;</td>
+											<td class="col-lg-3"><input size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" /></td>
 <!-- 											<td><input type="submit" value="Update item on MongoDB" /></td> -->
-											<td class="col-lg-3">&nbsp;<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></td>
+											<td class="col-lg-3"> <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Update</button></td>
 										</tr>
 									</table>
 								</form>
@@ -116,7 +117,7 @@
 									<table>
 										<tr>
 											<td><input id="id" name="id" type="hidden" th:value="${item.id}" /></td>
-											<td class="col-lg-3"><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> </button></td>
+											<td class="col-lg-2"><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button></td>
 										</tr>
 									</table>
 								</form>
@@ -129,7 +130,7 @@
 				            
             <div th:include="layout :: foot"></div>
 
-        </div>
+<!--         </div> -->
     </div>
 </div>
 </body>

@@ -102,7 +102,7 @@ public class SiteController {
 //	validacia pre update
 //	redirect att
 	@RequestMapping(value = "/updateMenuItem", method = RequestMethod.POST)
-	public String updateMenuItem(@Valid @ModelAttribute("menuItemUpd") MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
+	public String updateMenuItem(@Valid @ModelAttribute MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
 //			MessageHelper.addErrorAttribute(redirectAttrs, "updateMenuItem.error");
 			return "/admin";
@@ -113,9 +113,8 @@ public class SiteController {
 		return "redirect:/admin";
 	}
 
-//	redirect att	
 	@RequestMapping(value = "/deleteMenuItem", method = RequestMethod.POST)
-	public String removeMenuItem(@ModelAttribute("menuItemDel") MenuItem menuItem, RedirectAttributes redirectAttrs) {
+	public String removeMenuItem(@ModelAttribute MenuItem menuItem, RedirectAttributes redirectAttrs) {
 		LOG.debug("Remove {} from MongoDB", menuItem.getId());
 		menuService.deleteMenuItem(menuItem.getId());
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been deleted!");
