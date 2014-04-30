@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -99,13 +98,12 @@ public class SiteController {
 		return "redirect:/admin";
 	}
 	
-//	validacia pre update
-//	redirect att
+//	show error for corresponding field
 	@RequestMapping(value = "/updateMenuItem", method = RequestMethod.POST)
-	public String updateMenuItem(@Valid @ModelAttribute MenuItem menuItem, BindingResult result, RedirectAttributes redirectAttrs) {
-		if (result.hasErrors()) {
-//			MessageHelper.addErrorAttribute(redirectAttrs, "updateMenuItem.error");
-			return "/admin";
+	public String updateMenuItem(@Valid @ModelAttribute MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {
+		if (errors.hasErrors()) {
+			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error"
+			return "redirect:/admin";
 		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());
 		menuService.updateMenuItem(menuItem);
