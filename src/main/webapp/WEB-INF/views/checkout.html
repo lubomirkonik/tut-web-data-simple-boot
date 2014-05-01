@@ -43,19 +43,15 @@
 		</p>
 	</div>
 
-	<div class="row-fluid">
-<!-- 		<div class="span8 sidebar-nav"> -->
+<!-- 	<div class="row-fluid"> -->
+<!-- 	<div class="sidebar-nav span8"> -->
 		<div class="navbar-left">
 
-            <div th:if="${message}"
-                 th:text="${message}"
-                 id="message" class="alert alert-info">
-            </div>
             <!-- <th:block th:if="${message != null}">
         		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
     		</th:block> -->
 
-            <form  class="form-narrow form-horizontal" method="POST" th:object="${customerInfo}">
+            <form  class="form-horizontal" method="POST" th:object="${customerInfo}"> <!-- form-narrow -->
                 <table style="width: 800px; height: 140px">
                     <tr>
                         <td style="width: 120px; ">Name:</td>
@@ -80,9 +76,11 @@
                     </tr>
                 </table>
             </form>
-            <div th:include="layout :: foot"></div>
+            
 		</div>
-	</div>
+<!-- 	</div> -->
+<!-- 	</div> -->
 </div>
+<div th:include="layout :: foot"></div>
 </body>
 </html>

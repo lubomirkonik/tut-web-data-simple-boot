@@ -86,6 +86,7 @@ public class SiteController {
         return "admin/menu_item-add";		//bez lomitka
     }
 	
+// don't allow update with same id	
 	@RequestMapping(value = "/addMenuItem", method = RequestMethod.POST)
 	public String addMenuItem(@Valid @ModelAttribute("addMenuItemForm") MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {  //BindingResult result
 		if (errors.hasErrors()) {
@@ -102,7 +103,7 @@ public class SiteController {
 	@RequestMapping(value = "/updateMenuItem", method = RequestMethod.POST)
 	public String updateMenuItem(@Valid @ModelAttribute MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
-			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error"
+			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error" 
 			return "redirect:/admin";
 		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());

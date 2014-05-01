@@ -48,8 +48,14 @@
 		</p>
 	</div>
 
-	<div class="row-fluid">
+	<div class="navbar-left"> <!-- row-fluid -->
 <!-- 		<div class="span8"> -->
+
+			<div id="message" class="alert alert-info">
+                Review menu items. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
+                scrumptious item(s).
+            </div>
+
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -75,9 +81,11 @@
                     </tr>
 				</tbody>
 			</table>
-            <div th:include="layout :: foot"></div>
+
 <!-- 		</div> -->
 	</div>
 </div>
+
+<div th:include="layout :: foot"></div>
 </body>
 </html>

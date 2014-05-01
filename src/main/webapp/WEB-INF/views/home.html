@@ -71,7 +71,7 @@
         <h3>Yummy</h3>
         <p><small>Welcome to the home of all things Noodle</small></p>
         <p>
-<!--             <a class="btn btn-primary btn-large" href="http://spring.io/">Learn more about Spring</a> -->
+			<a class="btn btn-info btn-large" href="http://spring.io/">Learn more about Spring</a>
             <a th:if="${#authorization.expression('!isAuthenticated()')}" href="#" class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Sign up</a> <!-- href="./signup/signup.html" th:href="@{/signup}" -->
             <a th:if="${basket.size &gt; 0}"
                class="btn btn-primary btn-large"
@@ -79,14 +79,14 @@
         </p>
     </div>
 
-    <div class="row-fluid navbar-left">
+    <div class="navbar-left"> <!-- row-fluid -->
 <!--         <div class="span9"> -->
         
 			<!--/* Handle the flash task */-->
-			<th:block th:if="${message != null}">
+<!-- 			<th:block th:if="${message != null}"> -->
         		<!--/* The message code is returned from the @Controller */-->
-        		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
-    		</th:block>
+<!--         		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div> -->
+<!--     		</th:block> -->
 
             <div id="message" class="alert alert-info">
                 Select from the menu. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
@@ -131,11 +131,13 @@
                 </tr>
                 </tbody>
             </table> 
-            
-            <div th:include="layout :: foot"></div>
+                       
+<!-- foot -->
 
 <!--         </div> -->
     </div>
 </div>
+
+<div th:include="layout :: foot"></div>
 </body>
 </html>
