@@ -80,15 +80,14 @@
 				
 				<td th:text="${order.dateTimeOfSubmission}">2014-05-01 21:13:20.165</td>
 				
-				<td th:text="${order.orderItems}">{YM3=1}</td> <!-- variable is Map -->
-<!-- 				<td>Placeholder for oderItems</td> -->
+				<td th:text="${order.menuItemsNames}">{YM3=1}</td> <!-- Map orderItems -->
 				
-<!--			<td th:text="${order.orderStatus}">Order Received</td> --> <!-- variable is of type OrderStatus -->
-				<td>Order Received</td>
+				<td th:text="${order.stat}">Order Received</td>
+<!-- 				<td>Order Received</td> -->
 				
 				<td th:text="${order.name}"></td>
 				
-				<td th:text="${order.address1}"></td> <!-- join address and ${order.postcode} together, add 'city' -->
+				<td th:text="${order.address1}"></td> <!-- join address and ${order.postcode} together -->
 				
 				<td class="text-center"> - &euro;</td>
 				<td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td>

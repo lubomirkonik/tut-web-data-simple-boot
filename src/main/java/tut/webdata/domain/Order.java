@@ -4,8 +4,10 @@ package tut.webdata.domain;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 //import java.util.UUID;
 
@@ -23,7 +25,7 @@ public class Order {
 
   @Transient
   private OrderStatus orderStatus;
-
+  
   @Id
   @Column(name = "ORDER_ID")
   private String id;
@@ -36,7 +38,7 @@ public class Order {
   @Column(name = "POSTCODE")
   private String postcode;
   
-//  private String userName;
+//  private String username;
   
   public void setId(String id) {
     this.id = id;
@@ -74,8 +76,8 @@ public class Order {
 	  return address1;
   }
 
-  public void setAddress1(String address1) {
-	  this.address1 = address1;
+  public void setAddress1(String address) {
+	  this.address1 = address;
   }
 
   public String getPostcode() {
