@@ -1,5 +1,6 @@
 package tut.webdata.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 
 public class WebOrder {
+  private String id;	
 
   private Date dateTimeOfSubmission;
 
@@ -17,19 +19,19 @@ public class WebOrder {
 //  private OrderStatus orderStatus;
   
   //current status
-  private String stat;
-  public String getStat() {
-	  return stat;
+  private String status;
+  public String getStatus() {
+	  return status;
   }
-  public void setStat(String status) {
-	  this.stat = status;
+  public void setStatus(String status) {
+	  this.status = status;
   }
   
   //order menu items
-  private List<MenuItem> menuItems;
-  public void setMenuItems(List<MenuItem> menuItems) {
-	  this.menuItems = menuItems;
-  }
+//  private List<MenuItem> menuItems;
+//  public void setMenuItems(List<MenuItem> menuItems) {
+//	  this.menuItems = menuItems;
+//  }
 
   //order menu items names
   private List<String> menuItemsNames;
@@ -45,7 +47,21 @@ public class WebOrder {
 	  }
   }
   
-  private String id;
+  private BigDecimal cost;
+  public BigDecimal getCost() {
+	  return cost;
+  }
+  public void setCost(BigDecimal cost) {
+	  this.cost = cost;
+  }
+  
+  //get order total cost
+  public void getTotalCost(List<MenuItem> menuItems) {
+	  cost = BigDecimal.ZERO;
+	  for (MenuItem menuItem : menuItems) {
+		  cost = cost.add(menuItem.getCost());
+	  }
+  }
   
 //  CustomerInfo
   private String name;
