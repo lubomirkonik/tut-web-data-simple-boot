@@ -42,12 +42,12 @@ public class PersistenceConfig {
 //		return new OrderStatusUpdateEventHandler();
 //	}
 	
-	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {
-		MenuItem item = new MenuItem();
-		item.setId(id);
-		item.setCost(cost);
-		item.setMinutesToPrepare(minutesToPrepare);
-		item.setName(name);
-		return item;
-	}
+//	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {
+//		MenuItem item = new MenuItem();
+//		item.setId(id);
+//		item.setCost(cost);
+//		item.setMinutesToPrepare(minutesToPrepare);
+//		item.setName(name);
+//		return item;
+//	}
 }

@@ -78,18 +78,17 @@
 			<tr th:each="order,stat : ${orders}">
 				<td th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</td>
 				
-				<td th:text="${order.dateTimeOfSubmission}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
+				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
 				
-				<td th:text="${order.menuItemsNames}">{YM3=1}</td> <!-- Map orderItems -->
+				<td th:text="${#strings.listJoin(order.menuItemsNames,', ')}">[Hamburger, Yummy Noodles]</td> <!-- Map orderItems, {YM3=1} -->
 				
 				<td th:text="${order.status}">Order Received</td>
-<!-- 				<td>Order Received</td> -->
 				
-				<td th:text="${order.name}"></td>
+				<td th:text="${order.name}">Valter Longo</td>
 				
-				<td th:text="${order.address1}"></td> <!-- join address and ${order.postcode} together -->
+				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
 				
-				<td class="text-center" th:text="${order.cost}">19.79 &euro;</td> <!-- join cost with symbol -->
+				<td class="text-center" th:text="${order.cost}+' &euro;'">19.79 &euro;</td>
 				<td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td>
 			</tr>
 		</tbody>

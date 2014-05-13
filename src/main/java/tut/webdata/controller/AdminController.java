@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+//import tut.webdata.repository.OrderStatusRepository;
+//import tut.webdata.repository.OrdersRepository;
 import tut.webdata.services.MenuService;
 import tut.webdata.services.OrderService;
 import tut.webdata.domain.MenuItem;
@@ -24,19 +26,41 @@ import tut.webdata.domain.WebOrder;
 @Controller
 public class AdminController {
 	
-	@Autowired
+//	private OrdersRepository orderRepository;
+	
+//	private OrderStatusRepository orderStatusRepository;
+	
+//	@Autowired
 	private OrderService orderService;
 	
 	@Autowired
 	private MenuService menuService;
+	
+//	@Autowired
+//	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
+//		this.orderRepository = orderRepository;
+//		this.orderStatusRepository = orderStatusRepository;
+//		init();
+//	}
+	
+	@Autowired
+	public AdminController(OrderService orderService) {
+		this.orderService = orderService;
+		init();
+	}
+	
+//	private void init() {
+//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
+//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
+//	}
+	
+	private void init() {
+		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
+		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
+	}
 
 	@RequestMapping(value = "orders")
-	public String getOrders(Model model) {
-		
-		//init!
-		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
-		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Greenwitch St. 156/D, Paris", "569 21"));
-		
+	public String getOrders(Model model) {		
 		List<Order> orders = new ArrayList<>();
 		orders = orderService.requestAllOrders();
 		
@@ -44,9 +68,9 @@ public class AdminController {
 //		Iterator<Order> it1 = orders.iterator();
 //		Iterator<WebOrder> it2 = webOrders.iterator();
 //		while (it1.hasNext()) {
-//			BeanUtils.copyProperties(it1, it2);
 //			webOrders.add(new WebOrder());
 //			it2.next();
+//			BeanUtils.copyProperties(it1, it2);
 //		}
 		for (int i = 0; i < orders.size(); i++) {
 			webOrders.add(new WebOrder());
@@ -88,7 +112,7 @@ public class AdminController {
 		return orderItems;
 	}
 	
-	private static Order createOrder(String id, Date dateTimeOfSubmission, Map<String, Integer> orderItems, String name, String address, String postcode) {
+	private Order createOrder(String id, Date dateTimeOfSubmission, Map<String, Integer> orderItems, String name, String address, String postcode) {
 		Order order = new Order();
 		order.setId(id);
 		order.setDateTimeOfSubmission(dateTimeOfSubmission);
@@ -98,4 +122,9 @@ public class AdminController {
 		order.setPostcode(postcode);
 		return order;
 	}
+	
+//	private void createOrder(Order order) {
+//		orderRepository.save(order);
+//		orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
+//	}
 }
