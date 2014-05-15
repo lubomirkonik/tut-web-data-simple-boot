@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Yummy Noodle Bar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/core.css}" />
+<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<form class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/edit|}" th:fragment="updateOrderForm">
+<!-- 	OR th:action="@{edit}" -->
+		<th:block th:if="${#fields.hasErrors('${updateOrderForm.*}')}">
+        	<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    	</th:block>
+		<fieldset>
+		<legend>Update Order</legend>
+		<div class="form-group" th:classappend="${#fields.hasErrors('id')}? 'has-error'">
+			<label for="id" class="col-lg-2 control-label">ID</label>
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="id" disabled="disabled" th:field="*{id}"/>
+			</div>
+		</div>
+<!-- 		checklist -->
+		<div class="form-group" th:classappend="${#fields.hasErrors('menuItemsNames')}? 'has-error'">
+            <label for="orderItems" class="col-lg-2 control-label">Order Items</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="orderItems" placeholder="Cheesecake" th:field="*{menuItemsNames}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('menuItemsNames')}" th:errors="*{menuItemsNames}">Incorrect Items</span>
+            </div>
+        </div>
+<!--      drop-down menu -->
+        <div class="form-group" th:classappend="${#fields.hasErrors('status')}? 'has-error'">
+            <label for="status" class="col-lg-2 control-label">Status</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="status" placeholder="Order Received" th:field="*{status}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Incorrect Status</span>
+            </div>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+            <label for="name" class="col-lg-2 control-label">Customer Name</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="name" placeholder="Valter Longo" th:field="*{name}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect Name</span>
+            </div>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('address1')}? 'has-error'">
+            <label for="address" class="col-lg-2 control-label">Address</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="address" placeholder="Greenwitch St. 402/C, London" th:field="*{address1}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}">Incorrect Address</span>
+            </div>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('postcode')}? 'has-error'">
+            <label for="postcode" class="col-lg-2 control-label">Postcode</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="postcode" placeholder="4802 35" th:field="*{postcode}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}">Incorrect Postcode</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-default">Update Order</button>
+            </div>
+        </div>
+		</fieldset>
+	</form>
+</body>
+</html>

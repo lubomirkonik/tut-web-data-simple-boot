@@ -8,16 +8,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 //import tut.webdata.repository.OrderStatusRepository;
 //import tut.webdata.repository.OrdersRepository;
 import tut.webdata.services.MenuService;
 import tut.webdata.services.OrderService;
+import tut.webdata.support.web.AjaxUtils;
+import tut.webdata.support.web.MessageHelper;
 import tut.webdata.domain.MenuItem;
 import tut.webdata.domain.Order;
 import tut.webdata.domain.OrderStatus;
@@ -59,7 +70,7 @@ public class AdminController {
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
 	}
 
-	@RequestMapping(value = "orders")
+	@RequestMapping(value = "orders", method = RequestMethod.GET)
 	public String getOrders(Model model) {		
 		List<Order> orders = new ArrayList<>();
 		orders = orderService.requestAllOrders();
@@ -127,4 +138,48 @@ public class AdminController {
 //		orderRepository.save(order);
 //		orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
 //	}
+	
+//																@ModelAttribute("updateOrderForm") Order order
+	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
+	public String initUpdateOrderForm(@PathVariable("orderId") String orderId, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+		if (AjaxUtils.isAjaxRequest(requestedWith)) {
+            return "admin/updateOrder".concat(" :: updateOrderForm");
+        }
+		Order order = orderService.requestOrder(UUID.fromString(orderId));
+		
+		WebOrder webOrder = new WebOrder();
+		BeanUtils.copyProperties(order, webOrder);
+		
+		// get current status of order
+		OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(order.getId());
+		webOrder.setStatus(orderStatus.getStatus());
+		
+		//get all menu items objects of order by menu item ids as keys of Map orderItems
+		Map<String, Integer> orderItems = webOrder.getOrderItems();
+		List<MenuItem> menuItems = new ArrayList<>();
+		for (String itemId : orderItems.keySet()) {
+			menuItems.add(menuService.requestMenuItem(itemId));
+		}
+		
+		//get names of all menu items of order
+		webOrder.getAllMenuItemsNames(menuItems);
+		
+		model.addAttribute("updateOrderForm", webOrder);
+		
+        return "admin/updateOrder";
+	}
+	
+	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.POST)
+	public String processUpdateOrderForm(@Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
+		if (errors.hasErrors()) {
+			return "admin/updateOrder";
+		}
+//		orderItems of webOrder need to be updated
+		Order order = new Order();
+		BeanUtils.copyProperties(webOrder, order);
+		
+//		orderService.setOrder(order);
+		
+		return "redirect:/orders";
+	}
 }

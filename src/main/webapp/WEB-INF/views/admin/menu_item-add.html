@@ -32,8 +32,8 @@
         </div>
         <div class="form-group" th:classappend="${#fields.hasErrors('cost')}? 'has-error'">
             <label for="cost" class="col-lg-2 control-label">Cost</label>
-            <div class="col-lg-10 input-group">
-            	<span class="input-group-addon">&dollar;</span>
+            <div class="col-lg-10"> <!-- input-group -->
+<!--             	<span class="input-group-addon">&dollar;</span> -->
                 <input type="text" class="form-control" id="cost" placeholder="7.99" th:field="*{cost}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}">Incorrect Cost</span>
             </div>

@@ -13,7 +13,8 @@
             $('#myModal').on('show.bs.modal', function (e) {
                 $("#myModalBody").text("");
                 $.ajax({
-                    url: "/updateOrder",  
+//                     url: "editOrder",
+//                     method: "post",
                     cache: false
                 })
                         .done(function (html) {
@@ -70,26 +71,22 @@
           		<th>Status</th>
           		<th>Name</th>
           		<th>Address</th>
-				<th>Cost</th>
-				<th>Update order</th>
+				<th>Cost</th> <!-- colspan="2" -->
+				<th>Edit order</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="order,stat : ${orders}">
-				<td th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</td>
-				
+				<td th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</td> <!--  name="id" th:value="${order.id}" -->
 				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
-				
-				<td th:text="${#strings.listJoin(order.menuItemsNames,', ')}">[Hamburger, Yummy Noodles]</td> <!-- Map orderItems, {YM3=1} -->
-				
-				<td th:text="${order.status}">Order Received</td>
-				
-				<td th:text="${order.name}">Valter Longo</td>
-				
-				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
-				
+				<td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
+				<td th:text="${order.status}">Order Received</td> <!-- name="status" th:value="${order.status}" -->
+				<td th:text="${order.name}">Valter Longo</td>  <!-- name="name" th:value="${order.name}" -->
+				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td> <!-- name="address1" th:value="${order.address1}" -->
 				<td class="text-center" th:text="${order.cost}+' &euro;'">19.79 &euro;</td>
-				<td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td>
+				<!-- <td type="hidden" name="postcode" th:value="${order.postcode}"></td> -->
+				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
+				<!-- <td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
 			</tr>
 		</tbody>
     </table>
