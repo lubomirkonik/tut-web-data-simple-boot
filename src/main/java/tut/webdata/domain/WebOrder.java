@@ -15,10 +15,26 @@ public class WebOrder {
   private Date dateTimeOfSubmission;
 
   private Map<String, Integer> orderItems;
-
-//  private OrderStatus orderStatus;
   
-  //current status
+  	private List<MenuOrderItem> menuAndOrderItems;
+  	public List<MenuOrderItem> getMenuAndOrderItems() {
+		return menuAndOrderItems;
+	}
+	public void setMenuAndOrderItems(List<MenuOrderItem> items) {
+		this.menuAndOrderItems = items;
+	}
+
+	private List<WebOrderStatus> orderStatuses;
+	public List<WebOrderStatus> getOrderStatuses() {
+		return orderStatuses;
+	}
+	public void setOrderStatuses(List<WebOrderStatus> orderStatuses) {
+		this.orderStatuses = orderStatuses;
+	}
+	
+//  private OrderStatus orderStatus;
+
+//current status
   private String status;
   public String getStatus() {
 	  return status;
@@ -26,12 +42,6 @@ public class WebOrder {
   public void setStatus(String status) {
 	  this.status = status;
   }
-  
-  //order menu items
-//  private List<MenuItem> menuItems;
-//  public void setMenuItems(List<MenuItem> menuItems) {
-//	  this.menuItems = menuItems;
-//  }
 
   //order menu items names
   private List<String> menuItemsNames;

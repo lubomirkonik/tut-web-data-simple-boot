@@ -6,6 +6,7 @@ import java.util.HashMap;
 //import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 //import tut.webdata.repository.OrderStatusRepository;
 //import tut.webdata.repository.OrdersRepository;
 import tut.webdata.services.MenuService;
@@ -31,8 +31,10 @@ import tut.webdata.support.web.AjaxUtils;
 import tut.webdata.support.web.MessageHelper;
 import tut.webdata.domain.MenuItem;
 import tut.webdata.domain.Order;
+import tut.webdata.domain.MenuOrderItem;
 import tut.webdata.domain.OrderStatus;
 import tut.webdata.domain.WebOrder;
+import tut.webdata.domain.WebOrderStatus;
 
 @Controller
 public class AdminController {
@@ -150,23 +152,67 @@ public class AdminController {
 		WebOrder webOrder = new WebOrder();
 		BeanUtils.copyProperties(order, webOrder);
 		
-		// get current status of order
-		OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(order.getId());
-		webOrder.setStatus(orderStatus.getStatus());
+//		get all menu items, put it into orderItms and check every item whether is present in order according to orderItems
+		List<MenuOrderItem> menuAndOrderItems = new ArrayList<>();
 		
-		//get all menu items objects of order by menu item ids as keys of Map orderItems
-		Map<String, Integer> orderItems = webOrder.getOrderItems();
-		List<MenuItem> menuItems = new ArrayList<>();
-		for (String itemId : orderItems.keySet()) {
-			menuItems.add(menuService.requestMenuItem(itemId));
+		List<MenuItem> menuItems = menuService.requestAllMenuItems();
+		
+		Map<String, Integer> orderOrderItems = webOrder.getOrderItems();
+		Set<String> orderOrderItemsKeys = orderOrderItems.keySet();
+		
+		for (int i = 0; i < menuItems.size(); i++) {
+			MenuItem menuItem = menuItems.get(i);
+			
+			menuAndOrderItems.add(new MenuOrderItem());
+			MenuOrderItem menuOrderItem = menuAndOrderItems.get(i);
+			
+			menuOrderItem.setId(menuItem.getId());
+			menuOrderItem.setName(menuItem.getName());
+			menuOrderItem.setCost(menuItem.getCost());
+			menuOrderItem.setMinutesToPrepare(menuItem.getMinutesToPrepare());
+			menuOrderItem.setQuantity(0);
+			menuOrderItem.setChosen(false);
+			
+			//id aktualneho menuItem v iteracii je porovnane s id vsetkych poloziek nasej objednavky - orderOrderItems,
+			//ak najdene, nastavi na menuOrderItem, ze chosen je true a nastavi pocet kusov
+			for (String id : orderOrderItemsKeys) {
+				if (menuItem.getId().equals(id)) {
+					menuOrderItem.setChosen(true);
+					menuOrderItem.setQuantity(orderOrderItems.get(menuItem.getId())); //mozno konvertovat na int
+					break;
+				}
+			}
 		}
 		
-		//get names of all menu items of order
-		webOrder.getAllMenuItemsNames(menuItems);
+		webOrder.setMenuAndOrderItems(menuAndOrderItems);
+		
+		//get current status and other statuses
+		WebOrderStatus currentStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
+		//BeanUtils.copyProperties(orderService.requestOrderStatusByOrderId(order.getId()), currentStatus);
+		//currentStatus.setSelected(true);
+		List<WebOrderStatus> statuses = getAllStatuses();
+		List<WebOrderStatus> orderStatuses = new ArrayList<>();
+		orderStatuses.add(currentStatus);
+		for (WebOrderStatus status : statuses) {
+			if (!status.getStatus().equals(currentStatus.getStatus())) {
+				orderStatuses.add(status);
+			}
+		}
+		
+		webOrder.setOrderStatuses(orderStatuses);
 		
 		model.addAttribute("updateOrderForm", webOrder);
-		
         return "admin/updateOrder";
+	}
+	
+	private List<WebOrderStatus> getAllStatuses() {
+		List<WebOrderStatus> statuses = new ArrayList<>();
+		statuses.add(new WebOrderStatus("Order Received", false));
+		statuses.add(new WebOrderStatus("Order Processing", false));
+		statuses.add(new WebOrderStatus("Order Processed", false));
+		statuses.add(new WebOrderStatus("Order Completed", false));
+		statuses.add(new WebOrderStatus("Order Cancelled", false));
+		return statuses;
 	}
 	
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.POST)
@@ -174,7 +220,7 @@ public class AdminController {
 		if (errors.hasErrors()) {
 			return "admin/updateOrder";
 		}
-//		orderItems of webOrder need to be updated
+
 		Order order = new Order();
 		BeanUtils.copyProperties(webOrder, order);
 		
