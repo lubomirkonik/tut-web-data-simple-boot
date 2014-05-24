@@ -22,6 +22,11 @@ public interface OrderService {
 
 //  public Order setOrderPayment(PaymentDetails paymentDetails);
 
-//  public Order deleteOrder(UUID key);
+  public Order deleteOrder(String key);  //UUID
+  
+  
+  public void setOrder(Order order);
+  
+  public void deleteOrderStatus(String key);
 
 }

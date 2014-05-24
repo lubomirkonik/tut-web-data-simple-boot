@@ -71,5 +71,21 @@ public class OrderEventHandler implements OrderService {
 		orderStatusRepository.save(orderStatus);
 		return orderStatus;
 	}
-
+	
+	@Override
+	public Order deleteOrder(String key) {
+		orderRepository.delete(key);
+		return null;
+	}
+	
+	
+	@Override
+	public void setOrder(Order order) {
+		orderRepository.save(order);
+	}
+	
+	@Override
+	public void deleteOrderStatus(String key) {
+		orderStatusRepository.delete(key);
+	}
 }

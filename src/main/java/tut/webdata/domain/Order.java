@@ -88,12 +88,20 @@ public class Order {
 	  this.postcode = postcode;
   }
 
+//  public void setOrderItems(Map<String, Integer> orderItems) {
+//    if (orderItems == null) {
+//      this.orderItems = Collections.emptyMap();
+//    } else {
+//      this.orderItems = Collections.unmodifiableMap(orderItems);
+//    }
+//  }
+  
   public void setOrderItems(Map<String, Integer> orderItems) {
-    if (orderItems == null) {
-      this.orderItems = Collections.emptyMap();
-    } else {
-      this.orderItems = Collections.unmodifiableMap(orderItems);
-    }
+	  if (orderItems == null) {
+	      this.orderItems = Collections.emptyMap();
+	    } else {
+	    	this.orderItems = orderItems;
+	    }
   }
 
   public Map<String, Integer> getOrderItems() {

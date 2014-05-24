@@ -10,8 +10,8 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<form class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/edit|}" th:fragment="updateOrderForm">
-<!-- 	OR th:action="@{edit}" -->
+	<form class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/update|}" th:fragment="updateOrderForm">
+<!-- 	OR th:action="@{update}" -->
 		<th:block th:if="${#fields.hasErrors('${updateOrderForm.*}')}">
         	<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     	</th:block>
@@ -24,27 +24,20 @@
 			</div>
 		</div>
 		
-		<!-- <div class="form-group" th:classappend="${#fields.hasErrors('menuItemsNames')}? 'has-error'">
-            <label for="orderItems" class="col-lg-2 control-label">Order Items</label>
-            <div class="col-lg-10">
-                <input type="text" class="form-control" id="orderItems" placeholder="Cheesecake" th:field="*{menuItemsNames}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('menuItemsNames')}" th:errors="*{menuItemsNames}">Incorrect Items</span>
-            </div>
-        </div> -->
-        <div class="form-group" th:classappend="${#fields.hasErrors('menuAndOrderItems')}? 'has-error'">
+        <div class="form-group">  <!-- th:classappend="${#fields.hasErrors('menuAndOrderItems')}? 'has-error'" -->
         	<label for="orderItems" class="col-lg-2 control-label">Order Items</label>
         	<div class="col-lg-10">
         		<!-- <ul>
-        			<li th:each="item : *{menuAndOrderItems}">
-        				<input type="checkbox" th:field="*{menuAndOrderItems}" th:value="${item.id}" />
+        			<li th:each="item, stat : *{menuAndOrderItems}">
+        				<input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].id}" th:value="${item.id}" />
         				<label th:for="${#ids.prev('menuAndOrderItems')}" th:text="${item.name}">Cheesecake</label>
         			</li>
         		</ul> -->
         		
-        		<table class="table table-hover products-table">
+        		<table id="orderItems" class="table table-hover products-table" style="margin-bottom: 0px">
         			<thead>
         				<tr>
-        					<th>ID</th>
+        					<th colspan="2">ID</th>
         					<th>Name</th>
         					<th>Cost</th>
         					<th>Minutes</th>
@@ -53,19 +46,21 @@
         				</tr>
         			</thead>
         			<tbody>
-        				<tr th:each="item : *{menuAndOrderItems}">
-        					<td th:text="${item.id}" th:field="*{menuAndOrderItems}" th:value="${item.id}">YM10</td>
-        					<td th:text="${item.name}" th:field="*{menuAndOrderItems}">Cheesecake</td> <!--  th:value="${item.name}" -->
+        				<tr th:each="item, stat : *{menuAndOrderItems}">
+        					<td th:text="${item.id}">YM10</td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].id}" /></td> <!-- th:value="${item.id}" -->
         					
-        					<td th:text="${item.cost}+' &euro;'" th:field="*{menuAndOrderItems}" th:value="${item.cost}">19.79 &euro;</td>
+        					<td th:text="${item.name}">Cheesecake</td>
+        					
+        					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
 <!--         					<td>19.79 &euro;</td> -->
         					
-        					<td th:text="${item.minutesToPrepare}" th:field="*{menuAndOrderItems}" th:value="${item.minutesToPrepare}">7</td>
-<!--         					<td class="text-center">7</td> -->
+        					<td th:text="${item.minutesToPrepare}">7</td>
         					
-        					<td class="text-center" th:text="${item.quantity}" th:field="*{menuAndOrderItems}" th:name="quantity" th:value="${item.quantity}">2</td>
-        					<td><input type="checkbox" th:name="chosen" th:value="${item.chosen}" th:checked="${item.chosen}"/></td>
-        					<!-- th:if="${item.chosen}"  -->
+        					<td class="text-center" th:text="${item.quantity}">2</td>
+        					
+        					<td><input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" /></td>
+        					<!-- id="chosen" name="chosen" th:value="${item.chosen}" -->
         				</tr>
         			</tbody>
         		</table>
@@ -75,7 +70,7 @@
         <div class="form-group">
             <label for="status" class="col-lg-2 control-label">Status</label>
             <div class="col-lg-10">
-                <select class="form-control" id="status" th:field="*{status}">
+                <select class="form-control" th:field="*{status}">
                 	<option th:each="status : *{orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
                 </select>
             </div>
@@ -105,6 +100,7 @@
 		<div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
                 <button type="submit" class="btn btn-default">Update Order</button>
+                <a class="btn btn-default" th:href="@{/orders}">Cancel</a>
             </div>
         </div>
 		</fieldset>

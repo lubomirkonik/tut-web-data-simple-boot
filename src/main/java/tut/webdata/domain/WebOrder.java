@@ -4,17 +4,37 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 //import java.util.UUID;
 
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+
 public class WebOrder {
-  private String id;	
+	
+	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
+	
+	private String id;	
 
-  private Date dateTimeOfSubmission;
+	private Date dateTimeOfSubmission;
 
-  private Map<String, Integer> orderItems;
+	private Map<String, Integer> orderItems;
+	
+  	//put items ids and quantity from update form to orderItems
+  	public void updateOrderItems(List<MenuOrderItem> menuAndOrderItems) {
+  		Map<String, Integer> orderItems = new HashMap<String, Integer>();
+  		for (MenuOrderItem item : menuAndOrderItems) {
+  			if (item.isChosen()) {
+  				orderItems.put(item.getId(), 1);
+  			}
+  		}
+  		this.orderItems = orderItems;
+  	}
   
   	private List<MenuOrderItem> menuAndOrderItems;
   	public List<MenuOrderItem> getMenuAndOrderItems() {
@@ -57,6 +77,7 @@ public class WebOrder {
 	  }
   }
   
+  //total cost
   private BigDecimal cost;
   public BigDecimal getCost() {
 	  return cost;
@@ -74,8 +95,14 @@ public class WebOrder {
   }
   
 //  CustomerInfo
+  @NotNull(message = WebOrder.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = WebOrder.NOT_BLANK_MESSAGE)
   private String name;
+  @NotNull(message = WebOrder.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = WebOrder.NOT_BLANK_MESSAGE)
   private String address1;
+  @NotNull(message = WebOrder.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = WebOrder.NOT_BLANK_MESSAGE)
   private String postcode;
   
 //  private String username;
@@ -128,12 +155,20 @@ public class WebOrder {
 	  this.postcode = postcode;
   }
 
+//  public void setOrderItems(Map<String, Integer> orderItems) {
+//    if (orderItems == null) {
+//      this.orderItems = Collections.emptyMap();
+//    } else {
+//      this.orderItems = Collections.unmodifiableMap(orderItems);
+//    }
+//  }
+  
   public void setOrderItems(Map<String, Integer> orderItems) {
-    if (orderItems == null) {
-      this.orderItems = Collections.emptyMap();
-    } else {
-      this.orderItems = Collections.unmodifiableMap(orderItems);
-    }
+	  if (orderItems == null) {
+	      this.orderItems = Collections.emptyMap();
+	    } else {
+	    	this.orderItems = orderItems;
+	    }
   }
 
   public Map<String, Integer> getOrderItems() {

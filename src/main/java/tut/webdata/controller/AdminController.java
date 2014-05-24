@@ -215,16 +215,30 @@ public class AdminController {
 		return statuses;
 	}
 	
-	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.POST)
-	public String processUpdateOrderForm(@Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
+	@RequestMapping(value = "orders/{orderId}/update", method = RequestMethod.POST)
+	public String processUpdateOrderForm(@PathVariable("orderId") String orderId, @Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
 			return "admin/updateOrder";
 		}
-
-		Order order = new Order();
-		BeanUtils.copyProperties(webOrder, order);
+		//needed property for date/time of order update
 		
-//		orderService.setOrder(order);
+		webOrder.updateOrderItems(webOrder.getMenuAndOrderItems());
+		
+		Order order = orderService.requestOrder(UUID.fromString(orderId));
+		order.setOrderItems(webOrder.getOrderItems());
+		order.setName(webOrder.getName());
+		order.setAddress1(webOrder.getAddress1());
+		order.setPostcode(webOrder.getPostcode());
+		
+		orderService.setOrder(order);
+		
+		//if order status has been modified, update order status
+		OrderStatus status = orderService.requestOrderStatusByOrderId(orderId);
+		if (!status.getStatus().equals(webOrder.getStatus())) {
+			status.setStatusDate(new Date());
+			status.setStatus(webOrder.getStatus());
+			orderService.setOrderStatus(status);
+		}
 		
 		return "redirect:/orders";
 	}

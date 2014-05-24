@@ -19,7 +19,6 @@ import tut.webdata.services.OrderService;
 //import tut.webdata.events.orders.OrderStatusEvent;
 //import tut.webdata.events.orders.RequestOrderDetailsEvent;
 //import tut.webdata.events.orders.RequestOrderStatusEvent;
-//import tut.webdata.persistence.repository.OrderStatusRepository;
 //import tut.webdata.web.domain.OrderStatus;
 
 @Controller
@@ -31,10 +30,6 @@ public class OrderStatusController {
 
 	@Autowired
 	private OrderService orderService;
-	
-//	//fixture
-//	@Autowired
-//	private OrderStatusRepository orderStatusRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String orderStatus(@ModelAttribute("orderStatus") OrderStatus orderStatus) {
