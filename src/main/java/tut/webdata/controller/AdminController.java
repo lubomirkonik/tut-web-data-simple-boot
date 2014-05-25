@@ -220,7 +220,7 @@ public class AdminController {
 		if (errors.hasErrors()) {
 			return "admin/updateOrder";
 		}
-		//needed property for date/time of order update
+		//needed property for date/time of order update - updated details except status
 		
 		webOrder.updateOrderItems(webOrder.getMenuAndOrderItems());
 		

@@ -4,6 +4,9 @@ public class WebOrderStatus {
 	private String status;
 	private boolean selected;
 	
+public WebOrderStatus() {
+}	
+	
 public WebOrderStatus(String status, boolean selected) {
 		super();
 		this.status = status;

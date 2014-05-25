@@ -17,10 +17,11 @@
     	</th:block>
 		<fieldset>
 		<legend>Update Order</legend>
-		<div class="form-group" th:classappend="${#fields.hasErrors('id')}? 'has-error'">
+		<div class="form-group">
 			<label for="id" class="col-lg-2 control-label">ID</label>
 			<div class="col-lg-10">
-				<input type="text" class="form-control" id="id" disabled="disabled" th:field="*{id}"/>
+				<input type="text" class="form-control" id="id" name="id" th:value="${updateOrderForm.id}" disabled="disabled" />
+				<input type="hidden" th:field="*{id}"/>
 			</div>
 		</div>
 		
@@ -37,7 +38,7 @@
         		<table id="orderItems" class="table table-hover products-table" style="margin-bottom: 0px">
         			<thead>
         				<tr>
-        					<th colspan="2">ID</th>
+        					<th>ID</th>
         					<th>Name</th>
         					<th>Cost</th>
         					<th>Minutes</th>
@@ -46,21 +47,19 @@
         				</tr>
         			</thead>
         			<tbody>
-        				<tr th:each="item, stat : *{menuAndOrderItems}">
+        				<tr th:each="item, stat : *{menuAndOrderItems}"> <!-- ${updateOrderForm.menuAndOrderItems} -->
         					<td th:text="${item.id}">YM10</td>
-        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].id}" /></td> <!-- th:value="${item.id}" -->
-        					
         					<td th:text="${item.name}">Cheesecake</td>
-        					
         					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
-<!--         					<td>19.79 &euro;</td> -->
-        					
         					<td th:text="${item.minutesToPrepare}">7</td>
-        					
         					<td class="text-center" th:text="${item.quantity}">2</td>
-        					
         					<td><input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" /></td>
-        					<!-- id="chosen" name="chosen" th:value="${item.chosen}" -->
+        					
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].id}" /></td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].name}" /></td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].cost}" /></td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].minutesToPrepare}" /></td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].quantity}" /></td>
         				</tr>
         			</tbody>
         		</table>
@@ -71,11 +70,16 @@
             <label for="status" class="col-lg-2 control-label">Status</label>
             <div class="col-lg-10">
                 <select class="form-control" th:field="*{status}">
-                	<option th:each="status : *{orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
+                	<option th:each="status : ${updateOrderForm.orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
                 </select>
+                <!-- <input type="hidden" th:field="*{orderStatuses}" /> -->
+                <div th:each="status, stat : *{orderStatuses}">
+                	<input type="hidden" th:field="*{orderStatuses[__${stat.index}__].status}" />
+                	<input type="hidden" th:field="*{orderStatuses[__${stat.index}__].selected}" />
+                </div>
             </div>
         </div>
-        
+
         <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
             <label for="name" class="col-lg-2 control-label">Customer Name</label>
             <div class="col-lg-10">
