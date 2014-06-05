@@ -93,7 +93,6 @@ public class AdminController {
 			BeanUtils.copyProperties(orders.get(i), webOrders.get(i));
 		}
 		
-		List<WebOrder> ordersWithStatuses = new ArrayList<>();
 		for (WebOrder order : webOrders) {
 			// get current status of order
 			OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(order.getId());
@@ -105,18 +104,13 @@ public class AdminController {
 			for (String itemId : orderItems.keySet()) {
 				menuItems.add(menuService.requestMenuItem(itemId));
 			}
-			//order.setMenuItems(menuItems);
 			
-			//get names of all menu items of order
-			order.getAllMenuItemsNames(menuItems);
-			
+			//get order items and items total costs
 			//get total cost of order
 			order.calculateTotalCost(menuItems);
-			
-			ordersWithStatuses.add(order);
 		}
 		
-		model.addAttribute("orders", ordersWithStatuses);
+		model.addAttribute("orders", webOrders);
 		return "admin/orders";
 	}
 	

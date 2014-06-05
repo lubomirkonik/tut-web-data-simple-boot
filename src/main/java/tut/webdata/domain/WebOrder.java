@@ -120,41 +120,28 @@ public class WebOrder {
 	  this.status = status;
   }
 
-  //order menu items names
-  private List<String> menuItemsNames;
-  public List<String> getMenuItemsNames() {
-	  return menuItemsNames;
-  }
-  
-  public void getAllMenuItemsNames (List<MenuItem> menuItems) {
-	  menuItemsNames = new ArrayList<>();
-	  
-	  for (MenuItem menuItem : menuItems) {
-		  menuItemsNames.add(menuItem.getName());
-	  }
-  }
-  
-  private Map<String, BigDecimal> orderItemsTotalCosts;
-  private void calculateOrderItemsTotalCosts(List<MenuItem> menuItems) {
-	  List<MenuOrderItem> menuAndOrderItems = new ArrayList<>();
-	  menuAndOrderItems = initMenuAndOrderItems(menuItems);
-	  
-	  List<MenuOrderItem> orderItems = new ArrayList<>();
-	  for (MenuOrderItem item : menuAndOrderItems) {
-		  if (item.isChosen()) {
-			  orderItems.add(item);
-		  }
-	  }
-	  
-	  Map<String, BigDecimal> orderItemsTotalCosts = new HashMap<>();
-	  
-	  for (MenuOrderItem item : orderItems) {
-		  BigDecimal itemTotalCost = item.getCost().multiply(BigDecimal.valueOf(item.getQuantity()));
-		  orderItemsTotalCosts.put(item.getId(), itemTotalCost);
-	  }
-	  
-	  this.orderItemsTotalCosts = orderItemsTotalCosts;
-  }
+//  private Map<String, BigDecimal> orderItemsTotalCosts;
+//  private void calculateOrderItemsTotalCosts(List<MenuItem> menuItems) {
+//	  List<MenuOrderItem> menuAndOrderItems = new ArrayList<>();
+//	  menuAndOrderItems = initMenuAndOrderItems(menuItems);
+//	  
+//    // not needed, because menuItems contain only items included in order
+//	  List<MenuOrderItem> orderItems = new ArrayList<>();
+//	  for (MenuOrderItem item : menuAndOrderItems) {
+//		  if (item.isChosen()) {
+//			  orderItems.add(item);
+//		  }
+//	  }
+//	  
+//	  Map<String, BigDecimal> orderItemsTotalCosts = new HashMap<>();
+//	  
+//	  for (MenuOrderItem item : orderItems) {
+//		  BigDecimal itemTotalCost = item.getCost().multiply(BigDecimal.valueOf(item.getQuantity()));
+//		  orderItemsTotalCosts.put(item.getId(), itemTotalCost);
+//	  }
+//	  
+//	  this.orderItemsTotalCosts = orderItemsTotalCosts;
+//  }
   
   //total cost
   private BigDecimal cost;
@@ -163,12 +150,22 @@ public class WebOrder {
   }
   
   //get order total cost
+//  public void calculateTotalCost(List<MenuItem> menuItems) {
+//	  calculateOrderItemsTotalCosts(menuItems);
+//	  cost = BigDecimal.ZERO;
+//	  List<BigDecimal> totalItemsCosts = new ArrayList<>(this.orderItemsTotalCosts.values());
+//	  for (BigDecimal totalItemCost : totalItemsCosts) {
+//		  cost = cost.add(totalItemCost);
+//	  }
+//  }
   public void calculateTotalCost(List<MenuItem> menuItems) {
-	  calculateOrderItemsTotalCosts(menuItems);
+//	  List<MenuOrderItem> menuAndOrderItems = new ArrayList<>(initMenuAndOrderItems(menuItems));
+	  menuAndOrderItems = initMenuAndOrderItems(menuItems);
 	  cost = BigDecimal.ZERO;
-	  List<BigDecimal> totalItemsCosts = new ArrayList<>(this.orderItemsTotalCosts.values());
-	  for (BigDecimal totalItemCost : totalItemsCosts) {
-		  cost = cost.add(totalItemCost);
+	  
+	  for (MenuOrderItem item : menuAndOrderItems) {
+		  item.calculateItemTotalCost();
+		  cost = cost.add(item.getItemTotalCost());
 	  }
   }
   

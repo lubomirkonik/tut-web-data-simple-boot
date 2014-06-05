@@ -73,7 +73,7 @@
           		<th>Status</th>
           		<th>Name</th>
           		<th>Address</th>
-				<th>Cost</th> <!-- colspan="2" -->
+				<th>Total Cost</th> <!-- colspan="2" -->
 				<th>Edit order</th>
 			</tr>
 		</thead>
@@ -81,7 +81,33 @@
 			<tr th:each="order,stat : ${orders}">
 				<td th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</td> <!--  name="id" th:value="${order.id}" -->
 				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
-				<td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
+				
+				<!-- <td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> --> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
+				<td>
+				<table class="table table-hover products-table">
+        			<thead>
+        				<tr>
+        					<th>ID</th>
+        					<th>Name</th>
+        					<th>Cost</th>
+        					<th>Minutes</th>
+        					<th>Quantity</th>
+        					<th>Total Cost</th>
+        				</tr>
+        			</thead>
+        			<tbody>
+        				<tr th:each="item : ${order.menuAndOrderItems}">
+        					<td th:text="${item.id}">YM10</td>
+        					<td th:text="${item.name}">Cheesecake</td>
+        					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
+        					<td class="text-center" th:text="${item.minutesToPrepare}">7</td>
+        					<td class="text-center" th:text="${item.quantity}">2</td>
+        					<td class="text-center" th:text="${item.itemTotalCost}+' &euro;'">2</td>
+        				</tr>
+        			</tbody>
+        		</table>	
+				</td>
+				
 				<td th:text="${order.status}">Order Received</td> <!-- name="status" th:value="${order.status}" -->
 				<td th:text="${order.name}">Valter Longo</td>  <!-- name="name" th:value="${order.name}" -->
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td> <!-- name="address1" th:value="${order.address1}" -->
