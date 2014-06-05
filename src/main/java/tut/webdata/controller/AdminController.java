@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 //import tut.webdata.repository.OrderStatusRepository;
 //import tut.webdata.repository.OrdersRepository;
@@ -49,6 +51,7 @@ public class AdminController {
 	@Autowired
 	private MenuService menuService;
 	
+//  Another way to create initial orders	
 //	@Autowired
 //	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
 //		this.orderRepository = orderRepository;
@@ -107,8 +110,8 @@ public class AdminController {
 			//get names of all menu items of order
 			order.getAllMenuItemsNames(menuItems);
 			
-			//get cost of order
-			order.getTotalCost(menuItems);
+			//get total cost of order
+			order.calculateTotalCost(menuItems);
 			
 			ordersWithStatuses.add(order);
 		}
@@ -144,6 +147,7 @@ public class AdminController {
 //																@ModelAttribute("updateOrderForm") Order order
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
 	public String initUpdateOrderForm(@PathVariable("orderId") String orderId, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+//		needs to get path variable 'orderId' from orders page
 		if (AjaxUtils.isAjaxRequest(requestedWith)) {
             return "admin/updateOrder".concat(" :: updateOrderForm");
         }
@@ -152,44 +156,12 @@ public class AdminController {
 		WebOrder webOrder = new WebOrder();
 		BeanUtils.copyProperties(order, webOrder);
 		
-//		get all menu items, put it into orderItms and check every item whether is present in order according to orderItems
-		List<MenuOrderItem> menuAndOrderItems = new ArrayList<>();
-		
+//		get all menu items, put it into menuAndOrderItems and check every item whether is present in order according to orderItems
 		List<MenuItem> menuItems = menuService.requestAllMenuItems();
-		
-		Map<String, Integer> orderOrderItems = webOrder.getOrderItems();
-		Set<String> orderOrderItemsKeys = orderOrderItems.keySet();
-		
-		for (int i = 0; i < menuItems.size(); i++) {
-			MenuItem menuItem = menuItems.get(i);
-			
-			menuAndOrderItems.add(new MenuOrderItem());
-			MenuOrderItem menuOrderItem = menuAndOrderItems.get(i);
-			
-			menuOrderItem.setId(menuItem.getId());
-			menuOrderItem.setName(menuItem.getName());
-			menuOrderItem.setCost(menuItem.getCost());
-			menuOrderItem.setMinutesToPrepare(menuItem.getMinutesToPrepare());
-			menuOrderItem.setQuantity(0);
-			menuOrderItem.setChosen(false);
-			
-			//id aktualneho menuItem v iteracii je porovnane s id vsetkych poloziek nasej objednavky - orderOrderItems,
-			//ak najdene, nastavi na menuOrderItem, ze chosen je true a nastavi pocet kusov
-			for (String id : orderOrderItemsKeys) {
-				if (menuItem.getId().equals(id)) {
-					menuOrderItem.setChosen(true);
-					menuOrderItem.setQuantity(orderOrderItems.get(menuItem.getId())); //mozno konvertovat na int
-					break;
-				}
-			}
-		}
-		
-		webOrder.setMenuAndOrderItems(menuAndOrderItems);
+		webOrder.initMenuAndOrderItems(menuItems);
 		
 		//get current status and other statuses
 		WebOrderStatus currentStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
-		//BeanUtils.copyProperties(orderService.requestOrderStatusByOrderId(order.getId()), currentStatus);
-		//currentStatus.setSelected(true);
 		List<WebOrderStatus> statuses = getAllStatuses();
 		List<WebOrderStatus> orderStatuses = new ArrayList<>();
 		orderStatuses.add(currentStatus);
@@ -217,9 +189,18 @@ public class AdminController {
 	
 	@RequestMapping(value = "orders/{orderId}/update", method = RequestMethod.POST)
 	public String processUpdateOrderForm(@PathVariable("orderId") String orderId, @Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
-		if (errors.hasErrors()) {
+		// to-do checkMenuAndOrderItems - return particular object with error and set error that qty of checked item can't be 0
+//		if (errors.hasErrors() || webOrder.checkMenuAndOrderItems() != null) { 
+//			if (webOrder.checkMenuAndOrderItems() != null) {
+//				MenuOrderItem item = webOrder.checkMenuAndOrderItems();
+//				errors.getAllErrors().add(new ObjectError("quantity", "Quantity may not be less than 1"));
+//			}
+//			return "admin/updateOrder";
+//		}
+		if (errors.hasErrors() || !webOrder.checkMenuAndOrderItems()) { 
 			return "admin/updateOrder";
 		}
+		
 		//needed property for date/time of order update - updated details except status
 		
 		webOrder.updateOrderItems(webOrder.getMenuAndOrderItems());
@@ -239,6 +220,8 @@ public class AdminController {
 			status.setStatus(webOrder.getStatus());
 			orderService.setOrderStatus(status);
 		}
+		
+		MessageHelper.addSuccessAttribute(redirectAttrs, "Order / Order Status has been updated!");
 		
 		return "redirect:/orders";
 	}

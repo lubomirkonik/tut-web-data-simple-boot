@@ -9,12 +9,13 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script>
         /* Fill in modal with content loaded with Ajax */
+        //		needs to send path variable 'orderId'
         $(document).ready(function () {
             $('#myModal').on('show.bs.modal', function (e) {
                 $("#myModalBody").text("");
                 $.ajax({
-//                     url: "editOrder",
-//                     method: "post",
+//                     url: "orders/${order.id}/edit",
+////                   method: "post",
                     cache: false
                 })
                         .done(function (html) {
@@ -46,7 +47,7 @@
 <div th:include="layout :: head"></div>
 
 <div id="main">
-<div class="container-fluid"><!-- container-fluid -->
+<div class="container-fluid">
 	<div th:include="layout :: left"></div>
 	<div class="jumbotron navbar-left">
         <h3>Orders</h3>
@@ -56,12 +57,13 @@
 			<a class="btn btn-primary btn-large" th:href="@{/admin}">Look at menu items</a>          
         </p>
     </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
     
     <th:block th:if="${message != null}">
         <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
     </th:block>
     
-<div class=""> <!-- col-md-12 -->
+<div class="" > <!-- col-md-12 -->
     <table class="table table-hover products-table">
 		<thead>
 			<tr>
@@ -84,7 +86,6 @@
 				<td th:text="${order.name}">Valter Longo</td>  <!-- name="name" th:value="${order.name}" -->
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td> <!-- name="address1" th:value="${order.address1}" -->
 				<td class="text-center" th:text="${order.cost}+' &euro;'">19.79 &euro;</td>
-				<!-- <td type="hidden" name="postcode" th:value="${order.postcode}"></td> -->
 				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
 				<!-- <td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
 			</tr>

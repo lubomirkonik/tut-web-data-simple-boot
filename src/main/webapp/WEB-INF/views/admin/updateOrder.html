@@ -20,7 +20,7 @@
 		<div class="form-group">
 			<label for="id" class="col-lg-2 control-label">ID</label>
 			<div class="col-lg-10">
-				<input type="text" class="form-control" id="id" name="id" th:value="${updateOrderForm.id}" disabled="disabled" />
+				<input type="text" class="form-control" id="id" th:value="${updateOrderForm.id}" disabled="disabled" />
 				<input type="hidden" th:field="*{id}"/>
 			</div>
 		</div>
@@ -51,15 +51,20 @@
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
         					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
-        					<td th:text="${item.minutesToPrepare}">7</td>
-        					<td class="text-center" th:text="${item.quantity}">2</td>
-        					<td><input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" /></td>
-        					
+        					<td class="text-center" th:text="${item.minutesToPrepare}">7</td>
+<!--         					<td class="text-center" th:text="${item.quantity}">2</td> -->
+        					<td>
+        							<!-- th:pattern="${item.chosen} ? '[1-9][0-9]?$'" -->
+        							<input type="text" class="form-control" placeholder="2" th:field="*{menuAndOrderItems[__${stat.index}__].quantity}"/>
+        							<span class="help-block" th:errors="*{menuAndOrderItems[__${stat.index}__].quantity}">Incorrect Quantity</span>
+        					</td>
+        					<td>
+        							<input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" />	
+        					</td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].id}" /></td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].name}" /></td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].cost}" /></td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].minutesToPrepare}" /></td>
-        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].quantity}" /></td>
         				</tr>
         			</tbody>
         		</table>
