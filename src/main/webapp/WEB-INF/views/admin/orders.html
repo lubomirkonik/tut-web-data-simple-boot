@@ -68,20 +68,29 @@
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
 			<tr>
-          		<th>ID</th>
+          		<th>ID / Status</th>
           		<th>Date</th>
          		<th>Products</th>
-          		<th>Status</th>
+          		<!-- <th>Status</th> -->
           		<th>Name</th>
           		<th>Address</th>
-				<th class="text-center">Total Cost</th> <!-- colspan="2" -->
+				<th class="text-center">Total Cost</th>
 				<th>Edit order</th>
 				<th>Delete order</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="order,stat : ${orders}">
-				<td th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</td> <!--  name="id" th:value="${order.id}" -->
+				<td th:switch="${order.status}">
+					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div> <!--  name="id" th:value="${order.id}" -->
+					<!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
+					  <div th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</div>
+					  <div th:case="'Order Processing'" class="label label-default" th:text="${order.status}">Order Processing</div>
+					  <div th:case="'Order Processed'" class="label label-info" th:text="${order.status}">Order Processed</div>
+					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</div>
+					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</div>
+					  <div th:case="*" class="label label-default">-</div>
+				</td>
 				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
 				
 				<!-- <td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> --> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
@@ -110,15 +119,7 @@
         		</table>	
 				</td>
 				
-				<td th:switch="${order.status}">
-					<!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
-					  <span th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</span>
-					  <span th:case="'Order Processing'" class="label label-default" th:text="${order.status}">Order Processing</span>
-					  <span th:case="'Order Processed'" class="label label-info" th:text="${order.status}">Order Processed</span>
-					  <span th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</span>
-					  <span th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</span>
-					  <span th:case="*" class="label label-default">-</span>
-				</td>
+				
 				<td th:text="${order.name}">Valter Longo</td>
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
 				<td class="text-center text-info"><strong th:text="${order.cost}+' &euro;'">19.79 &euro;</strong></td>
