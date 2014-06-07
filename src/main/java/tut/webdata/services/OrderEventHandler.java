@@ -86,6 +86,7 @@ public class OrderEventHandler implements OrderService {
 	
 	@Override
 	public void deleteOrderStatus(String key) {
-		orderStatusRepository.delete(key);
+		OrderStatus orderStatus = requestOrderStatusByOrderId(key);
+		orderStatusRepository.delete(orderStatus.getId());
 	}
 }

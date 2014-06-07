@@ -80,3 +80,8 @@ body.modal-open {
 .products-table tbody>tr>td{
     vertical-align: middle;
 }
+
+/*media screen*/
+.label {
+    font-size: 85%;
+}

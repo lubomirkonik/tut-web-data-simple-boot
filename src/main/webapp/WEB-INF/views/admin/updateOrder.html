@@ -74,7 +74,8 @@
         <div class="form-group">
             <label for="status" class="col-lg-2 control-label">Status</label>
             <div class="col-lg-10">
-                <select class="form-control" th:field="*{status}">
+            	<!-- remove status property from WebOrder, remove attribute - field from select tag -->
+                <select class="form-control" th:field="*{status}"> <!-- th:field="*{status}" OR id="status" name="status" -->
                 	<option th:each="status : ${updateOrderForm.orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
                 </select>
                 <!-- <input type="hidden" th:field="*{orderStatuses}" /> -->

@@ -64,7 +64,8 @@
     </th:block>
     
 <div class="" > <!-- col-md-12 -->
-    <table class="table table-hover products-table">
+	<th:block th:if="${#lists.size(orders)} >= 1">
+    <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
 			<tr>
           		<th>ID</th>
@@ -73,8 +74,9 @@
           		<th>Status</th>
           		<th>Name</th>
           		<th>Address</th>
-				<th>Total Cost</th> <!-- colspan="2" -->
+				<th class="text-center">Total Cost</th> <!-- colspan="2" -->
 				<th>Edit order</th>
+				<th>Delete order</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,15 +86,15 @@
 				
 				<!-- <td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> --> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
 				<td>
-				<table class="table table-hover products-table">
+				<table class="table table-condensed products-table" style="background-color: transparent; margin-bottom:8px;">
         			<thead>
         				<tr>
-        					<th>ID</th>
-        					<th>Name</th>
-        					<th>Cost</th>
-        					<th>Minutes</th>
-        					<th>Quantity</th>
-        					<th>Total Cost</th>
+        					<th><small>ID</small></th>
+        					<th><small>Name</small></th>
+        					<th><small>Cost</small></th>
+<!--         					<th>Minutes</th> -->
+        					<th class="text-center"><small>Quantity</small></th>
+        					<th class="text-center"><small>Total</small></th>
         				</tr>
         			</thead>
         			<tbody>
@@ -100,25 +102,38 @@
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
         					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
-        					<td class="text-center" th:text="${item.minutesToPrepare}">7</td>
-        					<td class="text-center" th:text="${item.quantity}">2</td>
-        					<td class="text-center" th:text="${item.itemTotalCost}+' &euro;'">2</td>
+<!--         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td> -->
+        					<td class="text-center"><span class="badge" th:text="${item.quantity}">2</span></td>
+        					<td class="text-center text-info" th:text="${item.itemTotalCost}+' &euro;'">2</td>
         				</tr>
         			</tbody>
         		</table>	
 				</td>
 				
-				<td th:text="${order.status}">Order Received</td> <!-- name="status" th:value="${order.status}" -->
-				<td th:text="${order.name}">Valter Longo</td>  <!-- name="name" th:value="${order.name}" -->
-				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td> <!-- name="address1" th:value="${order.address1}" -->
-				<td class="text-center" th:text="${order.cost}+' &euro;'">19.79 &euro;</td>
+				<td th:switch="${order.status}">
+					<!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
+					  <span th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</span>
+					  <span th:case="'Order Processing'" class="label label-default" th:text="${order.status}">Order Processing</span>
+					  <span th:case="'Order Processed'" class="label label-info" th:text="${order.status}">Order Processed</span>
+					  <span th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</span>
+					  <span th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</span>
+					  <span th:case="*" class="label label-default">-</span>
+				</td>
+				<td th:text="${order.name}">Valter Longo</td>
+				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
+				<td class="text-center text-info"><strong th:text="${order.cost}+' &euro;'">19.79 &euro;</strong></td>
 				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
 				<!-- <td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
+				<td><a th:href="@{|/orders/${order.id}/delete|}" href="#" class="btn btn-large btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
 			</tr>
 		</tbody>
     </table>
+    </th:block>
     
-<!-- 	if orders == null - <div class="alert alert-warning"><strong>Oh no!</strong> Didn't find any orders, please add some.</div> -->
+    <th:block th:if="${#lists.isEmpty(orders)}">
+    	<div class="alert alert-warning"><strong>Oh no!</strong> No orders were found.</div>
+    </th:block>
+    
 </div> <!-- /.col-md-12 -->
 </div> <!-- /.container -->
 </div> <!-- /.main -->

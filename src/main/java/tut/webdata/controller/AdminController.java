@@ -207,15 +207,29 @@ public class AdminController {
 		
 		orderService.setOrder(order);
 		
-		//if order status has been modified, update order status
+		String message = "has been updated!";
 		OrderStatus status = orderService.requestOrderStatusByOrderId(orderId);
+		//if order status has been modified, update order status
 		if (!status.getStatus().equals(webOrder.getStatus())) {
 			status.setStatusDate(new Date());
 			status.setStatus(webOrder.getStatus());
 			orderService.setOrderStatus(status);
+			message = "Order Status ".concat(message);
+		} else {
+			message = "Order ".concat(message);
 		}
 		
-		MessageHelper.addSuccessAttribute(redirectAttrs, "Order / Order Status has been updated!");
+		MessageHelper.addSuccessAttribute(redirectAttrs, message);
+		
+		return "redirect:/orders";
+	}
+	
+	@RequestMapping(value = "orders/{orderId}/delete", method = RequestMethod.GET)
+	public String deleteOrderAndOrderStatus(@PathVariable("orderId") String orderId, RedirectAttributes redirectAttrs) {
+		orderService.deleteOrderStatus(orderId);
+		orderService.deleteOrder(orderId);
+		
+		MessageHelper.addSuccessAttribute(redirectAttrs, "Order has been deleted!");
 		
 		return "redirect:/orders";
 	}
