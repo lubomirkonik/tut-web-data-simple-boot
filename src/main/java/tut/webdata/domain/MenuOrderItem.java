@@ -46,6 +46,9 @@ public class MenuOrderItem {
 		return quantity;
 	}
 	public void setQuantity(int quantity) {
+//		if (quantity != 0 && !isChosen()) {
+//			quantity = 0;
+//		}
 		this.quantity = quantity;
 	}
 	public boolean isChosen() {
@@ -57,8 +60,12 @@ public class MenuOrderItem {
 	public BigDecimal getItemTotalCost() {
 		return itemTotalCost;
 	}
+	// if error occurs in update order form 
+	public void setItemTotalCost(BigDecimal itemTotalCost) {
+		this.itemTotalCost = itemTotalCost;
+	}
 	public void calculateItemTotalCost () {
 		BigDecimal itemTotalCost = cost.multiply(BigDecimal.valueOf(quantity));
 		this.itemTotalCost = itemTotalCost;
-	}
+	}	
 }

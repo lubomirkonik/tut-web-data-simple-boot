@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
 	
 	@PostConstruct	
 	protected void initialize() {
-		accountService.save(new Account("user", "demo", "ROLE_USER"));
+		accountService.save(new Account("user", "user", "ROLE_USER"));
 		accountService.save(new Account("admin", "admin", "ROLE_ADMIN"));
 	}
 	

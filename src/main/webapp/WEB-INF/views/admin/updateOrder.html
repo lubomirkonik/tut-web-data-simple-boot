@@ -10,7 +10,7 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<form class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/update|}" th:fragment="updateOrderForm">
+	<form id="updateOrderForm" class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/update|}" th:fragment="updateOrderForm">
 <!-- 	OR th:action="@{update}" -->
 		<th:block th:if="${#fields.hasErrors('${updateOrderForm.*}')}">
         	<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
@@ -18,15 +18,15 @@
 		<fieldset>
 		<legend>Update Order</legend>
 		<div class="form-group">
-			<label for="id" class="col-lg-2 control-label">ID</label>
+			<label for="orderId" class="col-lg-2 control-label">ID</label>
 			<div class="col-lg-10">
-				<input type="text" class="form-control" id="id" th:value="${updateOrderForm.id}" disabled="disabled" />
+				<input type="text" class="form-control" id="orderId" th:value="${updateOrderForm.id}" disabled="disabled" />
 				<input type="hidden" th:field="*{id}"/>
 			</div>
 		</div>
 		
-        <div class="form-group">  <!-- th:classappend="${#fields.hasErrors('menuAndOrderItems')}? 'has-error'" -->
-        	<label for="orderItems" class="col-lg-2 control-label">Order Items</label>
+        <div class="form-group" style="margin-bottom: 0px;">  <!-- th:classappend="${#fields.hasErrors('menuAndOrderItems')}? 'has-error'" -->
+        	<!-- <label for="orderItems" class="col-lg-2 control-label">Order Items</label> -->
         	<div class="col-lg-10">
         		<!-- <ul>
         			<li th:each="item, stat : *{menuAndOrderItems}">
@@ -43,6 +43,7 @@
         					<th>Cost</th>
         					<th>Minutes</th>
         					<th>Quantity</th>
+        					<th>Total</th>
         					<th></th>
         				</tr>
         			</thead>
@@ -50,14 +51,17 @@
         				<tr th:each="item, stat : *{menuAndOrderItems}"> <!-- ${updateOrderForm.menuAndOrderItems} -->
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
-        					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
+        					<td th:text="${item.cost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td>
-<!--         					<td class="text-center" th:text="${item.quantity}">2</td> -->
         					<td>
         							<!-- th:pattern="${item.chosen} ? '[1-9][0-9]?$'" -->
-        							<input type="text" class="form-control" placeholder="2" th:field="*{menuAndOrderItems[__${stat.index}__].quantity}"/>
+<!--         							   possible alternatives: -->
+        							<!-- th:field="*{menuAndOrderItems[__${stat.index}__].quantity}" -->
+        							<!-- th:id="menuAndOrderItems__${stat.index}__.quantity" th:value="${item.quantity}" th:name="menuAndOrderItems[__${stat.index}__].quantity" -->
+        							<input type="text" class="form-control" placeholder="2" th:id="'menuAndOrderItems'+${stat.index}+'.quantity'" th:value="*{menuAndOrderItems[__${stat.index}__].quantity}" th:name="'menuAndOrderItems['+${stat.index}+'].quantity'" />
         							<span class="help-block" th:errors="*{menuAndOrderItems[__${stat.index}__].quantity}">Incorrect Quantity</span>
         					</td>
+        					<td th:text="${item.itemTotalCost} == null ? '' : ${item.itemTotalCost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
         					<td>
         							<input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" />	
         					</td>
@@ -65,6 +69,18 @@
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].name}" /></td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].cost}" /></td>
         					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].minutesToPrepare}" /></td>
+        					<td style="padding: 0px"><input type="hidden" th:field="*{menuAndOrderItems[__${stat.index}__].itemTotalCost}" /></td>
+        				</tr>
+        				<tr>
+        					<td style="padding-bottom: 2px;"></td>
+        					<td style="padding-bottom: 2px;"></td>
+        					<td style="padding-bottom: 2px;"></td>
+        					<td colspan="2" style="padding-bottom: 2px;"><strong for="totalCost" class="pull-right">Total Cost:</strong></td>
+        					<td colspan="2" style="padding-bottom: 2px;">
+        						<div class="text-info" style="padding: 3px; font-size: 20px" id="totalCost" th:text="${updateOrderForm.cost}+'&nbsp;&euro;'"><strong>19.79&nbsp;&euro;</strong></div>
+        						<input type="hidden" th:field="*{cost}" />
+        					</td>
+        					
         				</tr>
         			</tbody>
         		</table>
@@ -72,10 +88,9 @@
         </div>
         
         <div class="form-group">
-            <label for="status" class="col-lg-2 control-label">Status</label>
+            <label for="status" class="col-lg-2 control-label" style="padding-top: 3px;">Status</label>
             <div class="col-lg-10">
-            	<!-- remove status property from WebOrder, remove attribute - field from select tag -->
-                <select class="form-control" th:field="*{status}"> <!-- th:field="*{status}" OR id="status" name="status" -->
+                <select class="form-control" th:field="*{status}"> <!-- th:field="*{status}" OR id="status" name="status", using orderStatuses object - *{orderStatuses[0].status} -->
                 	<option th:each="status : ${updateOrderForm.orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
                 </select>
                 <!-- <input type="hidden" th:field="*{orderStatuses}" /> -->
@@ -107,10 +122,11 @@
                 <span class="help-block" th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}">Incorrect Postcode</span>
             </div>
         </div>
-		<div class="form-group">
+		<div class="form-group" style="margin-bottom: 0px;">
             <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-default">Update Order</button>
-                <a class="btn btn-default" th:href="@{/orders}">Cancel</a>
+            	<a class="btn btn-danger" th:href="@{/orders}">Cancel</a>
+            	<button type="submit" th:form="updateOrderForm" th:formaction="@{|/orders/${updateOrderForm.id}/edit|}" class="btn btn-primary">Update Details</button>
+                <button type="submit" class="btn btn-success">Update Order</button>
             </div>
         </div>
 		</fieldset>

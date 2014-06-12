@@ -29,7 +29,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @ComponentScan(basePackages = {"tut.webdata.controller","tut.webdata.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	
-//	@Override
+//	  @Override
 //    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
 //        RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
 //        requestMappingHandlerMapping.setUseSuffixPatternMatch(false);

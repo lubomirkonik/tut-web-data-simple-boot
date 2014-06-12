@@ -54,7 +54,7 @@
         <p><small>View and update yummy orders</small></p>
         <p>
 			<a class="btn btn-info btn-large" href="http://spring.io/">Learn more about Spring</a>
-			<a class="btn btn-primary btn-large" th:href="@{/admin}">Look at menu items</a>          
+			<a class="btn btn-primary btn-large" href="./menuItems.html" th:href="@{/menuItems}">Look at menu items</a> <!-- href="menuItems.html" -->
         </p>
     </div>
     <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
@@ -69,6 +69,7 @@
 		<thead>
 			<tr>
           		<th>ID / Status</th>
+          		<!-- <th></th> --> <!-- for column to see content of orderStatuses -->
           		<th>Date</th>
          		<th>Products</th>
           		<!-- <th>Status</th> -->
@@ -82,15 +83,32 @@
 		<tbody>
 			<tr th:each="order,stat : ${orders}">
 				<td th:switch="${order.status}">
-					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div> <!--  name="id" th:value="${order.id}" -->
-					<!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
+<!-- 			<td th:switch="${order.orderStatuses[0].status}"> --> <!-- using orderStatuses object -->
+					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div>
+					  
+					  <!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
 					  <div th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</div>
 					  <div th:case="'Order Processing'" class="label label-default" th:text="${order.status}">Order Processing</div>
 					  <div th:case="'Order Processed'" class="label label-info" th:text="${order.status}">Order Processed</div>
 					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</div>
 					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</div>
+					  
+					  <!-- <div th:case="'Order Received'" class="label label-primary" th:text="${order.orderStatuses[0].status}">Order Received</div>
+					  <div th:case="'Order Processing'" class="label label-default" th:text="${order.orderStatuses[0].status}">Order Processing</div>
+					  <div th:case="'Order Processed'" class="label label-info" th:text="${order.orderStatuses[0].status}">Order Processed</div>
+					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.orderStatuses[0].status}">Order Completed</div>
+					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.orderStatuses[0].status}">Order Cancelled</div> -->
+					  
 					  <div th:case="*" class="label label-default">-</div>
 				</td>
+				
+				<!-- column to see content of orderStatuses -->
+				<!-- <td>
+					<div th:each="st : ${order.orderStatuses}">
+						<div th:text="${st.status}"></div>
+					</div>
+				</td> -->
+				
 				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
 				
 				<!-- <td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> --> <!-- Map orderItems - {YM3=1} -->  <!-- name="menuItemsNames" th:value="${order.menuItemsNames}" -->
@@ -101,7 +119,7 @@
         					<th><small>ID</small></th>
         					<th><small>Name</small></th>
         					<th><small>Cost</small></th>
-<!--         					<th>Minutes</th> -->
+<!--         				<th><small>Minutes</small></th> -->
         					<th class="text-center"><small>Quantity</small></th>
         					<th class="text-center"><small>Total</small></th>
         				</tr>
@@ -110,19 +128,18 @@
         				<tr th:each="item : ${order.menuAndOrderItems}">
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
-        					<td th:text="${item.cost}+' &euro;'">19.79 &euro;</td>
+        					<td th:text="${item.cost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
 <!--         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td> -->
         					<td class="text-center"><span class="badge" th:text="${item.quantity}">2</span></td>
-        					<td class="text-center text-info" th:text="${item.itemTotalCost}+' &euro;'">2</td>
+        					<td class="text-center text-info" th:text="${item.itemTotalCost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</td>
         				</tr>
         			</tbody>
         		</table>	
 				</td>
 				
-				
 				<td th:text="${order.name}">Valter Longo</td>
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
-				<td class="text-center text-info"><strong th:text="${order.cost}+' &euro;'">19.79 &euro;</strong></td>
+				<td class="text-center text-info"><strong th:text="${order.cost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</strong></td>
 				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
 				<!-- <td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
 				<td><a th:href="@{|/orders/${order.id}/delete|}" href="#" class="btn btn-large btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>

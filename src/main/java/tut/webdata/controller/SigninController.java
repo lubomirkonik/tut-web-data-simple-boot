@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SigninController {
 
-	@RequestMapping(value = "/signin")  //bez lomitka
+	@RequestMapping(value = "signin")
 	public String signin() {
-        return "/signin/signin";		//bez lomitka
+        return "signin/signin";
     }
 }

@@ -38,7 +38,7 @@ public class Order {
   @Column(name = "POSTCODE")
   private String postcode;
   
-//  private String username;
+//  private String email;
   
   public void setId(String id) {
     this.id = id;

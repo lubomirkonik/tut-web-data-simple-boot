@@ -28,7 +28,7 @@ class AccountController {
         this.accountService = accountService;
     }
 
-    @RequestMapping(value = "/account/current", method = RequestMethod.GET)  //bez lomitka
+    @RequestMapping(value = "account/current", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public Account accounts(Principal principal) {
