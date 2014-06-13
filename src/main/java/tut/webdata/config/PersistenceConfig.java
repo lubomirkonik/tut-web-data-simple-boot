@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class PersistenceConfig {
 
 	@Bean
-	public AccountService accountPersistenceService(AccountRepo accountRepository) {
+	public AccountService accountPersistenceService(AccountRepository accountRepository) {
 		return new AccountService(accountRepository);
 	}
 	

@@ -4,10 +4,8 @@ package tut.webdata.domain;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 //import java.util.UUID;
 
@@ -38,7 +36,7 @@ public class Order {
   @Column(name = "POSTCODE")
   private String postcode;
   
-//  private String email;
+//  private Long userId;
   
   public void setId(String id) {
     this.id = id;

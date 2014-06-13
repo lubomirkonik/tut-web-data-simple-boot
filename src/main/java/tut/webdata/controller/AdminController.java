@@ -1,12 +1,12 @@
 package tut.webdata.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-//import java.util.Iterator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -18,17 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
-
-
 
 
 
@@ -40,7 +35,6 @@ import tut.webdata.support.web.AjaxUtils;
 import tut.webdata.support.web.MessageHelper;
 import tut.webdata.domain.MenuItem;
 import tut.webdata.domain.Order;
-import tut.webdata.domain.MenuOrderItem;
 import tut.webdata.domain.OrderStatus;
 import tut.webdata.domain.WebOrder;
 import tut.webdata.domain.WebOrderStatus;
@@ -204,9 +198,11 @@ public class AdminController {
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.POST)
 	public String updateUpdateOrderFormDetails(@Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors) {
 		
-//		if (!webOrder.checkMenuAndOrderItems()) {
-//			// add field error to quantity that can't be 0	
-//		}
+		if (!webOrder.checkMenuAndOrderItems()) {
+			// add field error to quantity that can't be 0
+			
+			errors.reject("error"); // Checked menu item has quantity set to 0!
+		}
 		
 //		get total costs of order items
 //		get total cost of order
@@ -218,14 +214,21 @@ public class AdminController {
 	@RequestMapping(value = "orders/{orderId}/update", method = RequestMethod.POST)
 	public String processUpdateOrderForm(@PathVariable("orderId") String orderId, @Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
 		// to-do checkMenuAndOrderItems - return particular object with error and set error that qty of checked item can't be 0
-//		if (errors.hasErrors() || webOrder.checkMenuAndOrderItems() != null) { 
-//			if (webOrder.checkMenuAndOrderItems() != null) {
-//				MenuOrderItem item = webOrder.checkMenuAndOrderItems();
-//				errors.getAllErrors().add(new ObjectError("quantity", "Quantity may not be less than 1"));
+//		MenuOrderItem menuOrderItem = webOrder.checkMenuAndOrderItems();
+//		if (errors.hasErrors() || menuOrderItem != null) { 
+//			if (menuOrderItem != null) {
+//				// errors.getAllErrors().add(new ObjectError("menuAndOrderItems0.quantity", "Quantity may not be less than 1!"));
+//				errors.rejectValue("menuAndOrderItems0.quantity", "Quantity may not be less than 1!");
 //			}
 //			return "admin/updateOrder";
 //		}
-		if (errors.hasErrors() || !webOrder.checkMenuAndOrderItems()) { 
+		
+		boolean checkedItemWithoutZero = webOrder.checkMenuAndOrderItems();
+		if (errors.hasErrors() || !checkedItemWithoutZero) { 
+			if (!checkedItemWithoutZero) {
+				errors.reject("error"); // Checked menu item has quantity set to 0!
+			}
+			webOrder.calculateTotalCost();
 			return "admin/updateOrder";
 		}
 		
@@ -284,15 +287,31 @@ public class AdminController {
 		return "redirect:/orders";
 	}
 	
+//	@ModelAttribute("menuItems")
+//	private List<MenuItem> populateMenuItems() {
+//		return menuService.requestAllMenuItems();
+//	}
+	
+	private List<MenuItem> menuItems;
+	
+//	public List<MenuItem> getMenuItems() {
+//		return menuItems;
+//	}
+//	
+//	public void setMenuItems(List<MenuItem> menuItems) {
+//		this.menuItems = menuItems;
+//	}
+
 	@ModelAttribute("addMenuItemForm")
 	private MenuItem getMenuItem() {
 		return new MenuItem();
 	}
 
 	@RequestMapping(value = "menuItems", method = RequestMethod.GET)
-	public String getMenuItems(Model model) {
+	public String getAllMenuItems(Model model) {	// Model model
 		LOG.debug("All menu items to menuItems view");
 		model.addAttribute("menuItems", menuService.requestAllMenuItems());
+//		setMenuItems(menuService.requestAllMenuItems());
 		return "admin/menuItems";
 	}
 	
@@ -304,10 +323,9 @@ public class AdminController {
         return "admin/addMenuItem";
     }
 	
-	// don't allow update with same id	
 	@RequestMapping(value = "addMenuItem", method = RequestMethod.POST)
 	public String processAddMenuItemForm(@Valid @ModelAttribute("addMenuItemForm") MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {  //BindingResult result
-		if (errors.hasErrors()) {
+		if (errors.hasErrors() | !checkMenuItemIdNotExisting(menuItem, errors) | !checkMenuItemCostNotEmpty(menuItem, errors)) {
 			return "admin/addMenuItem";
 		}
 		LOG.debug("No errors, continue with creating of menu item {}:", menuItem.getName());
@@ -316,18 +334,91 @@ public class AdminController {
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been created!");	//"addMenuItem.success"
 		return "redirect:/menuItems";
 	}
+	
+	private boolean checkMenuItemIdNotExisting(MenuItem menuItem, Errors errors) {
+		List<MenuItem> menuItems = new ArrayList<>(menuService.requestAllMenuItems());
+		for (MenuItem item : menuItems) {
+			if (item.getId().equals(menuItem.getId())) {
+				//log
+				errors.rejectValue("id", "The value already exists!");
+				return false;	
+			}
+		}
+		return true;
+	}
+	
+	private boolean checkMenuItemCostNotEmpty(MenuItem menuItem, Errors errors) {
+		if (menuItem.getCost() == null) {
+			errors.rejectValue("cost", "The value is not a number!");
+			return false;
+		}
+		return true;
+	}
 		
 //	show error for corresponding field
 	@RequestMapping(value = "updateMenuItem", method = RequestMethod.POST)
+//	@ModelAttribute("menuItems") List<MenuItem> menuItems
 	public String processUpdateMenuItemForm(@Valid @ModelAttribute MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {
-		if (errors.hasErrors()) {
+//		MenuItem menuItem = new MenuItem();
+//		menuItem.setId("YM5");
+//		menuItem.setName("meno");
+//		menuItem.setMinutesToPrepare(5);
+//		menuItem.setCost(BigDecimal.valueOf(3.55));
+		
+//		modelMap.replace("menuItems", menuItems);
+		
+//		if (menuItem.getCost() == null) {
+//			menuItem.setCost(BigDecimal.ZERO);
+//		}
+		
+//		try {
+//			if (menuItem.getCost().equals(null)) {
+//				menuItem.setCost(BigDecimal.ZERO);
+//			}
+//		} catch (Exception e) {
+//			System.out.println("exception was catched");
+//			menuItem.setCost(BigDecimal.ZERO);
+//		}
+		
+		int index = 0;
+		if (errors.hasErrors() || menuItem.getCost() == null) {
+//			List<MenuItem> menuItems = menuService.requestAllMenuItems();
+			menuItems = menuService.requestAllMenuItems();
+			for (MenuItem item : menuItems) {
+				if (item.getId().equals(menuItem.getId())) {
+					index = menuItems.indexOf(item);
+					menuItems.remove(item);
+					break;
+				}
+			}
+			
+			menuItems.add(index, menuItem);
+
+//			Iterator<MenuItem> iterator = menuItems.iterator();
+//			while (iterator.hasNext()) {
+//				    if (iterator.next().getId().equals(menuItem.getId())) {
+//				    	iterator.next().setName(menuItem.getName());
+//				    	iterator.next().setMinutesToPrepare(menuItem.getMinutesToPrepare());
+//				    	iterator.next().setCost(menuItem.getCost());
+//				    	break;
+//				}
+//			}
+			
+//			model.addAttribute("menuItems", menuItems);
 			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error" 
-			return "redirect:/menuItems";
+			return "redirect:/errorInMenuItems"; // "admin/menuItems"
 		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());
 		menuService.updateMenuItem(menuItem);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been updated!");
 		return "redirect:/menuItems";
+	}
+	
+	@RequestMapping(value = "errorInMenuItems", method = RequestMethod.GET)
+	// @ModelAttribute("menuItems") ArrayList<MenuItem> menuItems
+	public String getMenuItemsWithError(Model model) {
+		model.addAttribute("menuItems", menuItems);
+		return "admin/menuItems";
 	}
 
 	@RequestMapping(value = "deleteMenuItem", method = RequestMethod.POST)

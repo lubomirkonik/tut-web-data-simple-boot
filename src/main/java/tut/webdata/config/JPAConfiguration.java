@@ -1,6 +1,6 @@
 package tut.webdata.config;
 
-import tut.webdata.repository.AccountRepo;
+import tut.webdata.repository.AccountRepository;
 import tut.webdata.repository.OrdersRepository;
 import tut.webdata.repository.OrderStatusRepository;
 
@@ -26,7 +26,7 @@ import java.sql.SQLException;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "tut.webdata.repository",
-    includeFilters = @ComponentScan.Filter(value = {OrdersRepository.class, OrderStatusRepository.class, AccountRepo.class}, type = FilterType.ASSIGNABLE_TYPE))
+    includeFilters = @ComponentScan.Filter(value = {OrdersRepository.class, OrderStatusRepository.class, AccountRepository.class}, type = FilterType.ASSIGNABLE_TYPE))
 @EnableTransactionManagement
 public class JPAConfiguration {
 

@@ -3,25 +3,22 @@ package tut.webdata.services;
 import javax.persistence.*;
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Repository;
+//import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import tut.webdata.domain.Account;
-import tut.webdata.repository.AccountRepo;
+import tut.webdata.repository.AccountRepository;
 
 //@Repository
 @Transactional(readOnly = true)
 public class AccountService {
 	
-	private final AccountRepo ar;
+	private final AccountRepository ar;
 	
-	public AccountService(final AccountRepo ar) {
+	public AccountService(final AccountRepository ar) {
 		this.ar = ar;
 	}
-	
-//	@PersistenceContext
-//	private EntityManager entityManager;
 	
 	@Inject
 	private PasswordEncoder passwordEncoder;
@@ -34,16 +31,6 @@ public class AccountService {
 		return account;
 	}
 	
-//	public Account findByEmail(String email) {
-//		try {
-//			return entityManager.createNamedQuery(Account.FIND_BY_EMAIL, Account.class)
-//					.setParameter("email", email)
-//					.getSingleResult();
-//		} catch (PersistenceException e) {
-//			return null;
-//		}
-//	}
-	
 	public Account findByEmail(String email) {
 		try {
 			return ar.findByEmail(email);
@@ -51,5 +38,19 @@ public class AccountService {
 			return null;
 		}
 	}
+
+//	in JPA repository - AccountRepository:
 	
+//	@PersistenceContext
+//	private EntityManager entityManager;	
+	
+//	public Account findByEmail(String email) {
+//		try {
+//			return entityManager.createNamedQuery(Account.FIND_BY_EMAIL, Account.class)
+//				.setParameter("email", email)
+//				.getSingleResult();
+//		} catch (PersistenceException e) {
+//			return null;
+//		}
+//	}
 }

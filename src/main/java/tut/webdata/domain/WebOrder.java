@@ -130,16 +130,11 @@ public class WebOrder {
 	this.cost = cost;
   }
   /**
-   * get order items and 
-   * 
    * get order items total costs;
    * get order total cost
    * @param menuItems
    */
 public void calculateTotalCost() {
-//	  List<MenuOrderItem> menuAndOrderItems = new ArrayList<>(initMenuAndOrderItems(menuItems));
-//	  menuAndOrderItems = initMenuAndOrderItems(menuItems);
-	  
 	  cost = BigDecimal.ZERO;
 	  
 	  for (MenuOrderItem item : menuAndOrderItems) {

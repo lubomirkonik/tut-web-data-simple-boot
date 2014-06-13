@@ -15,8 +15,10 @@
 		<th:block th:if="${#fields.hasErrors('${updateOrderForm.*}')}">
         	<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     	</th:block>
+
 		<fieldset>
 		<legend>Update Order</legend>
+		
 		<div class="form-group">
 			<label for="orderId" class="col-lg-2 control-label">ID</label>
 			<div class="col-lg-10">
@@ -34,7 +36,6 @@
         				<label th:for="${#ids.prev('menuAndOrderItems')}" th:text="${item.name}">Cheesecake</label>
         			</li>
         		</ul> -->
-        		
         		<table id="orderItems" class="table table-hover products-table" style="margin-bottom: 0px">
         			<thead>
         				<tr>
@@ -80,7 +81,6 @@
         						<div class="text-info" style="padding: 3px; font-size: 20px" id="totalCost" th:text="${updateOrderForm.cost}+'&nbsp;&euro;'"><strong>19.79&nbsp;&euro;</strong></div>
         						<input type="hidden" th:field="*{cost}" />
         					</td>
-        					
         				</tr>
         			</tbody>
         		</table>

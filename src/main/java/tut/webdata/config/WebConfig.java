@@ -28,17 +28,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @EnableWebMvc   //!
 @ComponentScan(basePackages = {"tut.webdata.controller","tut.webdata.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter {
-	
-//	  @Override
-//    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-//        RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
-//        requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-//        requestMappingHandlerMapping.setUseTrailingSlashMatch(false);
-//        return requestMappingHandlerMapping;
-//    }
 
-//	  private static final String RESOURCES_HANDLER = "/resources/";
-//    private static final String RESOURCES_LOCATION = RESOURCES_HANDLER + "**";
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
