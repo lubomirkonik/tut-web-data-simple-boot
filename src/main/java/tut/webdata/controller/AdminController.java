@@ -198,14 +198,13 @@ public class AdminController {
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.POST)
 	public String updateUpdateOrderFormDetails(@Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors) {
 		
-		if (!webOrder.checkMenuAndOrderItems()) {
-			// add field error to quantity that can't be 0
-			
-			errors.reject("error"); // Checked menu item has quantity set to 0!
+		webOrder.checkItemsNotChosenAndTotalCostsNull();
+		
+		if (!webOrder.checkItemsChosenAndQuantityGreaterThan0()) {
+			// add field error to quantity that can't be less than 1
+			errors.reject("error");
 		}
 		
-//		get total costs of order items
-//		get total cost of order
 		webOrder.calculateTotalCost();
 		
 		return "admin/updateOrder";
@@ -213,21 +212,14 @@ public class AdminController {
 	
 	@RequestMapping(value = "orders/{orderId}/update", method = RequestMethod.POST)
 	public String processUpdateOrderForm(@PathVariable("orderId") String orderId, @Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
-		// to-do checkMenuAndOrderItems - return particular object with error and set error that qty of checked item can't be 0
-//		MenuOrderItem menuOrderItem = webOrder.checkMenuAndOrderItems();
-//		if (errors.hasErrors() || menuOrderItem != null) { 
-//			if (menuOrderItem != null) {
-//				// errors.getAllErrors().add(new ObjectError("menuAndOrderItems0.quantity", "Quantity may not be less than 1!"));
-//				errors.rejectValue("menuAndOrderItems0.quantity", "Quantity may not be less than 1!");
-//			}
-//			return "admin/updateOrder";
-//		}
-		
-		boolean checkedItemWithoutZero = webOrder.checkMenuAndOrderItems();
-		if (errors.hasErrors() || !checkedItemWithoutZero) { 
-			if (!checkedItemWithoutZero) {
-				errors.reject("error"); // Checked menu item has quantity set to 0!
+// 		errors.getAllErrors().add(new ObjectError("menuAndOrderItems", "Quantity may not be less than 1!"));
+//		errors.rejectValue("menuAndOrderItems0.quantity", "Quantity may not be less than 1!");
+		boolean chosenItemHasQuantity = webOrder.checkItemsChosenAndQuantityGreaterThan0();
+		if (errors.hasErrors() || !chosenItemHasQuantity) { 
+			if (!chosenItemHasQuantity) {  // !notChosenItemHasTotalCostNull || !chosenItemHasQuantity
+				errors.reject("error");
 			}
+			webOrder.checkItemsNotChosenAndTotalCostsNull();
 			webOrder.calculateTotalCost();
 			return "admin/updateOrder";
 		}
@@ -293,14 +285,6 @@ public class AdminController {
 //	}
 	
 	private List<MenuItem> menuItems;
-	
-//	public List<MenuItem> getMenuItems() {
-//		return menuItems;
-//	}
-//	
-//	public void setMenuItems(List<MenuItem> menuItems) {
-//		this.menuItems = menuItems;
-//	}
 
 	@ModelAttribute("addMenuItemForm")
 	private MenuItem getMenuItem() {
@@ -308,10 +292,9 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "menuItems", method = RequestMethod.GET)
-	public String getAllMenuItems(Model model) {	// Model model
+	public String getMenuItems(Model model) {
 		LOG.debug("All menu items to menuItems view");
 		model.addAttribute("menuItems", menuService.requestAllMenuItems());
-//		setMenuItems(menuService.requestAllMenuItems());
 		return "admin/menuItems";
 	}
 	
@@ -357,32 +340,13 @@ public class AdminController {
 		
 //	show error for corresponding field
 	@RequestMapping(value = "updateMenuItem", method = RequestMethod.POST)
-//	@ModelAttribute("menuItems") List<MenuItem> menuItems
 	public String processUpdateMenuItemForm(@Valid @ModelAttribute MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {
-//		MenuItem menuItem = new MenuItem();
-//		menuItem.setId("YM5");
-//		menuItem.setName("meno");
-//		menuItem.setMinutesToPrepare(5);
-//		menuItem.setCost(BigDecimal.valueOf(3.55));
-		
-//		modelMap.replace("menuItems", menuItems);
-		
-//		if (menuItem.getCost() == null) {
-//			menuItem.setCost(BigDecimal.ZERO);
-//		}
-		
-//		try {
-//			if (menuItem.getCost().equals(null)) {
-//				menuItem.setCost(BigDecimal.ZERO);
-//			}
-//		} catch (Exception e) {
-//			System.out.println("exception was catched");
-//			menuItem.setCost(BigDecimal.ZERO);
-//		}
+		if (menuItem.getCost() == null) {
+			menuItem.setCost(BigDecimal.ZERO);
+		}
 		
 		int index = 0;
-		if (errors.hasErrors() || menuItem.getCost() == null) {
-//			List<MenuItem> menuItems = menuService.requestAllMenuItems();
+		if (errors.hasErrors() || menuItem.getCost().equals(BigDecimal.ZERO)) {
 			menuItems = menuService.requestAllMenuItems();
 			for (MenuItem item : menuItems) {
 				if (item.getId().equals(menuItem.getId())) {
@@ -391,22 +355,10 @@ public class AdminController {
 					break;
 				}
 			}
-			
 			menuItems.add(index, menuItem);
-
-//			Iterator<MenuItem> iterator = menuItems.iterator();
-//			while (iterator.hasNext()) {
-//				    if (iterator.next().getId().equals(menuItem.getId())) {
-//				    	iterator.next().setName(menuItem.getName());
-//				    	iterator.next().setMinutesToPrepare(menuItem.getMinutesToPrepare());
-//				    	iterator.next().setCost(menuItem.getCost());
-//				    	break;
-//				}
-//			}
 			
-//			model.addAttribute("menuItems", menuItems);
 			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error" 
-			return "redirect:/errorInMenuItems"; // "admin/menuItems"
+			return "redirect:/errorInMenuItems";
 		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());
 		menuService.updateMenuItem(menuItem);
@@ -415,7 +367,6 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "errorInMenuItems", method = RequestMethod.GET)
-	// @ModelAttribute("menuItems") ArrayList<MenuItem> menuItems
 	public String getMenuItemsWithError(Model model) {
 		model.addAttribute("menuItems", menuItems);
 		return "admin/menuItems";

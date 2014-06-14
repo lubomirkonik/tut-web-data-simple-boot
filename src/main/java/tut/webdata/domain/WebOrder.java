@@ -40,6 +40,7 @@ public class WebOrder {
   	}
   
   	private List<MenuOrderItem> menuAndOrderItems;
+  	
   	public List<MenuOrderItem> getMenuAndOrderItems() {
 		return menuAndOrderItems;
 	}
@@ -51,23 +52,29 @@ public class WebOrder {
 		}
 		this.menuAndOrderItems = items;
 	}
-	// to-do return particular object with error
-	public boolean checkMenuAndOrderItems() {
+	/**
+	 * checks every item, if is chosen and quantity is <= 0 returns false 
+	 * @return
+	 */
+	public boolean checkItemsChosenAndQuantityGreaterThan0() {
 		for (MenuOrderItem item : this.menuAndOrderItems) {
-			if (item.isChosen() && item.getQuantity() == 0) {
+			if (item.isChosen() && item.getQuantity() <= 0) {
 				return false;
 			}
 		}
 		return true;
 	}
-//	public MenuOrderItem checkMenuAndOrderItems() {
-//		for (MenuOrderItem item : this.menuAndOrderItems) {
-//			if (item.isChosen() && item.getQuantity() == 0) {
-//				return item;
-//			}
-//		}
-//		return null;
-//	}
+	/**
+	 * checks every item, if is not chosen and item total cost has some value, set the value to null;
+	 * 
+	 */
+	public void  checkItemsNotChosenAndTotalCostsNull() {
+		for (MenuOrderItem item : this.menuAndOrderItems) {
+			if (!item.isChosen() && item.getItemTotalCost() != null) {
+				item.setItemTotalCost(null);
+			}
+		}
+	}
 //	put menuItems into menuAndOrderItems and check every item whether is present in order according to orderItems ids
 	public List<MenuOrderItem> initMenuAndOrderItems(List<MenuItem> menuItems) {
 		Map<String, Integer> orderItems = this.orderItems;
@@ -104,6 +111,7 @@ public class WebOrder {
 	}
 
 	private List<WebOrderStatus> orderStatuses;
+	
 	public List<WebOrderStatus> getOrderStatuses() {
 		return orderStatuses;
 	}
@@ -113,6 +121,7 @@ public class WebOrder {
 
 //current status
   private String status;
+  
   public String getStatus() {
 	  return status;
   }
@@ -122,6 +131,7 @@ public class WebOrder {
   
   //total cost
   private BigDecimal cost;
+  
   public BigDecimal getCost() {
 	  return cost;
   }
@@ -156,7 +166,7 @@ public void calculateTotalCost() {
   @NotEmpty(message = WebOrder.NOT_BLANK_MESSAGE)
   private String postcode;
   
-//  private String username;
+// private Long userId;
   
   public void setId(String id) {
     this.id = id;
