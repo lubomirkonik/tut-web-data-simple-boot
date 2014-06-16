@@ -85,3 +85,7 @@ body.modal-open {
 .label {
     font-size: 85%;
 }
+
+#minutesToPrepare {
+	min-width: 60px;
+}

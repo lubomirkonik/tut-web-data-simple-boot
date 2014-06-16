@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 
@@ -151,10 +153,47 @@ public class AdminController {
 //	@ModelAttribute("updateOrderForm") Order order
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
 	public String initUpdateOrderForm(@PathVariable("orderId") String orderId, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
-//		needs to get path variable 'orderId' from orders page
+
+		//		needs to get path variable 'orderId' from orders page
 		if (AjaxUtils.isAjaxRequest(requestedWith)) {
+			getOrderAndPutIntoModel(orderId, model);
             return "admin/updateOrder".concat(" :: updateOrderForm");
         }
+		
+		getOrderAndPutIntoModel(orderId, model);
+		
+//		Order order = orderService.requestOrder(UUID.fromString(orderId));
+//		
+//		WebOrder webOrder = new WebOrder();
+//		BeanUtils.copyProperties(order, webOrder);
+//		
+////		get all menu items
+//		List<MenuItem> menuItems = menuService.requestAllMenuItems();
+////		get menu and order items
+//		webOrder.initMenuAndOrderItems(menuItems);
+////		get total costs of order items
+////		get total cost of order
+//		webOrder.calculateTotalCost();
+//		
+//		//get current status and other statuses
+//		WebOrderStatus currentStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
+//		List<WebOrderStatus> statuses = getAllStatuses();
+//		List<WebOrderStatus> orderStatuses = new ArrayList<>();
+//		orderStatuses.add(currentStatus);
+//		for (WebOrderStatus status : statuses) {
+//			if (!status.getStatus().equals(currentStatus.getStatus())) {
+//				orderStatuses.add(status);
+//			}
+//		}
+//		
+//		webOrder.setOrderStatuses(orderStatuses);
+//		
+//		model.addAttribute("updateOrderForm", webOrder);
+		
+        return "admin/updateOrder";
+	}
+	
+	private void getOrderAndPutIntoModel(String orderId, Model model) {
 		Order order = orderService.requestOrder(UUID.fromString(orderId));
 		
 		WebOrder webOrder = new WebOrder();
@@ -182,7 +221,6 @@ public class AdminController {
 		webOrder.setOrderStatuses(orderStatuses);
 		
 		model.addAttribute("updateOrderForm", webOrder);
-        return "admin/updateOrder";
 	}
 	
 	private List<WebOrderStatus> getAllStatuses() {
@@ -374,6 +412,17 @@ public class AdminController {
 
 	@RequestMapping(value = "deleteMenuItem", method = RequestMethod.POST)
 	public String processDeleteMenuItemForm(@ModelAttribute MenuItem menuItem, RedirectAttributes redirectAttrs) {
+		List<Order> orders = orderService.requestAllOrders();
+		for (Order order : orders) {
+			Set<String> orderItemsIds = order.getOrderItems().keySet();
+			for (String id : orderItemsIds) {
+				if (id.equals(menuItem.getId())) {
+					//log
+					MessageHelper.addErrorAttribute(redirectAttrs, "Menu item is included in one or more orders!");
+					return "redirect:/menuItems";
+				}
+			}
+		}
 		LOG.debug("Remove {} from MongoDB", menuItem.getId());
 		menuService.deleteMenuItem(menuItem.getId());
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been deleted!");

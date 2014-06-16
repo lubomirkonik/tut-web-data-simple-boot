@@ -9,13 +9,15 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script>
         /* Fill in modal with content loaded with Ajax */
-        //		needs to send path variable 'orderId'
         $(document).ready(function () {
+        	//var orderId = $('#orderId').val();
+        	//var orderId = $('#orderId').attr("value");
             $('#myModal').on('show.bs.modal', function (e) {
                 $("#myModalBody").text("");
                 $.ajax({
-//                     url: "orders/${order.id}/edit",
-////                   method: "post",
+                     url: '/orders/'+orderId+'/edit',
+                  // url: '/orders/'+$('#orderId').attr("value")+'/edit',
+                  // method: "post",
                     cache: false
                 })
                         .done(function (html) {
@@ -64,7 +66,7 @@
     </th:block>
     
 <div class="" > <!-- col-md-12 -->
-	<th:block th:if="${#lists.size(orders)} >= 1">
+	<th:block th:if="${#lists.size(orders)} >= 1"> <!-- th:unless="${#lists.isEmpty(orders)}" -->
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
 			<tr>
@@ -72,7 +74,6 @@
           		<!-- <th></th> --> <!-- for column to see content of orderStatuses -->
           		<th>Date</th>
          		<th>Products</th>
-          		<!-- <th>Status</th> -->
           		<th>Name</th>
           		<th>Address</th>
 				<th class="text-center">Total Cost</th>
@@ -85,6 +86,7 @@
 				<td th:switch="${order.status}">
 <!-- 			<td th:switch="${order.orderStatuses[0].status}"> --> <!-- using orderStatuses object -->
 					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div>
+<!-- 					  <input type="hidden" th:id="orderId" th:name="orderId" th:value="${order.id}"/> -->
 					  
 					  <!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
 					  <div th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</div>
@@ -140,8 +142,10 @@
 				<td th:text="${order.name}">Valter Longo</td>
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
 				<td class="text-center text-info"><strong th:text="${order.cost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</strong></td>
+				
 				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
-				<!-- <td><a href="#"  class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
+		 <!--			  id="orderId" th:value="${order.id}" -->
+		 <!-- <td><a href="#" class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
 				<td><a th:href="@{|/orders/${order.id}/delete|}" href="#" class="btn btn-large btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
 			</tr>
 		</tbody>

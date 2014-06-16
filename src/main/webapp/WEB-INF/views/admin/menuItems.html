@@ -25,20 +25,6 @@
         });
     </script>
     <title>Yummy Noodle Bar</title>
-    <!-- <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-    </style> -->
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 </head>
 <body>
 <!-- Modal -->
@@ -85,26 +71,29 @@
            		<table class="table table-striped">
 					<thead>
 						<tr>
-							<th width="135px" class="text-center">ID</th>
-							<th width="145px" class="text-center">Name</th>
-							<th width="115px" class="text-center">Cost</th>
-							<th width="50px" class="text-center">Minutes to prepare</th>
-							<th width="40px" class="text-center small">Update item on MongoDB</th>
-							<th width="40px" class="text-center small">Remove from MongoDB</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">ID</th>
+							<th class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-center">Name</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">Cost</th>
+							<th class="col-lg-4 col-md-4 col-sm-5 col-xs-5 text-center small">Minutes to prepare</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center small" style="padding-right: 14px;">Update item on MongoDB</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center small">Remove from MongoDB</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="item,status : ${menuItems}">
-							<td colspan="5">
+							<td colspan="5" style="padding-right: 0px;">
 								<form action="#" th:action="@{/updateMenuItem}" method="post">
 									<table>
 										<tr>
-											<td class="col-lg-2"><input class="form-control" size="10" id="id" name="id" th:value="${item.id}" disabled="disabled" /></td>  <!-- contenteditable="false" -->
-											<td class="col-lg-3"><input class="form-control" size="17" id="name" name="name" th:value="${item.name}" /></td>
-											<td class="col-lg-3"><input class="form-control" size="10" id="cost" name="cost" th:value="${item.cost}" /></td>
-											<td class="col-lg-3"><input class="form-control" size="10" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" /></td>
-<!-- 									    <td><input type="submit" value="Update item on MongoDB" /></td> -->
-											<td class="col-lg-3"><button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Update</button></td>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-4 " style="padding-left: 0px;">
+												<input class="form-control" size="" th:value="${item.id}" disabled="disabled" />
+												<input type="hidden" id="id" name="id" th:value="${item.id}"/>
+											</td>  <!-- contenteditable="false" -->	
+											<td class="col-lg-5 col-md-5 col-sm-5 col-xs-5"><input class="form-control" id="name" name="name" th:value="${item.name}" /></td>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><input class="form-control" id="cost" name="cost" th:value="${item.cost}" /></td>
+											<td class="col-lg-4 col-md-4 col-sm-5 col-xs-5"><input class="form-control" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" /></td>
+<!-- 									    <td><input type="submit" value="Update" /></td> -->
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Update</button></td>
 										</tr>
 									</table>
 								</form>
@@ -114,7 +103,7 @@
 									<table>
 										<tr>
 											<td><input id="id" name="id" type="hidden" th:value="${item.id}" /></td>
-											<td class="col-lg-2"><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button></td>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-left: 0px; padding-right: 0px;" ><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button></td>
 										</tr>
 									</table>
 								</form>
@@ -123,8 +112,7 @@
 					</tbody>
 				</table>
 				
-				<a href="#"  class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Add Menu Item</a><br /><br /> <!-- href="./admin/menu_item-add.html" th:href="@{/addMenuItem}" -->
-				            
+				<a href="#"  class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Add Menu Item</a><br /><br /> <!-- href="./admin/addMenuItem.html" th:href="@{/addMenuItem}" -->
 <!--         </div> --><!-- /.span9 -->
     </div>
 </div>

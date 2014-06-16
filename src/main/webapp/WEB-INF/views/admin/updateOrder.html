@@ -59,7 +59,7 @@
 <!--         							   possible alternatives: -->
         							<!-- th:field="*{menuAndOrderItems[__${stat.index}__].quantity}" -->
         							<!-- th:id="menuAndOrderItems__${stat.index}__.quantity" th:value="${item.quantity}" th:name="menuAndOrderItems[__${stat.index}__].quantity" -->
-        							<input type="text" class="form-control" placeholder="2" th:id="'menuAndOrderItems'+${stat.index}+'.quantity'" th:value="*{menuAndOrderItems[__${stat.index}__].quantity}" th:name="'menuAndOrderItems['+${stat.index}+'].quantity'" />
+        							<input type="text" class="form-control" placeholder="2" th:id="'menuAndOrderItems'+${stat.index}+'.quantity'" th:value="*{menuAndOrderItems[__${stat.index}__].quantity}" th:name="'menuAndOrderItems['+${stat.index}+'].quantity'" required="required"/>
         							<span class="help-block" th:errors="*{menuAndOrderItems[__${stat.index}__].quantity}">Incorrect Quantity</span>
         					</td>
         					<td th:text="${item.itemTotalCost} == null ? '' : ${item.itemTotalCost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
@@ -93,7 +93,6 @@
                 <select class="form-control" th:field="*{status}"> <!-- th:field="*{status}" OR id="status" name="status", using orderStatuses object - *{orderStatuses[0].status} -->
                 	<option th:each="status : ${updateOrderForm.orderStatuses}" th:value="${status.status}" th:text="${status.status}" th:selected="${status.selected}">Order Received</option>
                 </select>
-                <!-- <input type="hidden" th:field="*{orderStatuses}" /> -->
                 <div th:each="status, stat : *{orderStatuses}">
                 	<input type="hidden" th:field="*{orderStatuses[__${stat.index}__].status}" />
                 	<input type="hidden" th:field="*{orderStatuses[__${stat.index}__].selected}" />
