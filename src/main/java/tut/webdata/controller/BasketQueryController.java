@@ -20,7 +20,7 @@ public class BasketQueryController {
 	private Basket basket;
 		
 	@RequestMapping(value = "/showBasket" , method = RequestMethod.GET)
-	public String show(Model model) {
+	public String show() { // Model model
 		LOG.debug("Show the basket contents");
 		return "/showBasket";
 	}

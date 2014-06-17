@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -8,54 +8,45 @@
 
     <title>Yummy Noodle Bar</title>
 
-<!--     <link href="/resources/css/bootstrap.min.css" rel="stylesheet"></link> -->
-
     <link href="../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/resources/css/core.css}" />
 <!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
     <script src="../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
-    <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
-    
-    <!-- <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-    </style> -->
-    
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script> 
 </head>
 <body>
 
+<div class="wrap">
 <div th:include="layout :: head"></div>
 
+<div id="main">
 <div class="container-fluid">
     <div th:include="layout :: left"></div>
 
 	<div class="jumbotron navbar-left">
 		<h3>Basket</h3>
+		<p><small>Review menu items in your basket</small></p>
 		<p>
-			<a class="btn btn-primary btn-large" href="/">Continue eating</a>
+			<a class="btn btn-primary btn-large" href="./home.html" th:href="@{/}">Continue eating</a>
             <a th:if="${basket.size > 0}"
-               class="btn btn-primary btn-large" href="/checkout">Go ahead and order</a>
+               class="btn btn-primary btn-large" href="./checkout.html" th:href="@{/checkout}">Go ahead and order</a>
 		</p>
 	</div>
+	<div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
 
 	<div class="navbar-left"> <!-- row-fluid -->
 <!-- 		<div class="span8"> -->
 
-			<div id="message" class="alert alert-info">
-                Review menu items. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
-                scrumptious item(s).
-            </div>
-
+			<th:block th:if="${#lists.isEmpty(basket.items)}">
+    			<div class="alert alert-warning"><strong>Oh no!</strong> Please add something scrumptious to your basket.</div>
+    		</th:block>
+    		
+    		<th:block th:unless="${#lists.isEmpty(basket.items)}">
+    		<div id="message" class="alert alert-info">
+    			Review menu items.
+         		Currently your basket contains <em th:text="${basket.size}">SOME</em> item(s).
+    		</div>
+			
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -81,10 +72,13 @@
                     </tr>
 				</tbody>
 			</table>
+			</th:block>
 
 <!-- 		</div> -->
 	</div>
-</div>
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
 
 <div th:include="layout :: foot"></div>
 </body>

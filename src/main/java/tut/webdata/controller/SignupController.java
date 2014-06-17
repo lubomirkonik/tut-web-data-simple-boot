@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //import thymeleafexamples.layouts.support.web.*;
 
 
+
+
 import tut.webdata.domain.Account;
 //import tut.webdata.repository.AccountRepository;
 import tut.webdata.services.AccountService;
@@ -42,12 +44,35 @@ public class SignupController {
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)	
 	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
-		if (errors.hasErrors()) {
+		if (!checkEmailNotUsed(signupForm, errors) || errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
 		}
+		
 		Account account = accountService.save(signupForm.createAccount());
+		
+//		if (errors.hasErrors()) {
+//			return SIGNUP_VIEW_NAME;
+//		}
+
+//		Account account = signupForm.createAccount();
+//		try {
+//			account = accountService.save(account);
+//		} catch (Exception exception) {
+//			System.out.println("Catched JdbcSQLException: Unique index or primary key violation.");
+//		}
+//		when existing account contains the same email and password, account is signed in
+		
 		userService.signin(account);
-        MessageHelper.addSuccessAttribute(ra, "signup.success");
+        MessageHelper.addSuccessAttribute(ra, "Congratulations! You have successfully signed up."); //"signup.success"
 		return "redirect:/";
 	}
+	
+	private boolean checkEmailNotUsed(SignupForm signupForm, Errors errors) {
+		if (accountService.findByEmail(signupForm.getEmail()) != null) {
+			errors.rejectValue("email", "This email is already used!");
+			return false;
+		}
+		return true;
+	}
+	
 }

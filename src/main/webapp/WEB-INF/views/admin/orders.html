@@ -17,7 +17,6 @@
                 $.ajax({
                      url: '/orders/'+orderId+'/edit',
                   // url: '/orders/'+$('#orderId').attr("value")+'/edit',
-                  // method: "post",
                     cache: false
                 })
                         .done(function (html) {
@@ -86,7 +85,6 @@
 				<td th:switch="${order.status}">
 <!-- 			<td th:switch="${order.orderStatuses[0].status}"> --> <!-- using orderStatuses object -->
 					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div>
-<!-- 					  <input type="hidden" th:id="orderId" th:name="orderId" th:value="${order.id}"/> -->
 					  
 					  <!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
 					  <div th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</div>

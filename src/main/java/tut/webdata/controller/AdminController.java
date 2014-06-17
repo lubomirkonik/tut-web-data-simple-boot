@@ -86,13 +86,6 @@ public class AdminController {
 		orders = orderService.requestAllOrders();
 		
 		List<WebOrder> webOrders = new ArrayList<>();
-//		Iterator<Order> it1 = orders.iterator();
-//		Iterator<WebOrder> it2 = webOrders.iterator();
-//		while (it1.hasNext()) {
-//			webOrders.add(new WebOrder());
-//			it2.next();
-//			BeanUtils.copyProperties(it1, it2);
-//		}
 		for (int i = 0; i < orders.size(); i++) {
 			webOrders.add(new WebOrder());
 			BeanUtils.copyProperties(orders.get(i), webOrders.get(i));
@@ -154,42 +147,13 @@ public class AdminController {
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
 	public String initUpdateOrderForm(@PathVariable("orderId") String orderId, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
 
-		//		needs to get path variable 'orderId' from orders page
+		//	needs to get path variable 'orderId' from orders page
 		if (AjaxUtils.isAjaxRequest(requestedWith)) {
 			getOrderAndPutIntoModel(orderId, model);
             return "admin/updateOrder".concat(" :: updateOrderForm");
         }
 		
 		getOrderAndPutIntoModel(orderId, model);
-		
-//		Order order = orderService.requestOrder(UUID.fromString(orderId));
-//		
-//		WebOrder webOrder = new WebOrder();
-//		BeanUtils.copyProperties(order, webOrder);
-//		
-////		get all menu items
-//		List<MenuItem> menuItems = menuService.requestAllMenuItems();
-////		get menu and order items
-//		webOrder.initMenuAndOrderItems(menuItems);
-////		get total costs of order items
-////		get total cost of order
-//		webOrder.calculateTotalCost();
-//		
-//		//get current status and other statuses
-//		WebOrderStatus currentStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
-//		List<WebOrderStatus> statuses = getAllStatuses();
-//		List<WebOrderStatus> orderStatuses = new ArrayList<>();
-//		orderStatuses.add(currentStatus);
-//		for (WebOrderStatus status : statuses) {
-//			if (!status.getStatus().equals(currentStatus.getStatus())) {
-//				orderStatuses.add(status);
-//			}
-//		}
-//		
-//		webOrder.setOrderStatuses(orderStatuses);
-//		
-//		model.addAttribute("updateOrderForm", webOrder);
-		
         return "admin/updateOrder";
 	}
 	
@@ -276,7 +240,7 @@ public class AdminController {
 		
 		String message = "has been updated!";
 		
-		// using orderStatuses object
+		// - using orderStatuses object
 		// get orderStatuses and get actual status from them - needed to bind all statuses from select tag in update order form
 //		List<WebOrderStatus> orderStatuses = webOrder.getOrderStatuses();
 //		WebOrderStatus actualStatus = new WebOrderStatus();
@@ -286,7 +250,7 @@ public class AdminController {
 //				break;
 //			}
 //		}
-		// using orderStatuses object
+		// - using orderStatuses object
 //		WebOrderStatus actualStatus = webOrder.getOrderStatuses().get(0);
 		
 		// order status before order/order status update

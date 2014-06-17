@@ -9,7 +9,7 @@
     <script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
-<body>
+<body style="padding-top: 15px;">
 	<form id="updateOrderForm" class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/update|}" th:fragment="updateOrderForm">
 <!-- 	OR th:action="@{update}" -->
 		<th:block th:if="${#fields.hasErrors('${updateOrderForm.*}')}">

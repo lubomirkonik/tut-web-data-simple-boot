@@ -14,10 +14,10 @@ import tut.webdata.repository.AccountRepository;
 @Transactional(readOnly = true)
 public class AccountService {
 	
-	private final AccountRepository ar;
+	private final AccountRepository accountRepository;
 	
-	public AccountService(final AccountRepository ar) {
-		this.ar = ar;
+	public AccountService(final AccountRepository accountRepository) {
+		this.accountRepository = accountRepository;
 	}
 	
 	@Inject
@@ -26,14 +26,16 @@ public class AccountService {
 	@Transactional
 	public Account save(Account account) {
 		account.setPassword(passwordEncoder.encode(account.getPassword()));
+		
 //		entityManager.persist(account);
-		ar.save(account);
+		accountRepository.save(account);
+		
 		return account;
 	}
 	
 	public Account findByEmail(String email) {
 		try {
-			return ar.findByEmail(email);
+			return accountRepository.findByEmail(email);
 		} catch (PersistenceException e) {
 			return null;
 		}

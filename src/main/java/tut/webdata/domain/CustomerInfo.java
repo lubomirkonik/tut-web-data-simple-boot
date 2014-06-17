@@ -3,20 +3,23 @@ package tut.webdata.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 
 public class CustomerInfo implements Serializable {
 
-  @NotNull
-  @NotEmpty
+  private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";	
+	
+  @NotNull(message = CustomerInfo.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = CustomerInfo.NOT_BLANK_MESSAGE)
   private String name;
 
-  @NotNull
-  @NotEmpty
+  @NotNull(message = CustomerInfo.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = CustomerInfo.NOT_BLANK_MESSAGE)
   private String address1;
 
-  @NotNull
-  @NotEmpty
+  @NotNull(message = CustomerInfo.NOT_BLANK_MESSAGE)
+  @NotEmpty(message = CustomerInfo.NOT_BLANK_MESSAGE)
   private String postcode;
 
   public String getName() {
