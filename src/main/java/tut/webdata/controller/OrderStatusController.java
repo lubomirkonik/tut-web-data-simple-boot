@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import tut.webdata.domain.Basket;
 import tut.webdata.domain.Order;
 import tut.webdata.domain.OrderStatus;
 import tut.webdata.services.OrderService;
@@ -28,6 +29,9 @@ public class OrderStatusController {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(OrderStatusController.class);
 
+	@Autowired
+	private Basket basket;
+	
 	@Autowired
 	private OrderService orderService;
 
@@ -48,5 +52,10 @@ public class OrderStatusController {
 		status.setStatus(orderStatusEvent.getStatus());
 		
 		return status;
+	}
+	
+	@ModelAttribute("basket")
+	public Basket getBasket() {
+		return basket;
 	}
 }

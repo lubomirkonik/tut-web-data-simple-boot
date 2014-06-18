@@ -12,9 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //import thymeleafexamples.layouts.account.*;
 //import thymeleafexamples.layouts.support.web.*;
 
-
-
-
 import tut.webdata.domain.Account;
 //import tut.webdata.repository.AccountRepository;
 import tut.webdata.services.AccountService;

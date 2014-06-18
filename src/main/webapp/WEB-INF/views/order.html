@@ -1,62 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="Simplicity Itself"/>
-
-    <title>Yummy Noodle Bar</title>
-
     <link href="../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
-<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
     <script src="../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
     <script src="../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     
-    <!-- <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-    </style> -->
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <title>Yummy Noodle Bar</title>
 </head>
 <body>
 
+<div class="wrap">
 <div th:include="layout :: head"></div>
+
+<div id="main">
 <div class="container-fluid">
+
 	<div th:include="layout :: left"></div>
     <div class="jumbotron navbar-left">
         <h3>Your order is confirmed</h3>
-
+		<p><small>Check status of your order</small></p>
         <p>
-            <a class="btn btn-primary btn-large" href="/">Please can I have some more</a>
+            <a class="btn btn-primary btn-large" href="./home.html" th:href="@{/}">Please can I have some more</a>
             <a class="btn btn-primary btn-large"
-               th:href="'/order/' + ${orderStatus.orderId}">Get latest status</a>
+               href="./order.html" th:href="@{|/order/${orderStatus.orderId}|}">Get latest status</a> <!-- "@{'/order/' + ${orderStatus.orderId}}" -->
         </p>
     </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
+    
+    <div class="navbar-left"> <!-- style="width: 800px" --> <!-- row-fluid sidebar-nav -->
+<!--      <div class="span8"> -->
 
-    <div class="navbar-left" style="width: 800px"> <!-- row-fluid sidebar-nav -->
-<!--         <div class="span8"> -->
-            <p class="text-info"><span th:text="${orderStatus.name}">, </span>, Thanks for your order</p>
+			<div id="message" class="alert alert-info">
+    			Check status of your order.
+     			Your basket contains <em th:text="${basket.size}">SOME</em> item(s).
+   			</div>
+			
+			<div style="padding-left: 3px;">
+            <p class="text-info"><span th:text="${orderStatus.name}"></span>, Thanks for your order.</p>
 
             <p class="text-info">Your order number is <span th:text="${orderStatus.orderId}"></span></p>
 
             <p class="text-info">The estimate for cooking is 20 minutes</p>
 
             <p class="text-success">The status is currently <span th:text="${orderStatus.status}"></span></p>
-<!--         </div> -->
+            </div>
+<!--      </div> -->
     </div>
-</div>
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
 
 <div th:include="layout :: foot"></div>
 </body>

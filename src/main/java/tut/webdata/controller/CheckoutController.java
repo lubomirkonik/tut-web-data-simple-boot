@@ -86,7 +86,7 @@ public class CheckoutController {
 		return basket;
 	}
 
-	public void setBasket(Basket basket) {
-		this.basket = basket;
-	}
+//	public void setBasket(Basket basket) {
+//		this.basket = basket;
+//	}
 }

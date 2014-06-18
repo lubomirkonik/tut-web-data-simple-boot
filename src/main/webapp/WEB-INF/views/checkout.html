@@ -34,33 +34,33 @@
 <!-- 	<div class="sidebar-nav span8"> -->
 		<div class="navbar-left">
 
-            <th:block th:if="${#fields.hasErrors('${customerInfo.*}')}">
-        		<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
-    		</th:block>
-    		
-    		<th:block th:unless="${#fields.hasErrors('${customerInfo.*}')}">
+<!--     	<th:block th:unless="${#fields.hasErrors('${customerInfo.*}')}"> -->
     		<div id="message" class="alert alert-info">
     			Please fill in the form, all fields are required.
          		Your basket contains <em th:text="${basket.size}">SOME</em> item(s).
     		</div>
+<!--     	</th:block> -->
+
+			<th:block th:if="${#fields.hasErrors('${customerInfo.*}')}">
+        		<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     		</th:block>
 
             <form method="POST" th:object="${customerInfo}"> <!-- form-horizontal, form-narrow -->
                 <table style="height: 170px; margin-top: 8px;">
                     <tr>
-                        <td class="text-right" style="padding-right: 15px; width: 130px;">Name:</td>
+                        <td class="text-right" style="padding-right: 15px; width: 100px;">Name:</td>
                         <td style="width: 250px;"><input class="form-control" type="text" th:field="*{name}" /></td>
-                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('name')}"><p th:errors="*{name}">Incorrect Name</p></td>
+                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect Name</td>
                     </tr>
                     <tr>
                         <td class="text-right" style="padding-right: 15px;">Address:</td>
                         <td><input class="form-control" type="text" th:field="*{address1}" /></td>
-                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('address1')}"><p th:errors="*{address1}">Incorrect Address</p></td>
+                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}">Incorrect Address</td>
                     </tr>
                     <tr>
                         <td class="text-right" style="padding-right: 15px;">Postal Code:</td>
                         <td><input class="form-control" type="text" th:field="*{postcode}" /></td>
-                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('postcode')}"><p th:errors="*{postcode}">Postcode Error</p></td>
+                        <td style="padding-left: 10px;" th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}">Postcode Error</td>
                     </tr>
                     <tr>
                     	<td></td>
