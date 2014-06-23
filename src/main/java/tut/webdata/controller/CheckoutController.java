@@ -8,6 +8,7 @@ import tut.webdata.domain.Basket;
 import tut.webdata.domain.CustomerInfo;
 import tut.webdata.domain.Order;
 import tut.webdata.services.OrderService;
+import tut.webdata.support.web.MessageHelper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +66,11 @@ public class CheckoutController {
 //		UUID key = event.getNewOrderKey();
 		String key = event.getId();
 
-		redirectAttrs.addFlashAttribute("message",
-				"Your order has been accepted!");
+//		redirectAttrs.addFlashAttribute("message",
+//				"Your order has been accepted!");
+		
+//		MessageHelper.addSuccessAttribute(redirectAttrs, "{}, Thanks for your order.", customer.getName());
+//		System.out.printf("%s, Thanks for your order.", customer.getName());
 
 		basket.clear();
 		LOG.debug("Basket now has {} items", basket.getSize());
