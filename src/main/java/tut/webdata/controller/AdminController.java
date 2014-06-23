@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,9 +24,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
-
 
 //import tut.webdata.repository.OrderStatusRepository;
 //import tut.webdata.repository.OrdersRepository;
@@ -95,11 +91,6 @@ public class AdminController {
 			// get current status of order
 			OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(order.getId());
 			order.setStatus(orderStatus.getStatus());
-			// - using orderStatuses object
-//			WebOrderStatus webOrderStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
-//			List<WebOrderStatus> statuses = new ArrayList<>(); 
-//			statuses.add(webOrderStatus);
-//			order.setOrderStatuses(statuses);
 			
 			//get all menu items objects of order by menu item ids as keys of Map orderItems
 			Map<String, Integer> orderItems = order.getOrderItems();
@@ -240,25 +231,12 @@ public class AdminController {
 		
 		String message = "has been updated!";
 		
-		// - using orderStatuses object
-		// get orderStatuses and get actual status from them - needed to bind all statuses from select tag in update order form
-//		List<WebOrderStatus> orderStatuses = webOrder.getOrderStatuses();
-//		WebOrderStatus actualStatus = new WebOrderStatus();
-//		for(WebOrderStatus status : orderStatuses) {
-//			if (status.isSelected()) {
-//				actualStatus = status;
-//				break;
-//			}
-//		}
-		// - using orderStatuses object
-//		WebOrderStatus actualStatus = webOrder.getOrderStatuses().get(0);
-		
 		// order status before order/order status update
 		OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(orderId);
 		// if order status has been modified, update order status
-		if (!orderStatus.getStatus().equals(webOrder.getStatus())) { // actualStatus.getStatus()
+		if (!orderStatus.getStatus().equals(webOrder.getStatus())) {
 			orderStatus.setStatusDate(new Date());
-			orderStatus.setStatus(webOrder.getStatus()); // actualStatus.getStatus()
+			orderStatus.setStatus(webOrder.getStatus());
 			orderService.setOrderStatus(orderStatus);
 			message = "Order Status ".concat(message);
 		} else {

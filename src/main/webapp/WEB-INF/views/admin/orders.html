@@ -70,7 +70,6 @@
 		<thead>
 			<tr>
           		<th>ID / Status</th>
-          		<!-- <th></th> --> <!-- for column to see content of orderStatuses -->
           		<th>Date</th>
          		<th>Products</th>
           		<th>Name</th>
@@ -83,7 +82,6 @@
 		<tbody>
 			<tr th:each="order,stat : ${orders}">
 				<td th:switch="${order.status}">
-<!-- 			<td th:switch="${order.orderStatuses[0].status}"> --> <!-- using orderStatuses object -->
 					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div>
 					  
 					  <!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
@@ -93,21 +91,8 @@
 					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</div>
 					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</div>
 					  
-					  <!-- <div th:case="'Order Received'" class="label label-primary" th:text="${order.orderStatuses[0].status}">Order Received</div>
-					  <div th:case="'Order Processing'" class="label label-default" th:text="${order.orderStatuses[0].status}">Order Processing</div>
-					  <div th:case="'Order Processed'" class="label label-info" th:text="${order.orderStatuses[0].status}">Order Processed</div>
-					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.orderStatuses[0].status}">Order Completed</div>
-					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.orderStatuses[0].status}">Order Cancelled</div> -->
-					  
 					  <div th:case="*" class="label label-default">-</div>
 				</td>
-				
-				<!-- column to see content of orderStatuses -->
-				<!-- <td>
-					<div th:each="st : ${order.orderStatuses}">
-						<div th:text="${st.status}"></div>
-					</div>
-				</td> -->
 				
 				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
 				
