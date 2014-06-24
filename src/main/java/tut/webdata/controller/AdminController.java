@@ -52,7 +52,6 @@ public class AdminController {
 	private MenuService menuService;
 	
 //  Another way to create initial orders	
-	
 //	@Autowired
 //	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
 //		this.orderRepository = orderRepository;
@@ -110,7 +109,7 @@ public class AdminController {
 		return "admin/orders";
 	}
 	
-	private static Map<String, Integer> createOrderItems(String... orderIds) {
+	private Map<String, Integer> createOrderItems(String... orderIds) {
 		Map<String, Integer> orderItems = new HashMap<String, Integer>();
 		for (String orderId : orderIds) {
 			orderItems.put(orderId, 1);
@@ -134,8 +133,8 @@ public class AdminController {
 //		orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
 //	}
 	
-//	@ModelAttribute("updateOrderForm") Order order
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
+															 // @ModelAttribute("updateOrderForm") WebOrder order
 	public String initUpdateOrderForm(@PathVariable("orderId") String orderId, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
 
 		//	needs to get path variable 'orderId' from orders page
@@ -205,12 +204,11 @@ public class AdminController {
 	
 	@RequestMapping(value = "orders/{orderId}/update", method = RequestMethod.POST)
 	public String processUpdateOrderForm(@PathVariable("orderId") String orderId, @Valid @ModelAttribute("updateOrderForm") WebOrder webOrder, Errors errors, RedirectAttributes redirectAttrs) {
-// 		errors.getAllErrors().add(new ObjectError("menuAndOrderItems", "Quantity may not be less than 1!"));
-//		errors.rejectValue("menuAndOrderItems0.quantity", "Quantity may not be less than 1!");
 		boolean chosenItemHasQuantity = webOrder.checkItemsChosenAndQuantityGreaterThan0();
 		if (errors.hasErrors() || !chosenItemHasQuantity) { 
 			if (!chosenItemHasQuantity) {  // !notChosenItemHasTotalCostNull || !chosenItemHasQuantity
-				errors.reject("error");
+//				errors.rejectValue("menuAndOrderItems0.quantity", "Quantity may not be less than 1!");
+				errors.reject("error");	
 			}
 			webOrder.checkItemsNotChosenAndTotalCostsNull();
 			webOrder.calculateTotalCost();
@@ -231,7 +229,7 @@ public class AdminController {
 		
 		String message = "has been updated!";
 		
-		// order status before order/order status update
+		// order status before order/order-status update
 		OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(orderId);
 		// if order status has been modified, update order status
 		if (!orderStatus.getStatus().equals(webOrder.getStatus())) {
@@ -288,7 +286,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "addMenuItem", method = RequestMethod.POST)
 	public String processAddMenuItemForm(@Valid @ModelAttribute("addMenuItemForm") MenuItem menuItem, Errors errors, RedirectAttributes redirectAttrs) {  //BindingResult result
-		if (errors.hasErrors() | !checkMenuItemIdNotExisting(menuItem, errors) | !checkMenuItemCostNotEmpty(menuItem, errors)) {
+		if (errors.hasErrors() | !checkMenuItemIdNotExisting(menuItem, errors) | !checkMenuItemCostNotNull(menuItem, errors)) {
 			return "admin/addMenuItem";
 		}
 		LOG.debug("No errors, continue with creating of menu item {}:", menuItem.getName());
@@ -303,16 +301,16 @@ public class AdminController {
 		for (MenuItem item : menuItems) {
 			if (item.getId().equals(menuItem.getId())) {
 				//log
-				errors.rejectValue("id", "The value already exists!");
+				errors.rejectValue("id", "duplicate", "The value already exists!");
 				return false;	
 			}
 		}
 		return true;
 	}
 	
-	private boolean checkMenuItemCostNotEmpty(MenuItem menuItem, Errors errors) {
+	private boolean checkMenuItemCostNotNull(MenuItem menuItem, Errors errors) {
 		if (menuItem.getCost() == null) {
-			errors.rejectValue("cost", "The value is not a number!");
+			errors.rejectValue("cost", "type", "The value is not a number!");
 			return false;
 		}
 		return true;

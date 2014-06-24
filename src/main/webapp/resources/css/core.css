@@ -71,7 +71,7 @@ footer p{
 	margin-top: 8px;
 }
 
-/* --- .form-signin and .carousel were omitted --- */
+/* --- .form-signin and .carousel omitted --- */
 
 body.modal-open {
     margin-right: 0;
@@ -80,6 +80,7 @@ body.modal-open {
 .products-table tbody>tr>td{
     vertical-align: middle;
 }
+/* --- end ecomme --- */
 
 /*media screen*/
 .label {

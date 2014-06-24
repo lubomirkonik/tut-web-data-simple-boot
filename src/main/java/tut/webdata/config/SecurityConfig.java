@@ -11,8 +11,6 @@ import org.springframework.context.annotation.ImportResource;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
@@ -33,19 +31,16 @@ public class SecurityConfig { 		//extends WebSecurityConfigurerAdapter
 
 //  @Override
 //  protected void configure(HttpSecurity http) throws Exception {
-////	  <security:http auto-config="true" disable-url-rewriting="true" use-expressions="true">
-////    http.authorizeUrls()
-//	  http.authorizeRequests()
-//    	.antMatchers("/").permitAll()
-//    	.antMatchers(HttpMethod.GET, "/showBasket").permitAll()
-//    	.antMatchers("/addToBasket").permitAll()
-//    	.antMatchers("/removeFromBasket").permitAll()
-//    	.antMatchers("/updateMenuItem").permitAll()
-//    	.antMatchers("/deleteMenuItem").permitAll()
+//	   http.authorizeRequests()
+//    	  .antMatchers("/").permitAll()
+//    	  .antMatchers(HttpMethod.GET, "/showBasket").permitAll()
+//    	  .antMatchers("/addToBasket").permitAll()
+//    	  .antMatchers("/removeFromBasket").permitAll()
+//    	  .antMatchers("/updateMenuItem").permitAll()
+//    	  .antMatchers("/deleteMenuItem").permitAll()
 //        .antMatchers("/order/**").hasRole("USER")
 //        .antMatchers("/checkout").hasRole("USER")
 //        
-////        <security:intercept-url pattern="/favicon.ico" access="permitAll" />
 //        .antMatchers("/resources/**").permitAll()
 //        .antMatchers("/signin").permitAll()
 //        .antMatchers("/signup").permitAll()

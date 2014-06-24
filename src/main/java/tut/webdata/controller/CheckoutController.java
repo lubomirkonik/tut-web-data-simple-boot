@@ -8,7 +8,6 @@ import tut.webdata.domain.Basket;
 import tut.webdata.domain.CustomerInfo;
 import tut.webdata.domain.Order;
 import tut.webdata.services.OrderService;
-import tut.webdata.support.web.MessageHelper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +17,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/checkout")
 public class CheckoutController {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(BasketCommandController.class);
+			.getLogger(CheckoutController.class);
 
 	@Autowired
 	private Basket basket;
@@ -40,17 +36,12 @@ public class CheckoutController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String checkout() {
-//		 vytvor model atribut customerInfo a vymaz z doCheckout metody @ModelAttribute a metodu getCustomerInfo() - mozno treba nastavit @SessionAttributes, pozri OwnerController-Petclinic
 		return "/checkout";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
-			// errors in the form
-			// show the checkout form again
-//			result.rejectValue("lastName", "notFound", "not found"); - vyskusaj ako alternativu, inak asi nastavit lokalizovane chybne spravy
-//			pre vytvorenie validacie pozri metodu processCreationForm() v PetController
 			return "/checkout";
 		}
 
@@ -68,9 +59,6 @@ public class CheckoutController {
 
 //		redirectAttrs.addFlashAttribute("message",
 //				"Your order has been accepted!");
-		
-//		MessageHelper.addSuccessAttribute(redirectAttrs, "{}, Thanks for your order.", customer.getName());
-//		System.out.printf("%s, Thanks for your order.", customer.getName());
 
 		basket.clear();
 		LOG.debug("Basket now has {} items", basket.getSize());

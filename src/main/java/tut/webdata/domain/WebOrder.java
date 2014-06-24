@@ -95,12 +95,12 @@ public class WebOrder {
 			menuOrderItem.setQuantity(0);
 			menuOrderItem.setChosen(false);
 			
-			//id aktualneho menuItem v iteracii je porovnane s id vsetkych poloziek nasej objednavky - orderOrderItems,
-			//ak najdene, nastavi na menuOrderItem, ze chosen je true a nastavi pocet kusov
+//			actual menuItem id in interation is compared with ids of orderItems hashmap, if there is equality,
+//			menuOrderItem has property chosen set on true and its property quantity is set according to value of orderItems
 			for (String id : orderItemsKeys) {
 				if (menuItem.getId().equals(id)) {
 					menuOrderItem.setChosen(true);
-					menuOrderItem.setQuantity(orderItems.get(id)); //menuItem.getId()
+					menuOrderItem.setQuantity(orderItems.get(id)); //orderItems.get(menuItem.getId())
 					break;
 				}
 			}

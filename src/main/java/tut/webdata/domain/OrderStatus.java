@@ -8,7 +8,7 @@ import javax.persistence.*;
 //import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
+//import javax.persistence.Column;
 
 @Entity(name = "ORDER_STATUS")
 public class OrderStatus { // implements Serializable

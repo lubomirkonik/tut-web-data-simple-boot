@@ -47,18 +47,6 @@ public class SignupController {
 		
 		Account account = accountService.save(signupForm.createAccount());
 		
-//		if (errors.hasErrors()) {
-//			return SIGNUP_VIEW_NAME;
-//		}
-
-//		Account account = signupForm.createAccount();
-//		try {
-//			account = accountService.save(account);
-//		} catch (Exception exception) {
-//			System.out.println("Catched JdbcSQLException: Unique index or primary key violation.");
-//		}
-//		when existing account contains the same email and password, account is signed in
-		
 		userService.signin(account);
         MessageHelper.addSuccessAttribute(ra, "Congratulations! You have successfully signed up."); //"signup.success"
 		return "redirect:/";
@@ -66,7 +54,7 @@ public class SignupController {
 	
 	private boolean checkEmailNotUsed(SignupForm signupForm, Errors errors) {
 		if (accountService.findByEmail(signupForm.getEmail()) != null) {
-			errors.rejectValue("email", "This email is already used!");
+			errors.rejectValue("email", "duplicate", "This email is already used!");
 			return false;
 		}
 		return true;

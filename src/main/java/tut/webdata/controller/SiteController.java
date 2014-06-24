@@ -21,7 +21,6 @@ import tut.webdata.services.MenuService;
 public class SiteController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
-//	private static final String ADMIN_ROLE = "ROLE_ADMIN";
 	
 	@Autowired
 	private MenuService menuService;

@@ -1,19 +1,19 @@
 package tut.webdata.config;
 
-import tut.webdata.domain.MenuItem;
+//import tut.webdata.domain.MenuItem;
 import tut.webdata.repository.*;
 import tut.webdata.services.AccountService;
 import tut.webdata.services.MenuEventHandler;
 import tut.webdata.services.MenuService;
 import tut.webdata.services.OrderEventHandler;
 import tut.webdata.services.OrderService;
-import tut.webdata.services.OrderStatusUpdateEventHandler;
-import tut.webdata.services.OrderStatusUpdateService;
+//import tut.webdata.services.OrderStatusUpdateEventHandler;
+//import tut.webdata.services.OrderStatusUpdateService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 
 @Configuration
 public class PersistenceConfig {

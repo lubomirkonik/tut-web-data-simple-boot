@@ -45,7 +45,8 @@ public class OrderStatusController {
 	private OrderStatus getOrderStatus(@PathVariable("orderId") String orderId) {
 		Order orderDetailsEvent = orderService.requestOrder(UUID.fromString(orderId));
 		OrderStatus orderStatusEvent = orderService.requestOrderStatusByOrderId(orderId); //UUID.fromString(orderId)
-
+		
+		//orderStatusEvent could be used to set customer's name and to return it as status
 		OrderStatus status = new OrderStatus();
 		status.setName(orderDetailsEvent.getName());
 		status.setOrderId(orderId);  // UUID.fromString(orderId)
@@ -54,6 +55,7 @@ public class OrderStatusController {
 		return status;
 	}
 	
+	//added basket to see its size
 	@ModelAttribute("basket")
 	public Basket getBasket() {
 		return basket;

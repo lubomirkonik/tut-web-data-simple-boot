@@ -40,11 +40,6 @@ public class MenuEventHandler implements MenuService {
 	
 	@Override
 	public void updateMenuItem(MenuItem menuItem) {
-//		MenuItem item = menuItemRepository.findOne(menuItem.getId());
-//		item.setId(menuItem.getId());
-//		item.setName(menuItem.getName());
-//		item.setCost(menuItem.getCost());
-//		item.setMinutesToPrepare(menuItem.getMinutesToPrepare());
 		menuItemRepository.save(menuItem);
 	}
 	
