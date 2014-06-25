@@ -6,15 +6,14 @@ import javax.validation.constraints.Min;
 
 public class MenuOrderItem {
 	
-//	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String NUMBER_MESSAGE = "{number.message}";
+//	private static final String NUMBER_MESSAGE = "{number.message}";
 	
 	private String id;
 	private String name;
 	private BigDecimal cost;
 	private BigDecimal itemTotalCost;
 	private int minutesToPrepare;
-	@Min(value = 0, message = MenuOrderItem.NUMBER_MESSAGE)
+//	@Min(value = 0, message = MenuOrderItem.NUMBER_MESSAGE)
 	private int quantity;
 	private boolean chosen;
 	

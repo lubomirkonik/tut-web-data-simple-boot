@@ -23,6 +23,21 @@ import tut.webdata.services.UserService;
 @ImportResource(value = "classpath:spring-security-context.xml")
 public class SecurityConfig { 		//extends WebSecurityConfigurerAdapter
 
+	  @Bean
+	  public UserService userService() {
+		  return new UserService();
+	  }
+	  
+	  @Bean
+	  public TokenBasedRememberMeServices rememberMeServices() {
+		  return new TokenBasedRememberMeServices("remember-me-key", userService());
+	  }
+	  
+	  @Bean
+	  public PasswordEncoder passwordEncoder() {
+		  return new StandardPasswordEncoder();
+	  }
+	
 //  @Override
 //  protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 //    auth.inMemoryAuthentication()
@@ -47,13 +62,12 @@ public class SecurityConfig { 		//extends WebSecurityConfigurerAdapter
 //        
 ////        .anyRequest().hasAuthority("ROLE_USER").and().anonymous()
 ////        .anyRequest().permitAll()
-////        .anyRequest().anonymous()
 //        .anyRequest().authenticated()
 //        .and()
 //        //This will generate a login form if none is supplied.
 //        .formLogin()
 //        
-//        .loginPage("/signin") // authentication-failure-url="/signin?error=1"
+//        .loginPage("/signin")
 //    	.and().logout().logoutUrl("/logout")
 //    	.and().rememberMe().rememberMeServices(rememberMeServices()).key("remember-me-key");
 //  }
@@ -63,22 +77,5 @@ public class SecurityConfig { 		//extends WebSecurityConfigurerAdapter
 //  public AuthenticationManager authenticationManagerBean() throws Exception {
 //       return super.authenticationManagerBean();
 //  }
-  
-//  public AuthenticationProvider authenticationProvider() {
-//  }
-  
-  @Bean
-  public UserService userService() {
-	  return new UserService();
-  }
-  
-  @Bean
-  public TokenBasedRememberMeServices rememberMeServices() {
-	  return new TokenBasedRememberMeServices("remember-me-key", userService());
-  }
-  
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-	  return new StandardPasswordEncoder();
-  }
+
 }

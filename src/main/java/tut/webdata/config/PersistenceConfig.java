@@ -30,10 +30,6 @@ public class PersistenceConfig {
 
 	@Bean
 	public MenuService menuPersistenceService(MenuItemRepository menuItemRepository) {
-//		menuItemRepository.deleteAll();
-//		menuItemRepository.save(menuItem("YM3", new BigDecimal("3.99"), 13, "Low cal Yummy Noodles"));
-//		menuItemRepository.save(menuItem("YM2", new BigDecimal("2.99"), 12, "Special Yummy Noodles"));
-//		menuItemRepository.save(menuItem("YM1", new BigDecimal("1.99"), 11, "Yummy Noodles"));
 		return new MenuEventHandler(menuItemRepository);
 	}
 
@@ -42,12 +38,4 @@ public class PersistenceConfig {
 //		return new OrderStatusUpdateEventHandler();
 //	}
 	
-//	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {
-//		MenuItem item = new MenuItem();
-//		item.setId(id);
-//		item.setCost(cost);
-//		item.setMinutesToPrepare(minutesToPrepare);
-//		item.setName(name);
-//		return item;
-//	}
 }

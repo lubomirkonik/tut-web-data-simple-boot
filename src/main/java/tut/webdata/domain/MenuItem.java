@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 
 import javax.validation.constraints.DecimalMax;
@@ -42,7 +43,9 @@ public class MenuItem implements Serializable {
   
 //  @NotNull
 //  @NotEmpty
+  
 //  @NotBlank(message = MenuItem.NOT_BLANK_MESSAGE)
+  
   @DecimalMin(value = "0.99", message = MenuItem.COST_MESSAGE)
   @DecimalMax(value = "99.99", message = MenuItem.COST_MESSAGE)
   private BigDecimal cost;
@@ -88,6 +91,14 @@ public class MenuItem implements Serializable {
   }
 
   public void setCost(BigDecimal cost) {
+	  
+	  try {
+		  cost = cost.setScale(2, RoundingMode.HALF_UP);
+		} catch (NullPointerException exception) {
+			System.out.println("Null Pointer Exception");
+			cost = new BigDecimal("0.00");
+		}
+	   
     this.cost = cost;
   }
 

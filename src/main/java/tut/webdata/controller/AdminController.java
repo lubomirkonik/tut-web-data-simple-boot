@@ -42,22 +42,10 @@ public class AdminController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
 	
-//	private OrdersRepository orderRepository;
-//	private OrderStatusRepository orderStatusRepository;
-	
-//	@Autowired
 	private OrderService orderService;
 	
 	@Autowired
 	private MenuService menuService;
-	
-//  Another way to create initial orders	
-//	@Autowired
-//	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
-//		this.orderRepository = orderRepository;
-//		this.orderStatusRepository = orderStatusRepository;
-//		init();
-//	}
 	
 	@Autowired
 	public AdminController(OrderService orderService) {
@@ -65,16 +53,52 @@ public class AdminController {
 		init();
 	}
 	
-//	private void init() {
-//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
-//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
-//	}
-	
 	private void init() {
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
 	}
+	
+	private Order createOrder(String id, Date dateTimeOfSubmission, Map<String, Integer> orderItems, String name, String address, String postcode) {
+		Order order = new Order();
+		order.setId(id);
+		order.setDateTimeOfSubmission(dateTimeOfSubmission);
+		order.setOrderItems(orderItems);
+		order.setName(name);
+		order.setAddress1(address);
+		order.setPostcode(postcode);
+		return order;
+	}
 
+	private Map<String, Integer> createOrderItems(String... orderIds) {
+		Map<String, Integer> orderItems = new HashMap<String, Integer>();
+		for (String orderId : orderIds) {
+			orderItems.put(orderId, 1);
+		}
+		return orderItems;
+	}
+	
+////  Another way to create initial orders	
+//	
+//	private OrdersRepository orderRepository;
+//	private OrderStatusRepository orderStatusRepository;
+//	
+//	@Autowired
+//	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
+//		this.orderRepository = orderRepository;
+//		this.orderStatusRepository = orderStatusRepository;
+//		init();
+//	}
+//	
+//	private void init() {
+//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
+//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
+//	}
+//
+//	private void createOrder(Order order) {
+//	orderRepository.save(order);
+//	orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
+// }
+	
 	@RequestMapping(value = "orders", method = RequestMethod.GET)
 	public String getOrders(Model model) {		
 		List<Order> orders = new ArrayList<>();
@@ -108,30 +132,6 @@ public class AdminController {
 		model.addAttribute("orders", webOrders);
 		return "admin/orders";
 	}
-	
-	private Map<String, Integer> createOrderItems(String... orderIds) {
-		Map<String, Integer> orderItems = new HashMap<String, Integer>();
-		for (String orderId : orderIds) {
-			orderItems.put(orderId, 1);
-		}
-		return orderItems;
-	}
-	
-	private Order createOrder(String id, Date dateTimeOfSubmission, Map<String, Integer> orderItems, String name, String address, String postcode) {
-		Order order = new Order();
-		order.setId(id);
-		order.setDateTimeOfSubmission(dateTimeOfSubmission);
-		order.setOrderItems(orderItems);
-		order.setName(name);
-		order.setAddress1(address);
-		order.setPostcode(postcode);
-		return order;
-	}
-	
-//	private void createOrder(Order order) {
-//		orderRepository.save(order);
-//		orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
-//	}
 	
 	@RequestMapping(value = "orders/{orderId}/edit", method = RequestMethod.GET)
 															 // @ModelAttribute("updateOrderForm") WebOrder order
@@ -257,11 +257,6 @@ public class AdminController {
 		return "redirect:/orders";
 	}
 	
-//	@ModelAttribute("menuItems")
-//	private List<MenuItem> populateMenuItems() {
-//		return menuService.requestAllMenuItems();
-//	}
-	
 	private List<MenuItem> menuItems;
 
 	@ModelAttribute("addMenuItemForm")
@@ -324,7 +319,7 @@ public class AdminController {
 		}
 		
 		int index = 0;
-		if (errors.hasErrors() || menuItem.getCost().equals(BigDecimal.ZERO)) {
+		if (errors.hasErrors()) {	// || menuItem.getCost().equals(BigDecimal.ZERO)
 			menuItems = menuService.requestAllMenuItems();
 			for (MenuItem item : menuItems) {
 				if (item.getId().equals(menuItem.getId())) {
