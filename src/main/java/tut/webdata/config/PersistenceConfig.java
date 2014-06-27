@@ -1,6 +1,5 @@
 package tut.webdata.config;
 
-//import tut.webdata.domain.MenuItem;
 import tut.webdata.repository.*;
 import tut.webdata.services.AccountService;
 import tut.webdata.services.MenuEventHandler;
@@ -12,8 +11,6 @@ import tut.webdata.services.OrderService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-//import java.math.BigDecimal;
 
 @Configuration
 public class PersistenceConfig {

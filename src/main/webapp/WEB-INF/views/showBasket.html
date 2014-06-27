@@ -61,7 +61,7 @@
                     <tr th:each="basketItem : ${basket.items}">
                         <td th:text="${basketItem.id}"></td>
                         <td th:text="${basketItem.name}"></td>
-                        <td th:text="${basketItem.cost}"></td>
+                        <td th:text="|${basketItem.cost}&nbsp;&euro;|"></td>
                         <td th:text="${basketItem.minutesToPrepare}"></td>
                         <td>
                             <form id="${itemFormId}" action="/removeFromBasket" method="POST">

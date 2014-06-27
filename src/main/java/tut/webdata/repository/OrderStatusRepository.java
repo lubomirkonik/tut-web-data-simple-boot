@@ -2,11 +2,11 @@ package tut.webdata.repository;
 
 import tut.webdata.domain.OrderStatus;
 
-import org.springframework.data.gemfire.repository.GemfireRepository;
-import org.springframework.data.gemfire.repository.Query;
+//import org.springframework.data.gemfire.repository.GemfireRepository;
+//import org.springframework.data.gemfire.repository.Query;
 
-import java.util.Collection;
-import java.util.UUID;
+//import java.util.Collection;
+//import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
 

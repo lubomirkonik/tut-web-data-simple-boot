@@ -61,7 +61,7 @@
         							<!-- th:id="menuAndOrderItems__${stat.index}__.quantity" th:value="${item.quantity}" th:name="menuAndOrderItems[__${stat.index}__].quantity" -->
         							<input type="text" class="form-control" placeholder="2" th:id="'menuAndOrderItems'+${stat.index}+'.quantity'" 
         							th:value="*{menuAndOrderItems[__${stat.index}__].quantity}" th:name="'menuAndOrderItems['+${stat.index}+'].quantity'" 
-        							pattern="[0-9][0-9]?[0-9]?" required="required"/>
+        							pattern="(\d{1,2})" title="range of 0 - 99" required="required"/> <!-- pattern="(\d|(\d,\d{0,2}))" -->
         							<span class="help-block" th:errors="*{menuAndOrderItems[__${stat.index}__].quantity}">Incorrect Quantity</span>
         					</td>
         					<td th:text="${item.itemTotalCost} == null ? '' : ${item.itemTotalCost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
