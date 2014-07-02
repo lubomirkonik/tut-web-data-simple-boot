@@ -1,7 +1,9 @@
 package tut.webdata.config;
 
 import com.mongodb.Mongo;
+
 import tut.webdata.repository.MenuItemRepository;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +23,8 @@ public class MongoConfiguration {
     return new MongoTemplate(mongo, "yummynoodle");
   }
 
-  public @Bean Mongo mongo() throws UnknownHostException {
+  @SuppressWarnings("deprecation")
+public @Bean Mongo mongo() throws UnknownHostException {
     return new Mongo("localhost");
   }
 }

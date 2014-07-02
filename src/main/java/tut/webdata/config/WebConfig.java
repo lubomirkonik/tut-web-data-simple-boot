@@ -52,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
   @Bean
-  public ServletContextTemplateResolver templateResolver() {
+  public ServletContextTemplateResolver defaultTemplateResolver() {
     ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
     resolver.setPrefix("/WEB-INF/views/");
     resolver.setSuffix(".html");
@@ -65,7 +65,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
   public SpringTemplateEngine templateEngine() {
     SpringTemplateEngine engine = new SpringTemplateEngine();
-    engine.setTemplateResolver(templateResolver());
+    engine.setTemplateResolver(defaultTemplateResolver());
     engine.addDialect(new SpringSecurityDialect());
     engine.addDialect(new LayoutDialect());
     return engine;

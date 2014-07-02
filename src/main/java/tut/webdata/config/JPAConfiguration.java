@@ -17,9 +17,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+//import javax.persistence.EntityManager;
+//import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ import java.sql.SQLException;
 @EnableJpaRepositories(basePackages = "tut.webdata.repository",
     includeFilters = @ComponentScan.Filter(value = {OrdersRepository.class, OrderStatusRepository.class, AccountRepository.class}, type = FilterType.ASSIGNABLE_TYPE))
 @EnableTransactionManagement
-public class JPAConfiguration {
+public class JPAConfiguration implements TransactionManagementConfigurer {
 
   @Bean
   public DataSource dataSource() throws SQLException {
@@ -38,7 +39,7 @@ public class JPAConfiguration {
   }
 
   @Bean
-  public EntityManagerFactory entityManagerFactory() throws SQLException {
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
 
     HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     vendorAdapter.setGenerateDdl(true);
@@ -49,24 +50,31 @@ public class JPAConfiguration {
     factory.setDataSource(dataSource());
     factory.afterPropertiesSet();
 
-    return factory.getObject();
+//    return factory.getObject();
+    return factory;
   }
 
-  @Bean
-  public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
-    return entityManagerFactory.createEntityManager();
-  }
+//  @Bean
+//  public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+//    return entityManagerFactory.createEntityManager();
+//  }
 
-  @Bean
-  public PlatformTransactionManager transactionManager() throws SQLException {
+//  @Bean
+//  public PlatformTransactionManager transactionManager() throws SQLException {
+//
+//    JpaTransactionManager txManager = new JpaTransactionManager();
+//    txManager.setEntityManagerFactory(entityManagerFactory());
+//    return txManager;
+//  }
 
-    JpaTransactionManager txManager = new JpaTransactionManager();
-    txManager.setEntityManagerFactory(entityManagerFactory());
-    return txManager;
-  }
+@Bean
+@Override
+public PlatformTransactionManager annotationDrivenTransactionManager() {
+	return new JpaTransactionManager();
+}
 
-  @Bean
-  public HibernateExceptionTranslator hibernateExceptionTranslator() {
-    return new HibernateExceptionTranslator();
-  }
+@Bean
+public HibernateExceptionTranslator hibernateExceptionTranslator() {
+  return new HibernateExceptionTranslator();
+}
 }

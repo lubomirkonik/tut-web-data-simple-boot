@@ -222,3 +222,12 @@ vf.gf.dmn-license.cfg
 .gradle/1.8/taskArtifacts/taskArtifacts.bin
 screenshots1/menu items.PNG
 screenshots1/update order.PNG
+.gradle/1.12/taskArtifacts/cache.properties.lock
+.gradle/1.12/taskArtifacts/cache.properties.lock
+.gradle/1.12/taskArtifacts/fileHashes.bin
+.gradle/1.12/taskArtifacts/fileSnapshots.bin
+.gradle/1.12/taskArtifacts/outputFileStates.bin
+.gradle/1.12/taskArtifacts/taskArtifacts.bin
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew
