@@ -215,3 +215,9 @@ pip-log.txt
 .mr.developer.cfg
 screenshots1/menu items.PNG
 screenshots1/update order.PNG
+.gradle/1.12/taskArtifacts/cache.properties
+.gradle/1.12/taskArtifacts/cache.properties.lock
+.gradle/1.12/taskArtifacts/fileHashes.bin
+.gradle/1.12/taskArtifacts/fileSnapshots.bin
+.gradle/1.12/taskArtifacts/outputFileStates.bin
+.gradle/1.12/taskArtifacts/taskArtifacts.bin
