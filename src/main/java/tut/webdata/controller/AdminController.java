@@ -42,16 +42,11 @@ public class AdminController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
 	
+	@Autowired
 	private OrderService orderService;
 	
 	@Autowired
 	private MenuService menuService;
-	
-	@Autowired
-	public AdminController(OrderService orderService) {
-		this.orderService = orderService;
-		init();
-	}
 	
 	private void init() {
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
@@ -77,30 +72,15 @@ public class AdminController {
 		return orderItems;
 	}
 	
-////  Another way to create initial orders	
-//	
-//	private OrdersRepository orderRepository;
-//	private OrderStatusRepository orderStatusRepository;
-//	
-//	@Autowired
-//	public AdminController(OrdersRepository orderRepository, OrderStatusRepository orderStatusRepository) {
-//		this.orderRepository = orderRepository;
-//		this.orderStatusRepository = orderStatusRepository;
-//		init();
-//	}
-//	
-//	private void init() {
-//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
-//		createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
-//	}
-//
-//	private void createOrder(Order order) {
-//	orderRepository.save(order);
-//	orderStatusRepository.save(new OrderStatus(order.getId(), (UUID.randomUUID()).toString(), new Date(), "Order Received"));
-// }
+	private static boolean visited = false;
 	
 	@RequestMapping(value = "orders", method = RequestMethod.GET)
-	public String getOrders(Model model) {		
+	public String getOrders(Model model) {
+		if (!visited) {
+			init();
+			visited = true;
+		}
+		
 		List<Order> orders = new ArrayList<>();
 		orders = orderService.requestAllOrders();
 		
