@@ -213,12 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-vf.gf.dmn-events.txt
-vf.gf.dmn-license.cfg
-.gradle/1.8/taskArtifacts/cache.properties
-.gradle/1.8/taskArtifacts/fileHashes.bin
-.gradle/1.8/taskArtifacts/fileSnapshots.bin
-.gradle/1.8/taskArtifacts/outputFileStates.bin
-.gradle/1.8/taskArtifacts/taskArtifacts.bin
 screenshots1/menu items.PNG
 screenshots1/update order.PNG
