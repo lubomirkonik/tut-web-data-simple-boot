@@ -52,7 +52,7 @@
         				<tr th:each="item, stat : *{menuAndOrderItems}"> <!-- ${updateOrderForm.menuAndOrderItems} -->
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
-        					<td th:text="${item.cost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
+        					<td><span th:text="${item.cost}">19.79</span>&nbsp;&euro;</td>
         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td>
         					<td>
         							<!-- th:pattern="${item.chosen} ? '[1-9][0-9]?$' : '[0-9][0-9]?$'" -->
@@ -64,7 +64,8 @@
         							pattern="(\d{1,2})" title="range of 0 - 99" required="required"/> <!-- pattern="(\d|(\d,\d{0,2}))" -->
         							<span class="help-block" th:errors="*{menuAndOrderItems[__${stat.index}__].quantity}">Incorrect Quantity</span>
         					</td>
-        					<td th:text="${item.itemTotalCost} == null ? '' : ${item.itemTotalCost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
+        					<!-- <td><span th:text="${item.itemTotalCost} == null ? '' : ${item.itemTotalCost}">39.58</span><span th:remove="${item.itemTotalCost} == null ? all">&nbsp;&euro;</span></td> -->
+        					<td><span th:text="${item.itemTotalCost}">39.58</span><span th:remove="${item.itemTotalCost} == null ? all">&nbsp;&euro;</span></td>
         					<td>
         							<input type="checkbox" th:field="*{menuAndOrderItems[__${stat.index}__].chosen}" th:checked="${item.chosen}" />	
         					</td>
@@ -80,7 +81,7 @@
         					<td style="padding-bottom: 2px;"></td>
         					<td colspan="2" style="padding-bottom: 2px;"><strong class="pull-right">Total Cost:</strong></td>
         					<td colspan="2" style="padding-bottom: 2px;">
-        						<div class="text-info" style="padding: 3px; font-size: 20px" th:text="${updateOrderForm.cost}+'&nbsp;&euro;'"><strong>19.79&nbsp;&euro;</strong></div>
+        						<div class="text-info" style="padding: 3px; font-size: 20px"><span th:text="${updateOrderForm.cost}">39.58</span>&nbsp;&euro;</div>
         						<input type="hidden" th:field="*{cost}" />
         					</td>
         				</tr>
@@ -125,7 +126,7 @@
         </div>
 		<div class="form-group" style="margin-bottom: 0px;">
             <div class="col-lg-offset-2 col-lg-10">
-            	<a class="btn btn-danger" th:href="@{/orders}">Cancel</a>
+            	<a class="btn btn-danger" href="./orders.html" th:href="@{/orders}">Cancel</a>
             	<button type="submit" th:form="updateOrderForm" th:formaction="@{|/orders/${updateOrderForm.id}/edit|}" class="btn btn-primary">Update Details</button>
                 <button type="submit" class="btn btn-success">Update Order</button>
             </div>

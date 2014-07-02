@@ -120,7 +120,7 @@
                 <tr th:each="item,status : ${menuItems}">
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.name}"></td>
-                    <td th:text="|${item.cost}&nbsp;&#8364;|"></td>
+                    <td><span th:text="${item.cost}">5.68</span>&nbsp;&#8364;</td><!-- <small class="glyphicon glyphicon-euro"></small> -->
                     <td th:text="${item.minutesToPrepare}"></td>
                     <td>
                         <form action="/addToBasket" method="POST">

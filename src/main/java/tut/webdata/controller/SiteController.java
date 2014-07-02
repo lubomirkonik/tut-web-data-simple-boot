@@ -41,7 +41,7 @@ public class SiteController {
 		menuService.createMenuItem(menuItem("YM1", new BigDecimal("1.99"), 11, "Yummy Noodles"));
 		menuService.createMenuItem(menuItem("YM2", new BigDecimal("2.99"), 12, "Special Noodles"));
 		menuService.createMenuItem(menuItem("YM3", new BigDecimal("3.59"), 13, "Low Cal Noodles"));
-		menuService.createMenuItem(menuItem("YM4", new BigDecimal("4.09"), 5, "Cheesecake"));
+		menuService.createMenuItem(menuItem("YM4", new BigDecimal("4.09"), 5, "Greek Salad"));
 	}
 	
 	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {

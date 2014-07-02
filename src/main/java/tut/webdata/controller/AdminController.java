@@ -95,17 +95,17 @@ public class AdminController {
 			OrderStatus orderStatus = orderService.requestOrderStatusByOrderId(order.getId());
 			order.setStatus(orderStatus.getStatus());
 			
-			//get all menu items objects of order by menu item ids as keys of Map orderItems
+			// get all menu items objects of order by menu item ids as keys of Map orderItems
 			Map<String, Integer> orderItems = order.getOrderItems();
 			List<MenuItem> menuItems = new ArrayList<>();
 			for (String itemId : orderItems.keySet()) {
 				menuItems.add(menuService.requestMenuItem(itemId));
 			}
 			
-//			get order items
+			// get order items
 			order.initMenuAndOrderItems(menuItems);
-//			get total costs of order items
-//			get total cost of order
+			// get total costs of order items
+			// get total cost of order
 			order.calculateTotalCost();
 		}
 		
@@ -133,15 +133,15 @@ public class AdminController {
 		WebOrder webOrder = new WebOrder();
 		BeanUtils.copyProperties(order, webOrder);
 		
-//		get all menu items
+		// get all menu items
 		List<MenuItem> menuItems = menuService.requestAllMenuItems();
-//		get menu and order items
+		// get menu and order items
 		webOrder.initMenuAndOrderItems(menuItems);
-//		get total costs of order items
-//		get total cost of order
+		// get total costs of order items
+		// get total cost of order
 		webOrder.calculateTotalCost();
 		
-		//get current status and other statuses
+		// get current status and other statuses
 		WebOrderStatus currentStatus = new WebOrderStatus(orderService.requestOrderStatusByOrderId(order.getId()).getStatus(),true);
 		List<WebOrderStatus> statuses = getAllStatuses();
 		List<WebOrderStatus> orderStatuses = new ArrayList<>();
@@ -195,7 +195,7 @@ public class AdminController {
 			return "admin/updateOrder";
 		}
 		
-		//needed property for date/time of order update - updated details except status
+		// needed property for date/time of order update - updated details except status
 		
 		webOrder.updateOrderItems(webOrder.getMenuAndOrderItems());
 		
@@ -266,8 +266,8 @@ public class AdminController {
 		}
 		LOG.debug("No errors, continue with creating of menu item {}:", menuItem.getName());
 		menuService.createMenuItem(menuItem);
-//		redirectAttrs.addFlashAttribute("message","Menu item has been created!");
-		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been created!");	//"addMenuItem.success"
+		// redirectAttrs.addFlashAttribute("message","Menu item has been created!");
+		MessageHelper.addSuccessAttribute(redirectAttrs, "Menu item has been created!");	// "addMenuItem.success"
 		return "redirect:/menuItems";
 	}
 	
@@ -275,7 +275,7 @@ public class AdminController {
 		List<MenuItem> menuItems = new ArrayList<>(menuService.requestAllMenuItems());
 		for (MenuItem item : menuItems) {
 			if (item.getId().equals(menuItem.getId())) {
-				//log
+				// log
 				errors.rejectValue("id", "duplicate", "The value already exists!");
 				return false;	
 			}
@@ -310,7 +310,7 @@ public class AdminController {
 			}
 			menuItems.add(index, menuItem);
 			
-			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  //"updateMenuItem.error" 
+			MessageHelper.addErrorAttribute(redirectAttrs, "Form contains errors! Please try again.");  // "updateMenuItem.error" 
 			return "redirect:/errorInMenuItems";
 		}
 		LOG.debug("Update {} on MongoDB", menuItem.getId());

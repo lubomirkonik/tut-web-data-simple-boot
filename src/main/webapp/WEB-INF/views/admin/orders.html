@@ -113,17 +113,17 @@
         				<tr th:each="item : ${order.menuAndOrderItems}">
         					<td th:text="${item.id}">YM10</td>
         					<td th:text="${item.name}">Cheesecake</td>
-        					<td th:text="${item.cost}+'&nbsp;&euro;'">19.79&nbsp;&euro;</td>
+        					<td><span th:text="${item.cost}">19.79</span>&nbsp;&euro;</td>
 <!--         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td> -->
         					<td class="text-center"><span class="badge" th:text="${item.quantity}">2</span></td>
-        					<td class="text-center text-info" th:text="${item.itemTotalCost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</td>
+        					<td class="text-center text-info"><span th:text="${item.itemTotalCost}">39.58</span>&nbsp;&euro;</td>
         				</tr>
         				<tr>
         					<td style="padding-bottom: 0px;"></td>
         					<td style="padding-bottom: 0px;"></td>
         					<td colspan="2" style="padding-bottom: 0px;"><small><strong class="pull-right">Total Cost:</strong></small></td>
         					<td style="padding-bottom: 0px;">
-        						<strong class="text-info" th:text="${order.cost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</strong>
+        						<strong class="text-info" th:text="${order.cost}">39.58</strong><strong>&nbsp;&#8364;</strong>
         					</td>	
         				</tr>
         			</tbody>
@@ -132,9 +132,9 @@
 				
 				<td th:text="${order.name}">Valter Longo</td>
 				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
-<!-- 				<td class="text-center text-info"><strong th:text="${order.cost}+'&nbsp;&euro;'">39.58&nbsp;&euro;</strong></td> -->
+<!-- 				<td class="text-center text-info"><strong th:text="${order.cost}">39.58</strong><strong>&nbsp;&#8364;</strong></td> -->
 				
-				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
+				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder.html" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
 		 <!--			  id="orderId" th:value="${order.id}" -->
 		 <!-- <td><a href="#" class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
 				<td><a th:href="@{|/orders/${order.id}/delete|}" href="#" class="btn btn-large btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
