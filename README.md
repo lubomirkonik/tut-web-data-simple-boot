@@ -1,7 +1,7 @@
-Web application based on tutorials 
-http://spring.io/guides/tutorials/data/, 
-http://spring.io/guides/tutorials/web and 
-http://www.thymeleaf.org/layouts.html with Spring Boot.
+Web application with Spring Boot based on tutorials 
+[Data Access with Spring](http://spring.io/guides/tutorials/data/), 
+[Designing and Implementing a Web Application with Spring](http://spring.io/guides/tutorials/web/) and 
+[Thymeleaf Page Layouts](http://www.thymeleaf.org/layouts.html).
 
 Registration and Login are implemented based on the Layouts project, forms with validation messages are created based on this project.
 Administration section is added to the project, see screenshots.
