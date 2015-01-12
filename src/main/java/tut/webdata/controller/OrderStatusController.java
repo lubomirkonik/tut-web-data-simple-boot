@@ -15,12 +15,6 @@ import tut.webdata.domain.Basket;
 import tut.webdata.domain.Order;
 import tut.webdata.domain.OrderStatus;
 import tut.webdata.services.OrderService;
-//import tut.webdata.core.services.OrderService;
-//import tut.webdata.events.orders.OrderDetailsEvent;
-//import tut.webdata.events.orders.OrderStatusEvent;
-//import tut.webdata.events.orders.RequestOrderDetailsEvent;
-//import tut.webdata.events.orders.RequestOrderStatusEvent;
-//import tut.webdata.web.domain.OrderStatus;
 
 @Controller
 @RequestMapping("/order/{orderId}")

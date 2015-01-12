@@ -1,8 +1,5 @@
 package tut.webdata.domain;
 
-//import tut.webdata.events.orders.OrderStatusDetails;
-//import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 
 //import java.io.Serializable;
@@ -74,16 +71,6 @@ public class OrderStatus { // implements Serializable
   public void setStatus(String status) {
     this.status = status;
   }
-
-//  public OrderStatusDetails toStatusDetails() {
-//    return new OrderStatusDetails(orderId, id, statusDate, status);
-//  }
-//
-//  public static OrderStatus fromStatusDetails(OrderStatusDetails orderStatusDetails) {
-//    return new OrderStatus(
-//        orderStatusDetails.getOrderId(), orderStatusDetails.getId(),
-//        orderStatusDetails.getStatusDate(), orderStatusDetails.getStatus());
-//  }
   
   private boolean entityFound = true;
   public static OrderStatus notFound(String key) {

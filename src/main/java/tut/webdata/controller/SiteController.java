@@ -2,6 +2,8 @@ package tut.webdata.controller;
 
 import java.math.BigDecimal;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import tut.webdata.domain.Basket;
 import tut.webdata.domain.MenuItem;
 import tut.webdata.services.MenuService;
-//import tut.webdata.events.menu.AllMenuItemsEvent;
-//import tut.webdata.events.menu.MenuItemDetails;
-//import tut.webdata.events.menu.RequestAllMenuItemsEvent;
 
 @Controller
 //@RequestMapping("/")
@@ -32,11 +31,12 @@ public class SiteController {
 	@Autowired
 	public SiteController(MenuService menuService) {
 		this.menuService = menuService;
-		if (menuService.requestAllMenuItems().size() == 0) {
-			init();
-		}
+//		if (menuService.requestAllMenuItems().size() == 0) {
+//			init();
+//		}
 	}
 	
+	@PostConstruct
 	private void init() {
 		menuService.createMenuItem(menuItem("YM1", new BigDecimal("1.99"), 11, "Yummy Noodles"));
 		menuService.createMenuItem(menuItem("YM2", new BigDecimal("2.99"), 12, "Special Noodles"));
@@ -56,19 +56,9 @@ public class SiteController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getCurrentMenu(Model model) {
 		LOG.debug("Yummy MenuItemDetails to home view");
-		model.addAttribute("menuItems", menuService.requestAllMenuItems()); //getMenuItems(menuService.requestAllMenuItems(new RequestAllMenuItemsEvent()))
+		model.addAttribute("menuItems", menuService.requestAllMenuItems());
 		return "/home";
 	}
-
-//	private List<MenuItem> getMenuItems(AllMenuItemsEvent requestAllMenuItems) {
-//		List<MenuItem> menuDetails = new ArrayList<MenuItem>();
-//		
-//		for (MenuItemDetails menuItemDetails : requestAllMenuItems.getMenuItemDetails()) {
-//			menuDetails.add(MenuItem.fromMenuDetails(menuItemDetails));
-//		}
-//
-//		return menuDetails;
-//	}
 	
 	@ModelAttribute("basket")
 	private Basket getBasket() {

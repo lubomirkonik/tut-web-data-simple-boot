@@ -1,9 +1,5 @@
 package tut.webdata.controller;
 
-//import tut.webdata.core.services.OrderService;
-//import tut.webdata.events.orders.CreateOrderEvent;
-//import tut.webdata.events.orders.OrderCreatedEvent;
-//import tut.webdata.events.orders.OrderDetails;
 import tut.webdata.domain.Basket;
 import tut.webdata.domain.CustomerInfo;
 import tut.webdata.domain.Order;

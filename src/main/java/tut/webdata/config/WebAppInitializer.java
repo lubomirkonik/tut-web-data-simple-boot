@@ -1,7 +1,7 @@
 package tut.webdata.config;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletRegistration;
+//import javax.servlet.ServletRegistration;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -14,8 +14,8 @@ public class WebAppInitializer extends
   //{!begin addToRootContext}
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { SecurityConfig.class, PersistenceConfig.class,
-				MongoConfiguration.class, JPAConfiguration.class };  //, GemfireConfiguration.class
+		return new Class<?>[] { SecurityConfig.class, PersistenceConfig.class, 
+				JPAConfiguration.class };
 	}
   //{!end addToRootContext}
 

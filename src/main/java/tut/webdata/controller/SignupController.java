@@ -9,11 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-//import thymeleafexamples.layouts.account.*;
-//import thymeleafexamples.layouts.support.web.*;
-
 import tut.webdata.domain.Account;
-//import tut.webdata.repository.AccountRepository;
 import tut.webdata.services.AccountService;
 import tut.webdata.services.UserService;
 import tut.webdata.support.web.*;

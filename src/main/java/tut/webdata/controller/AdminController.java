@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+//import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -25,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-//import tut.webdata.repository.OrderStatusRepository;
-//import tut.webdata.repository.OrdersRepository;
 import tut.webdata.services.MenuService;
 import tut.webdata.services.OrderService;
 import tut.webdata.support.web.AjaxUtils;
@@ -48,6 +47,7 @@ public class AdminController {
 	@Autowired
 	private MenuService menuService;
 	
+//	@PostConstruct
 	private void init() {
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));

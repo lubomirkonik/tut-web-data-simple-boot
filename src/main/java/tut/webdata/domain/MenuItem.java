@@ -1,26 +1,24 @@
 package tut.webdata.domain;
 
-//import tut.webdata.events.menu.MenuItemDetails;
 //import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Document(collection = "menu")
-public class MenuItem implements Serializable {
+@Entity(name = "MENU_ITEMS")
+public class MenuItem {
 	
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 	private static final String COST_MESSAGE = "{cost.message}";
@@ -33,18 +31,12 @@ public class MenuItem implements Serializable {
 
   @NotNull(message = MenuItem.NOT_BLANK_MESSAGE)
   @NotEmpty(message = MenuItem.NOT_BLANK_MESSAGE)
-  @Field("itemName")
-  @Indexed
   private String name;
 
   private String description;
 
+  @Transient
   private Set<Ingredient> ingredients;
-  
-//  @NotNull
-//  @NotEmpty
-  
-//  @NotBlank(message = MenuItem.NOT_BLANK_MESSAGE)
   
   @DecimalMin(value = "0.99", message = MenuItem.COST_MESSAGE)
   @DecimalMax(value = "99.99", message = MenuItem.COST_MESSAGE)
@@ -109,21 +101,6 @@ public class MenuItem implements Serializable {
   public void setMinutesToPrepare(int minutesToPrepare) {
     this.minutesToPrepare = minutesToPrepare;
   }
-
-//  public MenuItemDetails toStatusDetails() {
-//    return new MenuItemDetails(id, name, cost, minutesToPrepare);
-//  }
-//
-//  public static MenuItem fromStatusDetails(MenuItemDetails orderStatusDetails) {
-//    MenuItem item = new MenuItem();
-//
-//    item.cost = orderStatusDetails.getCost();
-//    item.id = orderStatusDetails.getId();
-//    item.minutesToPrepare = orderStatusDetails.getMinutesToPrepare();
-//    item.name = orderStatusDetails.getName();
-//
-//    return item;
-//  }
   
   private boolean entityFound = true;
   public static MenuItem notFound(String key) {

@@ -13,14 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import tut.webdata.domain.Account;
-//import tut.webdata.repository.AccountRepository;
 import tut.webdata.services.AccountService;
 
 @Controller
 @Secured("ROLE_USER")
 class AccountController {
 	
-//	@Autowired
     private AccountService accountService;
 
     @Autowired

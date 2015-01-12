@@ -1,7 +1,5 @@
 package tut.webdata.domain;
 
-//import tut.webdata.events.orders.OrderDetails;
-
 import javax.persistence.*;
 
 import java.util.Collections;
@@ -106,32 +104,6 @@ public class Order {
     return orderItems;
   }
 
-//  public OrderDetails toOrderDetails() {
-//    OrderDetails details = new OrderDetails();
-//
-//    details.setKey(UUID.fromString(this.id));
-//    details.setDateTimeOfSubmission(this.dateTimeOfSubmission);
-//    details.setOrderItems(this.getOrderItems());
-//    details.setName(name);
-//    details.setAddress1(address1);
-//    details.setPostcode(postcode);
-//
-//    return details;
-//  }
-//
-//  public static Order fromOrderDetails(OrderDetails orderDetails) {
-//    Order order = new Order();
-//
-//    order.id = orderDetails.getKey().toString();
-//    order.dateTimeOfSubmission = orderDetails.getDateTimeOfSubmission();
-//    order.orderItems = orderDetails.getOrderItems();
-//    order.name = orderDetails.getName();
-//    order.address1 = orderDetails.getAddress1();
-//    order.postcode = orderDetails.getPostcode();
-//
-//    return order;
-//  }
-  
   private boolean entityFound = true;
   public static Order notFound(String key) {
 	  Order ev = new Order();

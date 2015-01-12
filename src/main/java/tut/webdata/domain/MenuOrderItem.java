@@ -2,7 +2,7 @@ package tut.webdata.domain;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.Min;
+//import javax.validation.constraints.Min;
 
 public class MenuOrderItem {
 	
